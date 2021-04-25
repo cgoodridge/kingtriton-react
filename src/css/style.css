@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap');
+/*$yale-blue: #144585ff; //Blue
+$light-french-beige: #d1ae68ff; //Yellow
+$eerie-black: #141414ff; //Black
+$light-cyan: #cffcffff; //Light Blue
+$cultured: #f5f5f5ff; // That Whiteish Text
+*/
+
+html, body{
+margin: 0;
+padding:0;
+height: 100%;
+width: 100%;
+font-family:'Poppins',sans-serif;
+color: #141414ff;
+}
+
+.nav-col{
+  background-color: #0f0f0f;
+}
+
+main{
+  flex: 1 0 auto;
+  margin:0 !important;
+  padding: 0 !important;
+  height: auto !important;
+}
+
+h4{
+  font-family: "Poiret One";
+  font-weight: bold;
+}
+ input, textarea
+{
+    -moz-border-radius: 20px;
+    border-radius: 10px;
+    border: none;
+    padding-left: 16px;
+    padding-right: 32px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    
+}
+.form-section input{
+  width: 100%;
+}
+
+input[type="text"], textarea {
+
+  background-color : #f0f0f0; 
+
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+.area{
+  width: 100%;
+  
+}
+.form-section h1
+{
+  color: white;
+  font-family: 'New Tegomin';
+  font-size: 4.5vw;
+}
+.padding{
+  padding: 4;
+}
+
+.centered {
+  z-index: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Main Content */
+
+.card.small {
+  margin-left: auto;
+  margin-right: auto;
+  height: 400px !important;
+  min-width: 280px !important;
+  max-width: 280px !important;
+}
+
+.card{
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-image img{
+  height: 200px !important;
+}
+.container{
+  width: 90% !important;
+}
+
+.card-controls{
+ padding-top: 32px !important;
+ margin: 0 !important;
+}
+
+.btn-floating img{
+  margin-top: 20%;
+  height: 26px;
+  
+}
+
+.btn-floating {
+  padding: 0px;
+  margin: 0px;
+  
+}
+.card-title{
+  font-family: 'Roboto';
+  font-weight: 300;
+}
+
+.card img{
+  border-radius: 0 0 15px 15px !important;
+  
+}
+.card .row{
+  margin: 0 !important;
+}
+
+.button-control{
+  background-color: #e4e4e4;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* End of Main Content */
+
+/* Footer */
+.footer-col{
+  background-color: #141414;
+}
+.footer-copyright{
+  background-color: #0f0f0f !important;
+}
+
+footer h5{
+  font-family: 'Poiret One';
+}
+
+#footer-logo
+{
+  height: 80px;
+}
+/* Footer End */
+
+
+/*---Media Queries --*/
+@media only screen and (min-width: 960px) {
+
+}
+@media (max-width: 992px) {
+  
+  }
+@media (max-width: 768px) {
+
+}
+@media (max-width: 576px) {
+
+}
+
+
+
+
+/*--- Bootstrap Padding Fix --*/
+[class*="col-"] {
+    padding: 1rem;
+}
+
+
+
+
+/*
+Extra small (xs) devices (portrait phones, less than 576px)
+No media query since this is the default in Bootstrap
+
+Small (sm) devices (landscape phones, 576px and up)
+@media (min-width: 576px) { ... }
+
+Medium (md) devices (tablets, 768px and up)
+@media (min-width: 768px) { ... }
+
+Large (lg) devices (desktops, 992px and up)
+@media (min-width: 992px) { ... }
+
+Extra (xl) large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { ... }
+*/
+
+
+
+
+
+
+
+
