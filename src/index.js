@@ -2,13 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Content from './Content';
-import Header from './components/Header.js'
+
 import M from 'materialize-css';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Header />
     <Content />
   </React.StrictMode>,
  

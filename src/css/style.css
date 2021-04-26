@@ -144,7 +144,7 @@ button:focus {
 
 /* Footer */
 .footer-col{
-  background-color: #141414;
+  background-color: #141414 !important;
 }
 .footer-copyright{
   background-color: #0f0f0f !important;
