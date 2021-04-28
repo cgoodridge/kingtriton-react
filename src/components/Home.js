@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Card from '@material-ui/core/Card';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import IconButton from '@material-ui/core/IconButton';
@@ -25,6 +25,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import { AutoInit } from 'materialize-css';
 // import { Button, Card, Row, Col } from 'react-materialize';
 
 
@@ -62,13 +63,6 @@ const useStyles = makeStyles((theme) => ({
     width: 38,
   },
 
-  formSize:{
-    width: 20,
-    paddingTop: 0,
-    paddingBottom: 0,
-    textAlign: 'center'
-  
-  },
   cardRadius:{
     borderRadius: 10,
   },
@@ -79,6 +73,22 @@ const useStyles = makeStyles((theme) => ({
   },
   heroImage:{
     width: "100%",
+  },
+  heroText:{
+    display:'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    left: '25%',
+    right: '50%',
+    top: '30%',
+    color: 'white',
+    width: '50%'
+    
+  },
+  mainFont:{
+    fontFamily: 'Poiret One'
   }
 }));
 
@@ -118,29 +128,40 @@ function Home() {
                 <CardMedia
                 component="img"
                 alt={card.alt}
-                height="200"
+                height="225"
                 image={card.image}
                 title={card.name}
                 className="card-image"
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2" align="left">
-                        {card.name} 
-                    </Typography>
+                  <Grid container style={{marginBottom: '10px'}}>
+                    <Grid item xs={10}>
+                      <Typography gutterBottom variant="h6" component="h2" align="left">
+                          {card.name} 
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Typography gutterBottom variant="h6" component="h2" align="left">
+                          ${card.price} 
+                      </Typography>
+                    </Grid>
+                  </Grid>
                 </CardContent>
                 <CardActions className={classes.controls}>
                     <Box className={classes.controlCounters}>
                         <IconButton size="small" color="primary">
                         <RemoveIcon />
                         </IconButton>
-                        <TextField id="filled-basic" className={classes.formSize} textAlign={'center'} defaultValue="1" size="small" />
+                        <TextField id="filled-basic" className="cardCount" InputProps={{ disableUnderline: true }} defaultValue="1" size="small" />
                         <IconButton size="small" color="primary">
                         <AddIcon />
                         </IconButton>
                     </Box>
-                    <Fab color="primary" aria-label="add">
-                        <img src="img/mdi_basket-plus.png"></img>
-                    </Fab>
+                    <ThemeProvider theme={theme}>
+                      <Fab color="primary" aria-label="add">
+                          <img src="img/mdi_basket-plus.png"></img>
+                      </Fab>
+                    </ThemeProvider>
                 </CardActions>
             </Card>
             </Grid>
@@ -149,12 +170,21 @@ function Home() {
     };
 
     return (
-        <div className="App" theme={theme}>
+        <div className="App">
 
-        <img src="/img/shrimp-dinner.jpg" className={classes.heroImage}></img>
-        
+        <img src="/img/shrimp-dinner.jpg" className={classes.heroImage} style={{filter: 'brightness(20%)'}}></img>
+        <Box className={classes.heroText}>
+          <Typography gutterBottom variant="h3" component="h2" align="center" className={classes.mainFont}>
+                      Dish of the Week
+          </Typography>
+          <ThemeProvider theme={theme}>
+            <Button variant="contained" color="primary" style={{width: 100}}>
+              Order 
+            </Button>
+          </ThemeProvider>
+        </Box>
         <Container maxWidth="lg">
-            <Typography gutterBottom variant="h3" component="h2" align="center">
+            <Typography gutterBottom variant="h3" component="h2" align="center" className={classes.mainFont}>
                     Specials
             </Typography>
         </Container>

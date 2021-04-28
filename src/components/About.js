@@ -13,6 +13,8 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Button from '@material-ui/core/Button';
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -76,6 +78,9 @@ const useStyles = makeStyles((theme) => ({
   gridContent:{
     display: 'flex',
     justifyContent: 'center'
+  },
+  mainFont:{
+    fontFamily: 'Poiret One'
   }
 }));
 
@@ -100,10 +105,10 @@ function About() {
   });
 
     const cardInfo = [
-        {image: "img/mains/shrimpalfredo.jpg", name: "Shrimp Alfredo", price:16,},
-        {image: "img/mains/lobster-mac.jpg", name: "Lobster Mac & Cheese", price:22,},
-        {image: "img/mains/fried-calamari.jpeg", name: "Fried Calamari", price:16,},
-        {image: "img/mains/fried-calamari.jpeg", name: "Fried Calamari", price:16,},
+        {image: "img/owner.jpg", name: "Barbara Gordon", position:"Owner, King Triton's Seafood Palace",},
+        {image: "img/head-chef.jpg", name: "Sara Lance", position:"Head Chef, King Triton's Seafood Palace",},
+        {image: "img/sous-chef.jpg", name: "Lucius Fox", position:"Sous Chef, King Triton's Seafood Palace",},
+        
 
     ];
 
@@ -114,30 +119,27 @@ function About() {
             <Card className="card small" style={{borderRadius: "20px"}} key={index}>
                 <CardMedia
                 component="img"
-                alt="Contemplative Reptile"
+                alt={card.position}
                 height="200"
                 image={card.image}
-                title="Contemplative Reptile"
+                title={card.owner}
                 className="card-image"
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2" align="left">
+                    <Typography gutterBottom variant="h4" component="h2" align="center" style={{fontFamily: 'Poiret One', fontWeight: 'bold'}}>
                         {card.name} 
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="h2" align="center">
+                        {card.position} 
                     </Typography>
                 </CardContent>
                 <CardActions className={classes.controls}>
-                    <Box className={classes.controlCounters}>
+                    
                         <IconButton size="small" color="primary">
-                        <RemoveIcon />
+                          <a href="#"><FontAwesomeIcon icon={['fab','linkedin']} size="lg" /></a>
                         </IconButton>
-                        <TextField id="filled-basic" className={classes.formSize} textAlign={'center'} defaultValue="1" size="small" />
-                        <IconButton size="small" color="primary">
-                        <AddIcon />
-                        </IconButton>
-                    </Box>
-                    <Fab color="primary" aria-label="add">
-                        <img src="img/mdi_basket-plus.png"></img>
-                    </Fab>
+                    
+        
                 </CardActions>
             </Card>
             </Grid>
@@ -146,10 +148,16 @@ function About() {
     };
 
     return (
-        <div className="App" theme={theme}>
+        <div className="App" theme={theme} style={{padding: '25px'}}>
         <Container maxWidth="lg">
-            <Typography gutterBottom variant="h3" component="h2" align="left">
-                    Menu
+            <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont} >
+                    About
+            </Typography>
+            <Typography variant="body1" gutterBottom style={{lineHeight: 2}}>
+              King Triton’s Seafood Palace “Food fit for a king” was founded in 1999. 
+              King Triton’s gets its name from the 1989 Disney movie, The Little Mermaid, a movie the owner’s son loved as a child. 
+              Barbara Gordon originally opened her first espresso, doughnut and sandwich shop and when that proved to be a fruitful business venture, she expanded and rebranded to what is now known as King Triton’s Seafood Palace. 
+              It has turned into the best Seafood Restaurant in Barbados, serving in excess of 300,000 meals and 299,000. Furthermore, presently it’s additionally in Barbados located at Hastings Christ Church. At King Triton's Seafood Palace Barbados, you can appreciate a wide variety of seafood delights, espresso, drinks, and sandwiches, that will have you sipping’, slurping, gorgin and more.
             </Typography>
         </Container>
 

@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Card from '@material-ui/core/Card';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import IconButton from '@material-ui/core/IconButton';
@@ -11,6 +11,14 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import MailIcon from '@material-ui/icons/Mail';
+import PhoneIcon from '@material-ui/icons/PhoneAndroid';
+import LocationIcon from '@material-ui/icons/PinDrop';
+import PersonIcon from '@material-ui/icons/Person';
+import EmailIcon from '@material-ui/icons/Email';
+import SubjectIcon from '@material-ui/icons/Subject';
+import MessageIcon from '@material-ui/icons/Message';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -76,7 +84,31 @@ const useStyles = makeStyles((theme) => ({
   gridContent:{
     display: 'flex',
     justifyContent: 'center'
-  }
+  },
+
+  gridItemContent:{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems:'center',
+    flexDirection: 'column'
+  },
+  mainFont:{
+    fontFamily: 'Poiret One'
+  },
+  underline: {
+    "&&&:before": {
+        borderBottom: "none"
+    },
+    "&&:after": {
+        borderBottom: "none"
+    }
+  },
+  root: {
+    '& > *': {
+      margin: theme.spacing(1),
+      width: '25ch',
+    },
+  },
 }));
 
 function Contact() {
@@ -99,63 +131,102 @@ function Contact() {
     },
   });
 
-    const cardInfo = [
-        {image: "img/mains/shrimpalfredo.jpg", name: "Shrimp Alfredo", price:16,},
-        {image: "img/mains/lobster-mac.jpg", name: "Lobster Mac & Cheese", price:22,},
-        {image: "img/mains/fried-calamari.jpeg", name: "Fried Calamari", price:16,},
-        {image: "img/mains/fried-calamari.jpeg", name: "Fried Calamari", price:16,},
-
-    ];
-
-    const renderCard = (card, index) => {
-        return(
-        
-            <Grid item xs={12} sm={3}>
-            <Card className="card small" style={{borderRadius: "20px"}} key={index}>
-                <CardMedia
-                component="img"
-                alt="Contemplative Reptile"
-                height="200"
-                image={card.image}
-                title="Contemplative Reptile"
-                className="card-image"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2" align="left">
-                        {card.name} 
-                    </Typography>
-                </CardContent>
-                <CardActions className={classes.controls}>
-                    <Box className={classes.controlCounters}>
-                        <IconButton size="small" color="primary">
-                        <RemoveIcon />
-                        </IconButton>
-                        <TextField id="filled-basic" className={classes.formSize} textAlign={'center'} defaultValue="1" size="small" />
-                        <IconButton size="small" color="primary">
-                        <AddIcon />
-                        </IconButton>
-                    </Box>
-                    <Fab color="primary" aria-label="add">
-                        <img src="img/mdi_basket-plus.png"></img>
-                    </Fab>
-                </CardActions>
-            </Card>
-            </Grid>
-
-        )
-    };
-
     return (
-        <div className="App" theme={theme}>
+        <div className="App" theme={theme} style={{padding: '25px'}}>
         <Container maxWidth="lg">
-            <Typography gutterBottom variant="h3" component="h2" align="left">
-                    Menu
+            <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont}>
+                    Contact Us
             </Typography>
         </Container>
 
             <Grid container direction="row" className={classes.gridContent}>
-            {cardInfo.map(renderCard)}
+              <Grid item xs={12} sm={6}>
+                  <Grid container>
+                    <ThemeProvider theme={theme}>
+                      <Grid item xs={6} style={{paddingRight: '20px', paddingBottom: '20px'}}>
+                        <TextField 
+                          id="standard-basic" 
+                          fullWidth 
+                          label="Name"                            
+                          InputProps={{ 
+                            disableUnderline: true,     
+                          }}                          
+                        />
+                      </Grid>
+
+                      <Grid item xs={6} style={{paddingBottom: '20px'}}>
+                        <TextField 
+                          id="standard-basic" 
+                          fullWidth label="Email" 
+                          color="primary"
+                          InputProps={{ 
+                            style: { color: '#fff' },
+                            disableUnderline: true,                           
+                           }}
+                           
+                       />
+                      </Grid>
+
+                      <Grid item xs={12} style={{paddingBottom: '20px'}}>
+                        <TextField 
+                          fullWidth 
+                          id="standard-basic" 
+                          label="Subject" 
+                          color="primary"
+                          InputProps={{ 
+                            disableUnderline: true,
+                            
+                            
+                            }}
+                          
+                        />
+                    
+                      </Grid>
+
+                      <Grid item xs={12} style={{paddingBottom: '20px'}}>
+                      <TextField
+                        id="standard-multiline-static"
+                        label="Multiline"
+                        fullWidth
+                        multiline
+                        rows={4}
+                        
+                      />
+                      </Grid>
+                      
+                        <Button variant="contained" color="primary" style={{width: 100}}>
+                          Send
+                        </Button>
+                      </ThemeProvider>
+                  </Grid>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <img style={{paddingLeft: '15px', paddingBottom: '20px', minWidth:'200px'}} className="responsive-img" src="/img/Mapsicle-Map.png"></img>
+              </Grid>
             </Grid>
+
+            <ThemeProvider theme={theme}>
+              <Grid container direction="row" className={classes.gridContent}>
+                <Grid item  xs={12} sm={4} className={classes.gridItemContent}>
+                  <MailIcon style={{ fontSize: 40 }} color="primary"/>
+                  <Typography gutterBottom variant="h4" component="h2" align="center" className={classes.mainFont}>
+                        info@triton
+                  </Typography>
+                </Grid>
+                <Grid item  xs={12} sm={4} className={classes.gridItemContent}>
+                  <PhoneIcon style={{ fontSize: 40 }} color="primary"/>
+                  <Typography gutterBottom variant="h5" component="h2" align="center" className={classes.mainFont}>
+                        (246)439-9000
+                  </Typography>
+                </Grid>
+                <Grid item  xs={12} sm={4} className={classes.gridItemContent}>
+                  <LocationIcon style={{ fontSize: 40 }} color="primary"/>
+                  <Typography gutterBottom variant="h5" component="h2" align="center" className={classes.mainFont}>
+                        Hastings Main Road, Christ Church
+                  </Typography>
+                </Grid>
+              </Grid>
+            </ThemeProvider>
 
         </div>
     );

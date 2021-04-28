@@ -140,6 +140,34 @@ button:focus {
   align-items: center;
 }
 
+.cardCount{
+  outline: none;
+  box-shadow: none;
+  border-bottom: none !important;
+  width: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
+    
+}
+.cardCount::after{
+  outline: none;
+  box-shadow: none;
+  border-bottom: none !important;
+  width: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
+    
+}
+.cardCount:focus{
+  outline: none !important;
+  box-shadow: none !important;
+  width: 20px;
+  padding-top: 0;
+  padding-bottom: 0;
+    
+}
+
+
 /* End of Main Content */
 
 /* Footer */

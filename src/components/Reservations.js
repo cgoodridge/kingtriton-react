@@ -3,7 +3,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Card from '@material-ui/core/Card';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import IconButton from '@material-ui/core/IconButton';
@@ -26,7 +26,6 @@ import {
   Link
 } from "react-router-dom";
 // import { Button, Card, Row, Col } from 'react-materialize';
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,28 +53,32 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
-    
-
   },
   playIcon: {
     height: 38,
     width: 38,
   },
-
   formSize:{
     width: 20,
     paddingTop: 0,
     paddingBottom: 0,
     textAlign: 'center'
-  
   },
   cardRadius:{
     borderRadius: 10,
   },
-
   gridContent:{
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'start'
+  },
+  mainFont:{
+    fontFamily: 'Poiret One'
+  },
+  resArea:{
+    backgroundColor: '#1e1e1e',
+    height: 500,
+    marginTop: 16,
+    borderRadius: 20
   }
 }));
 
@@ -107,56 +110,69 @@ function Reservations() {
 
     ];
 
-    const renderCard = (card, index) => {
-        return(
-        
-            <Grid item xs={12} sm={3}>
-            <Card className="card small" style={{borderRadius: "20px"}} key={index}>
-                <CardMedia
-                component="img"
-                alt="Contemplative Reptile"
-                height="200"
-                image={card.image}
-                title="Contemplative Reptile"
-                className="card-image"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2" align="left">
-                        {card.name} 
-                    </Typography>
-                </CardContent>
-                <CardActions className={classes.controls}>
-                    <Box className={classes.controlCounters}>
-                        <IconButton size="small" color="primary">
-                        <RemoveIcon />
-                        </IconButton>
-                        <TextField id="filled-basic" className={classes.formSize} textAlign={'center'} defaultValue="1" size="small" />
-                        <IconButton size="small" color="primary">
-                        <AddIcon />
-                        </IconButton>
-                    </Box>
-                    <Fab color="primary" aria-label="add">
-                        <img src="img/mdi_basket-plus.png"></img>
-                    </Fab>
-                </CardActions>
-            </Card>
-            </Grid>
-
-        )
-    };
 
     return (
-        <div className="App" theme={theme}>
-        <Container maxWidth="lg">
-            <Typography gutterBottom variant="h3" component="h2" align="left">
-                    Menu
-            </Typography>
-        </Container>
+        <div className="App" theme={theme} style={{padding: '25px'}}>
+          <ThemeProvider theme={theme}>
+            <Container maxWidth="lg">
+              <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont}>
+                      Make a Reservation
+              </Typography>
 
-            <Grid container direction="row" className={classes.gridContent}>
-            {cardInfo.map(renderCard)}
-            </Grid>
+              <ThemeProvider theme={theme}>
+                <Grid container direction="row" className={classes.gridContent}>
+                  <Grid item xs={12}>
+                      <Grid container>
+                          <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
+                            <TextField 
+                              id="standard-basic" 
+                              fullWidth 
+                              label="Date"                            
+                              InputProps={{ 
+                                disableUnderline: true,     
+                              }}                          
+                            />
+                          </Grid>
+                          <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
+                            <TextField 
+                              id="standard-basic" 
+                              fullWidth 
+                              label="Time" 
+                              color="primary"
+                              InputProps={{ 
+                                
+                                disableUnderline: true,                           
+                              }}/>
+                          </Grid>
+                          <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
+                            <TextField 
+                              id="standard-basic" 
+                              fullWidth 
+                              label="People" 
+                              color="primary"
+                              InputProps={{   
+                                disableUnderline: true,                           
+                              }}
+                            />
+                          </Grid>
+                          <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
+                            <Button variant="contained" color="primary" style={{width: 100}}>
+                              Book
+                            </Button>
+                          </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </ThemeProvider>
 
+              <Typography gutterBottom variant="h4" component="h2" align="left" className={classes.mainFont}>
+                Preferred Seating
+              </Typography>
+              <Box className={classes.resArea}>
+
+              </Box>
+            </Container>
+          </ThemeProvider>
         </div>
     );
 }

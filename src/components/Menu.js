@@ -71,6 +71,9 @@ const useStyles = makeStyles((theme) => ({
   gridContent:{
     display: 'flex',
     justifyContent: 'center'
+  },
+  mainFont:{
+    fontFamily: 'Poiret One'
   }
 }));
 
@@ -122,10 +125,10 @@ function Menu() {
                 </CardContent>
                 <CardActions className={classes.controls}>
                     <Box className={classes.controlCounters}>
-                        <IconButton size="small" color="primary">
-                        <RemoveIcon />
+                        <IconButton size="small" color="primary" >
+                          <RemoveIcon />
                         </IconButton>
-                        <TextField id="filled-basic" className={classes.formSize} textAlign={'center'} defaultValue="1" size="small" />
+                        <TextField id="filled-basic" className={classes.formSize} InputProps={{ disableUnderline: true }} style={{marginLeft: '6px'}} defaultValue="1" size="small" />
                         <IconButton size="small" color="primary">
                         <AddIcon />
                         </IconButton>
@@ -141,16 +144,16 @@ function Menu() {
     };
 
     return (
-        <div className="App" theme={theme}>
-        <Container maxWidth="lg">
-            <Typography gutterBottom variant="h3" component="h2" align="left">
-                    Menu
-            </Typography>
-        </Container>
+        <div className="App" theme={theme} style={{padding: '25px'}}>
+          <Container maxWidth="lg">
+              <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont}>
+                      Menu
+              </Typography>
+          </Container>
 
-            <Grid container direction="row" className={classes.gridContent}>
+          <Grid container direction="row" className={classes.gridContent}>
             {cardInfo.map(renderCard)}
-            </Grid>
+          </Grid>
 
         </div>
     );
