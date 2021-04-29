@@ -11,10 +11,12 @@ import { makeStyles, useTheme, ThemeProvider, createMuiTheme } from '@material-u
 import Cart from './components/Cart';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
+import Badge from '@material-ui/core/Badge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
+import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -36,14 +38,31 @@ library.add(fab);
 const useStyles = makeStyles((theme) => ({
   list: {
     width: 250,
+    
   },
   fullList: {
     width: 'auto',
+    
   },
 }));
 
   function Content() {
     const classes = useStyles();
+    let cart = [];
+
+    function addToBasket(data) {
+      // create a clone of your array of players; don't modify objects on the state directly
+      const cart = this.state.cart.slice(0);
+
+      cart.push({
+        image: data.image, name: data.name, price:data.price,
+      });
+
+      this.setState({
+        cart: cart,
+      });
+    };
+
     const theme = createMuiTheme({
       palette: {
         primary: {
@@ -82,23 +101,23 @@ const useStyles = makeStyles((theme) => ({
         onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}
       >
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
+        <ThemeProvider theme={theme}>
+          <List style={{height: '500px'}}>
+              {cart.map((text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            ))}
+            <ListItem>
+              <Button variant="contained" color="primary" style={{width: '100%'}}>
+                Checkout
+              </Button>
             </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+          </List>
+          <Divider />
+
+        </ThemeProvider>
       </div>
     );
     
@@ -120,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
                   <li><Link to="/about">About</Link></li>
                   {['right'].map((anchor) => (
                     <React.Fragment key={anchor}>
-                      <ThemeProvider theme={theme}><li><IconButton onClick={toggleDrawer(anchor, true)} color="primary"><Basket /></IconButton></li></ThemeProvider>
+                      <ThemeProvider theme={theme}><li><IconButton onClick={toggleDrawer(anchor, true)} color="primary"><Badge badgeContent={4} color="primary"><Basket color='white' /></Badge></IconButton></li></ThemeProvider>
                       <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
                         {list(anchor)}
                       </Drawer>

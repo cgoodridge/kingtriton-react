@@ -12,6 +12,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
@@ -76,9 +78,25 @@ const useStyles = makeStyles((theme) => ({
   },
   resArea:{
     backgroundColor: '#1e1e1e',
-    height: 500,
+    height: 650,
     marginTop: 16,
-    borderRadius: 20
+    paddingTop: 16,
+    paddingLeft: 20,
+    borderRadius: 20,
+    display: 'flex',
+    flexDirection: 'row wrap',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    overflow: 'hidden'
+  },
+
+  innerGrid:{
+    
+    display: 'flex',
+    flexDirection: 'row wrap',
+    justifyContent: 'flex-start',
+    
+    overflow: 'hidden'
   }
 }));
 
@@ -156,6 +174,17 @@ function Reservations() {
                             />
                           </Grid>
                           <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
+                            <TextField 
+                              id="standard-basic" 
+                              fullWidth 
+                              label="Table" 
+                              color="primary"
+                              InputProps={{   
+                                disableUnderline: true,                           
+                              }}
+                            />
+                          </Grid>
+                          <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
                             <Button variant="contained" color="primary" style={{width: 100}}>
                               Book
                             </Button>
@@ -168,9 +197,295 @@ function Reservations() {
               <Typography gutterBottom variant="h4" component="h2" align="left" className={classes.mainFont}>
                 Preferred Seating
               </Typography>
-              <Box className={classes.resArea}>
+              <Chip
+                style={{margin: 4}}
+                label="Lower Floor"
+                clickable
+                color="primary"
+              />
+              <Chip
+                style={{margin: 4}}
+                label=" Upper Floor"
+                clickable
+                color="#010101"
+              />
+              <Grid container className={classes.resArea}>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          P6
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid item>
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          P5
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          C4
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 8.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          C3
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 8.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          C2
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 8.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          C1
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 8.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
 
-              </Box>
+
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          P4
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          P3
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          F8
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          F7
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          F6
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          F5
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          P2
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          P1
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          F4
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          F3
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          F2
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
+                    <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                      <Grid >
+                        <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                          F1
+                        </Typography>
+                      </Grid>
+                      <Grid item>
+                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+
+                  <Grid container className={classes.innerGrid}>
+
+                    <Grid item xs={12} sm={3}>
+                      <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                        <Grid >
+                          <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                            B4
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <img src="/img/seating/Seating Area 16.png" className="seating"></img>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} sm={3}>
+                      <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                        <Grid >
+                          <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                            B3
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <img src="/img/seating/Seating Area 16.png" className="seating"></img>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} sm={3}>
+                      <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                        <Grid >
+                          <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                            B2
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <img src="/img/seating/Seating Area 16.png" className="seating"></img>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={12} sm={3}>
+                      <Grid container style={{display: 'flex', flexDirection:'column'}}>
+                        <Grid >
+                          <Typography style={{color:'white'}} gutterBottom variant="h6"  component="h2"  className={classes.mainFont}>
+                            B1
+                          </Typography>
+                        </Grid>
+                        <Grid item>
+                          <img src="/img/seating/Seating Area 16.png" className="seating"></img>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    
+
+                  </Grid>
+                
+              </Grid>
             </Container>
           </ThemeProvider>
         </div>

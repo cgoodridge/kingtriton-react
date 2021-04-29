@@ -124,46 +124,46 @@ function Home() {
         return(
         
             <Grid item xs={12} sm={3}>
-            <Card className="card small" style={{borderRadius: "20px"}} key={index}>
-                <CardMedia
-                component="img"
-                alt={card.alt}
-                height="225"
-                image={card.image}
-                title={card.name}
-                className="card-image"
-                />
-                <CardContent>
-                  <Grid container style={{marginBottom: '10px'}}>
-                    <Grid item xs={10}>
-                      <Typography gutterBottom variant="h6" component="h2" align="left">
-                          {card.name} 
-                      </Typography>
+              <Card className="card small" style={{borderRadius: "20px"}} key={index}>
+                  <CardMedia
+                  component="img"
+                  alt={card.alt}
+                  height="225"
+                  image={card.image}
+                  title={card.name}
+                  className="card-image"
+                  />
+                  <CardContent>
+                    <Grid container style={{marginBottom: '10px'}}>
+                      <Grid item xs={10}>
+                        <Typography gutterBottom variant="h6" component="h2" align="left">
+                            {card.name} 
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={2}>
+                        <Typography gutterBottom variant="h6" component="h2" align="left">
+                            ${card.price} 
+                        </Typography>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={2}>
-                      <Typography gutterBottom variant="h6" component="h2" align="left">
-                          ${card.price} 
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-                <CardActions className={classes.controls}>
-                    <Box className={classes.controlCounters}>
-                        <IconButton size="small" color="primary">
-                        <RemoveIcon />
-                        </IconButton>
-                        <TextField id="filled-basic" className="cardCount" InputProps={{ disableUnderline: true }} defaultValue="1" size="small" />
-                        <IconButton size="small" color="primary">
-                        <AddIcon />
-                        </IconButton>
-                    </Box>
-                    <ThemeProvider theme={theme}>
-                      <Fab color="primary" aria-label="add">
-                          <img src="img/mdi_basket-plus.png"></img>
-                      </Fab>
-                    </ThemeProvider>
-                </CardActions>
-            </Card>
+                  </CardContent>
+                  <CardActions className={classes.controls}>
+                      <Box className={classes.controlCounters}>
+                          <IconButton size="small" color="primary">
+                            <RemoveIcon />
+                          </IconButton>
+                          <TextField id="filled-basic" className="cardCount" InputProps={{ disableUnderline: true }} defaultValue="1" size="small" />
+                          <IconButton size="small" color="primary">
+                            <AddIcon />
+                          </IconButton>
+                      </Box>
+                      <ThemeProvider theme={theme}>
+                        <Fab color="primary" aria-label="add" onClick={this.addToBasket(card)}>
+                            <img src="img/mdi_basket-plus.png"></img>
+                        </Fab>
+                      </ThemeProvider>
+                  </CardActions>
+              </Card>
             </Grid>
 
         )

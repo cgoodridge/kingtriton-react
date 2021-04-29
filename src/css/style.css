@@ -167,6 +167,12 @@ button:focus {
     
 }
 
+.seating:hover{
+  filter: invert(56%) sepia(37%) saturate(4667%) hue-rotate(169deg) brightness(89%) contrast(103%);
+}
+
+
+
 
 /* End of Main Content */
 
