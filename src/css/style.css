@@ -171,9 +171,54 @@ button:focus {
   filter: invert(56%) sepia(37%) saturate(4667%) hue-rotate(169deg) brightness(89%) contrast(103%);
 }
 
+.hero-text{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: 'center';
+  position: absolute;
+  left: 25%;
+  right: 50%;
+  top: 30%;
+  color: white;
+  width: 50%;
+  
+}
 
+.hero-image{
+  width: 100%;
+}
 
+.grid-content{
+  display: flex;
+  justify-content: center;
+}
 
+.controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  padding-left: 10px;
+  padding-bottom: 10px;
+}
+
+.control-counters {
+  display: 'flex';
+  align-items: 'center';
+  justify-content: 'space-around'; 
+}
+
+.main-font{
+  font-family: 'Poiret One' !important;
+}
+
+.form-size{
+  width: 20;
+  padding-top: 0;
+  padding-bottom: 0;
+  text-align: 'center';
+
+}
 /* End of Main Content */
 
 /* Footer */

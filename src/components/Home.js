@@ -26,175 +26,109 @@ import {
   Link
 } from "react-router-dom";
 import { AutoInit } from 'materialize-css';
+import { Component } from 'react';
 // import { Button, Card, Row, Col } from 'react-materialize';
 
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  details: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  content: {
-    flex: '1 0 auto',
-  },
-  cover: {
-    width: 151,
-  },
-  controls: {
-    display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'space-around',
-    
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  controlCounters: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    
+class Home extends Component {
 
-  },
-  playIcon: {
-    height: 38,
-    width: 38,
-  },
-
-  cardRadius:{
-    borderRadius: 10,
-  },
-
-  gridContent:{
-    display: 'flex',
-    justifyContent: 'center'
-  },
-  heroImage:{
-    width: "100%",
-  },
-  heroText:{
-    display:'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    left: '25%',
-    right: '50%',
-    top: '30%',
-    color: 'white',
-    width: '50%'
-    
-  },
-  mainFont:{
-    fontFamily: 'Poiret One'
-  }
-}));
-
-function Home() {
-
-  const classes = useStyles();
-  const theme = createMuiTheme({
-    palette: {
-      primary: {
-        light: '#757ce8',
-        main: '#2196f3',
-        dark: '#002884',
-        contrastText: '#fff',
-      },
-      secondary: {
-        light: '#ff7961',
-        main: '#f44336',
-        dark: '#ba000d',
-        contrastText: '#000',
-      },
-    },
-  });
-
-    const cardInfo = [
-        {image: "img/mains/shrimpalfredo.jpg", name: "Shrimp Alfredo", price:16, alt:"Shrimp Alfredo"},
-        {image: "img/mains/lobster-mac.jpg", name: "Lobster Mac & Cheese", price:22,alt:"Lobster Mac & Cheese"},
-        {image: "img/mains/fried-calamari.jpeg", name: "Fried Calamari", price:16,alt:"Fried Calamari"},
-    
-
-    ];
-
-    const renderCard = (card, index) => {
-        return(
-        
-            <Grid item xs={12} sm={3}>
-              <Card className="card small" style={{borderRadius: "20px"}} key={index}>
-                  <CardMedia
-                  component="img"
-                  alt={card.alt}
-                  height="225"
-                  image={card.image}
-                  title={card.name}
-                  className="card-image"
-                  />
-                  <CardContent>
-                    <Grid container style={{marginBottom: '10px'}}>
-                      <Grid item xs={10}>
-                        <Typography gutterBottom variant="h6" component="h2" align="left">
-                            {card.name} 
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <Typography gutterBottom variant="h6" component="h2" align="left">
-                            ${card.price} 
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </CardContent>
-                  <CardActions className={classes.controls}>
-                      <Box className={classes.controlCounters}>
-                          <IconButton size="small" color="primary">
-                            <RemoveIcon />
-                          </IconButton>
-                          <TextField id="filled-basic" className="cardCount" InputProps={{ disableUnderline: true }} defaultValue="1" size="small" />
-                          <IconButton size="small" color="primary">
-                            <AddIcon />
-                          </IconButton>
-                      </Box>
-                      <ThemeProvider theme={theme}>
-                        <Fab color="primary" aria-label="add" onClick={this.addToBasket(card)}>
-                            <img src="img/mdi_basket-plus.png"></img>
-                        </Fab>
-                      </ThemeProvider>
-                  </CardActions>
-              </Card>
-            </Grid>
-
-        )
+  constructor(props) {
+    super(props);
+    this.state = {
+      
     };
+  }
 
-    return (
-        <div className="App">
 
-        <img src="/img/shrimp-dinner.jpg" className={classes.heroImage} style={{filter: 'brightness(20%)'}}></img>
-        <Box className={classes.heroText}>
-          <Typography gutterBottom variant="h3" component="h2" align="center" className={classes.mainFont}>
-                      Dish of the Week
-          </Typography>
-          <ThemeProvider theme={theme}>
-            <Button variant="contained" color="primary" style={{width: 100}}>
-              Order 
-            </Button>
-          </ThemeProvider>
-        </Box>
-        <Container maxWidth="lg">
-            <Typography gutterBottom variant="h3" component="h2" align="center" className={classes.mainFont}>
-                    Specials
+
+
+    
+    render()
+    {
+      if(this.props.foodData)
+      {
+        {console.log(this.props.foodData.food)}
+
+        var food = this.props.foodData.filter(foodData => foodData.special === true ).map(function (food) {
+          return(
+          
+            
+              <Grid item xs={12} sm={3}>
+                <Card className="card small" style={{borderRadius: "20px"}} key={food.id}>
+                    <CardMedia
+                    component="img"
+                    alt={food.alt}
+                    height="225"
+                    image={food.image}
+                    title={food.name}
+                    className="card-image"
+                    />
+                    <CardContent>
+                      <Grid container style={{marginBottom: '10px'}}>
+                        <Grid item xs={10}>
+                          <Typography gutterBottom variant="h6" component="h2" align="left">
+                              {food.name} 
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={2}>
+                          <Typography gutterBottom variant="h6" component="h2" align="left">
+                              ${food.price} 
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                    <CardActions className="controls">
+                        <Box className="control-counters">
+                            <IconButton size="small" color="primary">
+                              <RemoveIcon />
+                            </IconButton>
+                            <TextField id="filled-basic" className="cardCount" InputProps={{ disableUnderline: true }} defaultValue="1" size="small" />
+                            <IconButton size="small" color="primary">
+                              <AddIcon />
+                            </IconButton>
+                        </Box>
+                       
+                          <Fab color="primary" aria-label="add" >
+                              <img src="img/mdi_basket-plus.png"></img>
+                          </Fab>
+                        
+                    </CardActions>
+                </Card>
+              </Grid>
+        
+            );
+          });
+      }
+    
+      return (
+        
+        <section>
+          <img src="/img/shrimp-dinner.jpg" className="hero-image" style={{filter: 'brightness(20%)'}}></img>
+          <Box className="hero-text">
+            <Typography gutterBottom variant="h3" component="h2" align="center" className="main-font">
+                        Dish of the Week
             </Typography>
-        </Container>
+            
+              <Button variant="contained" color="primary" style={{width: 100}}>
+                Order 
+              </Button>
+            
+          </Box>
+          <Container maxWidth="lg">
+              <Typography gutterBottom variant="h3" component="h2" align="center" className="main-font">
+                      Specials
+              </Typography>
+          </Container>
 
-            <Grid container direction="row" className={classes.gridContent}>
-            {cardInfo.map(renderCard)}
-            </Grid>
+              <Grid container direction="row" className="grid-content">
+              
+                {food}
 
-        </div>
-    );
+              </Grid>
+        </section>
+        );
+    }
+    
 }
 
 export default Home;

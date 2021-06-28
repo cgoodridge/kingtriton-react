@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Content from './Content';
 
-import M from 'materialize-css';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
