@@ -20,80 +20,17 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { createMuiTheme } from '@material-ui/core/styles';
+import MenuList from '../components/MenuList';
+import foodList from './food';
 import { Component } from 'react';
 
 // import { Button, Card, Row, Col } from 'react-materialize';
 
 
-class Menu extends Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      
-    };
-  }
-  
-
-  render()
-  {
-    if(this.props.foodData)
-    {
-      {console.log(this.props.foodData.food)}
-
-      var food = this.props.foodData.map(function (food) {
-        return(
-        
-          
-            <Grid item xs={12} sm={3}>
-              <Card className="card small" style={{borderRadius: "20px"}} key={food.id}>
-                  <CardMedia
-                  component="img"
-                  alt={food.alt}
-                  height="225"
-                  image={food.image}
-                  title={food.name}
-                  className="card-image"
-                  />
-                  <CardContent>
-                    <Grid container style={{marginBottom: '10px'}}>
-                      <Grid item xs={10}>
-                        <Typography gutterBottom variant="h6" component="h2" align="left">
-                            {food.name} 
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={2}>
-                        <Typography gutterBottom variant="h6" component="h2" align="left">
-                            ${food.price} 
-                        </Typography>
-                      </Grid>
-                    </Grid>
-                  </CardContent>
-                  <CardActions className="controls">
-                      <Box className="control-counters">
-                          <IconButton size="small" color="primary">
-                            <RemoveIcon />
-                          </IconButton>
-                          <TextField id="filled-basic" className="cardCount" InputProps={{ disableUnderline: true }} defaultValue="1" size="small" />
-                          <IconButton size="small" color="primary">
-                            <AddIcon />
-                          </IconButton>
-                      </Box>
-                     
-                        <Fab color="primary" aria-label="add" >
-                            <img src="img/mdi_basket-plus.png"></img>
-                        </Fab>
-                      
-                  </CardActions>
-              </Card>
-            </Grid>
-      
-          );
-        });
-    }
-
-    return (
-        <div className="App"  style={{padding: '25px'}}>
+const Menu = () => {
+    
+      return (
+        <div>
           
             <Container maxWidth="lg">
               <Grid container>
@@ -105,7 +42,7 @@ class Menu extends Component {
                 <Grid item xs={12} sm={3}>
                   <TextField 
                     id="standard-basic" 
-                    fullWidth 
+                    fullWidth
                     label="Search" 
                     color="primary"
                     InputProps={{ 
@@ -120,7 +57,7 @@ class Menu extends Component {
                 style={{margin: 4}}
                 label="All"
                 clickable
-                color="primary"
+                color="secondary"
               />
               <Chip
                 style={{margin: 4}}
@@ -148,13 +85,13 @@ class Menu extends Component {
               />
             
               <Grid container direction="row" className="grid-content">
-                {food}
+                <MenuList foods={foodList} specialVal={false}/>
               </Grid>
             </Container>
 
         </div>
-      );
-  }
+      )
+ 
 }
 
 export default Menu;
