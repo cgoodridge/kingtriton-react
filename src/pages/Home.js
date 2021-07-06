@@ -56,11 +56,13 @@ const Home = () => {
           </Typography>
       </Container>
 
-          <Grid container spacing={3} className="grid-content">
-            
-            <MenuList foods={foodList} specialVal={true}/>
+        <Container maxWidth="lg">
+          <Grid container direction="row" className="grid-content"> 
+              <MenuList foods={foodList} specialVal={true}/>
 
           </Grid>
+        </Container>
+          
     </section>
     );
 }

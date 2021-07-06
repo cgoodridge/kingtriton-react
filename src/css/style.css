@@ -214,7 +214,7 @@ ul {
 /* .grid-content{
   display: flex;
   justify-content: center;
-} */
+}  */
 
 .controls {
   display: flex;
@@ -241,6 +241,13 @@ ul {
   text-align: 'center';
 
 }
+
+.homeList{
+  display: block;
+  width: 100vw;
+  margin: 0 auto;
+}
+
 /* End of Main Content */
 
 /* Footer */

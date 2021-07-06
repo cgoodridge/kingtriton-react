@@ -8,6 +8,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import Badge from '@material-ui/core/Badge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PropTypes from 'prop-types';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -69,16 +70,16 @@ const Navbar = ({props}) => {
 
     const [state, setState] = React.useState({
         right: false,
-        cart: {}
-    });
-
-    const toggleDrawer = (anchor, open) => (event) => {
+      });
+    
+      const toggleDrawer = (anchor, open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
           return;
         }
-      
-        this.setState({ ...this.state, [anchor]: open });
-    };
+    
+        setState({ ...state, [anchor]: open });
+      };
+    
 
     const list = (anchor) => (
         <div className={clsx(classes.list, {[classes.fullList]: anchor === 'top' || anchor === 'bottom',})}
@@ -124,6 +125,18 @@ const Navbar = ({props}) => {
                             <li><Link to="/reservations">Reservations</Link></li>
                             <li><Link to="/contact">Contact</Link></li>
                             <li><Link to="/about">About</Link></li>
+                            <li>
+                            {['right'].map((anchor) => (
+                                <React.Fragment key={anchor}>
+                                    <IconButton disableFocusRipple="true" onClick={toggleDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
+                                        <ShoppingBasketIcon />
+                                    </IconButton>
+                                    <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
+                                        {list(anchor)}
+                                    </Drawer>
+                                </React.Fragment>
+                            ))}
+                            </li>
                         </ul>
                     </div>
                 </nav>

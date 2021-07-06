@@ -39,9 +39,9 @@ const theme = createMuiTheme({
   },
 });
 
-const Content = () => 
+const Content = () => {
 
-{
+  
   return (
     <Router>
       <div className="App">
