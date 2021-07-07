@@ -29,7 +29,10 @@ import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Basket from '@material-ui/icons/ShoppingBasket';
 
-function HideOnScroll(props) {
+import cartList from './pages/cartList';
+
+
+const HideOnScroll = (props) => {
     const { children, window } = props;
     // Note that you normally won't need to set the window ref as useScrollTrigger
     // will default to window.
@@ -45,13 +48,15 @@ function HideOnScroll(props) {
 
 
 
-const cart = [
-    {
-        name: "test",
-        price: 16,
+// const cart = [
+//     {
+//         name: "test",
+//         price: 16,
 
-    }
-];
+//     }
+// ];
+
+
 
 const useStyles = makeStyles((theme) => ({
     list: {
@@ -63,8 +68,20 @@ const useStyles = makeStyles((theme) => ({
       
     },
 }));
+
+export const addToCart = (foodObj) =>{
+    const exist = cartList.find((x) => x.id === foodObj.id);
+    
+    
+    if (exist) {
+        
+    }
+    else {
+
+    }
+}
   
-const Navbar = ({props}) => {
+const Navbar = ({props, cart}) => {
 
     const classes = useStyles();
 
@@ -72,23 +89,26 @@ const Navbar = ({props}) => {
         right: false,
       });
     
-      const toggleDrawer = (anchor, open) => (event) => {
+    const toggleDrawer = (anchor, open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
-          return;
+            return;
         }
-    
+
         setState({ ...state, [anchor]: open });
-      };
+    };
     
 
     const list = (anchor) => (
-        <div className={clsx(classes.list, {[classes.fullList]: anchor === 'top' || anchor === 'bottom',})}
+        <div
+            className={clsx(classes.list, {
+            [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+            })}
             role="presentation"
             onClick={toggleDrawer(anchor, false)}
             onKeyDown={toggleDrawer(anchor, false)}
         >
         
-            <List style={{height: '500px'}}>
+            <List className="cart" style={{height: '500px'}}>
                 {cart.map((text, index) => (
                 <ListItem button key={index}>
                     <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>

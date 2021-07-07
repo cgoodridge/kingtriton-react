@@ -5,7 +5,8 @@ const cartList = [
         price: 16,
         image: "img/mains/shrimpalfredo.jpg",
         course: "main",
-        special: true
+        special: true,
+        qty: 1
 
     },
     {
@@ -14,7 +15,8 @@ const cartList = [
         price: 22,
         image: "img/mains/lobster-mac.jpg",
         course: "main",
-        special: true
+        special: true,
+        qty: 1
 
     },
     

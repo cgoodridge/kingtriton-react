@@ -1,5 +1,3 @@
-//  import logo from './logo.svg';
-
 import React, { useState } from 'react';
 import $ from "jquery";
 import { makeStyles, useTheme, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -9,6 +7,7 @@ import Reservations from './pages/Reservations';
 import Contact from './pages/Contact';
 import About from './pages/About';
 import Navbar from './Navbar';
+import cartList from './pages/cartList';
 import './css/style.css';
 import './css/materialize.css';
 import {
@@ -41,14 +40,14 @@ const theme = createMuiTheme({
 
 const Content = () => {
 
-  
+
   return (
     <Router>
       <div className="App">
         <ThemeProvider theme={theme} >
 
           <header>
-            <Navbar />
+            <Navbar cart={cartList}/>
           </header>
 
           <main>

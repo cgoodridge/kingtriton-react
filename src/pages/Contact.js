@@ -201,7 +201,7 @@ function Contact() {
                   </Grid>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <img style={{paddingLeft: '15px', paddingBottom: '20px', minWidth:'200px'}} className="responsive-img" src="/img/Mapsicle-Map.png"></img>
+                <img style={{paddingLeft: '15px', paddingBottom: '20px', minWidth:'200px'}} className="responsive-img" src="./img/Mapsicle-Map.png"></img>
               </Grid>
             </Grid>
 

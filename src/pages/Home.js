@@ -39,7 +39,7 @@ const Home = () => {
   return (
     
     <section>
-      <img src="/img/shrimp-dinner.jpg" className="hero-image" style={{filter: 'brightness(20%)'}}></img>
+      <img src="./img/shrimp-dinner.jpg" className="hero-image" style={{filter: 'brightness(20%)'}}></img>
       <Box className="hero-text">
         <Typography gutterBottom variant="h3" component="h2" align="center" className="main-font">
                     Dish of the Week

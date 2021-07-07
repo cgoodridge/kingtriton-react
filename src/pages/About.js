@@ -105,9 +105,9 @@ function About() {
   });
 
     const cardInfo = [
-        {image: "img/owner.jpg", name: "Barbara Gordon", position:"Owner, King Triton's Seafood Palace",},
-        {image: "img/head-chef.jpg", name: "Sara Lance", position:"Head Chef, King Triton's Seafood Palace",},
-        {image: "img/sous-chef.jpg", name: "Lucius Fox", position:"Sous Chef, King Triton's Seafood Palace",},
+        {image: "./img/owner.jpg", name: "Barbara Gordon", position:"Owner, King Triton's Seafood Palace",},
+        {image: "./img/head-chef.jpg", name: "Sara Lance", position:"Head Chef, King Triton's Seafood Palace",},
+        {image: "./img/sous-chef.jpg", name: "Lucius Fox", position:"Sous Chef, King Triton's Seafood Palace",},
         
 
     ];

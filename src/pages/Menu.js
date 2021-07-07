@@ -13,6 +13,7 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Button from '@material-ui/core/Button';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import Container from '@material-ui/core/Container';
 import Chip from '@material-ui/core/Chip';
 import Box from '@material-ui/core/Box';
@@ -22,6 +23,7 @@ import TextField from '@material-ui/core/TextField';
 import { createMuiTheme } from '@material-ui/core/styles';
 import MenuList from '../components/MenuList';
 import foodList from './food';
+import Search from '@material-ui/icons/Search';
 import { Component } from 'react';
 
 // import { Button, Card, Row, Col } from 'react-materialize';
@@ -46,7 +48,11 @@ const Menu = () => {
                     label="Search" 
                     color="primary"
                     InputProps={{ 
-                      
+                      // startAdornment:(
+                      //   <InputAdornment position="end">
+                      //     <Search />
+                      //   </InputAdornment>
+                      // ),
                       disableUnderline: true,                           
                   }}/>
                 </Grid>

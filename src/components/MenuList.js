@@ -13,6 +13,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import { addToCart } from '../Navbar';
 
 const MenuList = ({ foods, specialVal }) => {
     const useStyles = makeStyles((theme) => ({
@@ -67,7 +68,7 @@ const MenuList = ({ foods, specialVal }) => {
                                         </IconButton>
                                     </Box>
                                 
-                                    <Fab color="secondary" aria-label="add" >
+                                    <Fab color="secondary" aria-label="add" onClick={() => addToCart(food)}>
                                         <img src="img/mdi_basket-plus.png"></img>
                                     </Fab>
                                     
