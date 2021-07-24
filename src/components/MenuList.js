@@ -4,18 +4,27 @@ import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import IconButton from '@material-ui/core/IconButton';
+import Input from '@material-ui/core/Input';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
+import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { addToCart } from '../Navbar';
+import { connect } from 'react-redux';
+import { addToCart } from './actions/cartActions'
 
-const MenuList = ({ foods, specialVal }) => {
+const MenuList = (props) => {
+
+    const handleClick = (id)=>{
+        props.addToCart(id); 
+    }
+
     const useStyles = makeStyles((theme) => ({
         root: {
           flexGrow: 1,
@@ -23,14 +32,14 @@ const MenuList = ({ foods, specialVal }) => {
         card: {
           padding: theme.spacing(1),
         },
-      }));
-      const classes = useStyles();
-    return(
+    }));
 
+    const classes = useStyles();
+      
+    return(
         // TODO: Alter code so it's possible to display all food items on the main menu page, without excluding the special items
-        
             <>
-                {foods.filter(foods => foods.special === specialVal).map((food, key) => {
+                {props.items.filter(item => item.special === props.specialVal).map((food, key) => {
                     return (
                     <div className={classes.root}>
                         <Grid item xs={12} sm={3} key={key} className={classes.card}>
@@ -58,17 +67,16 @@ const MenuList = ({ foods, specialVal }) => {
                                 </Grid>
                                 </CardContent>
                                 <CardActions className="controls">
+
                                     <Box className="control-counters">
-                                        <IconButton size="small" color="secondary">
-                                        <RemoveIcon />
-                                        </IconButton>
-                                        <TextField id="filled-basic" className="cardCount" InputProps={{ disableUnderline: true }} defaultValue="1" size="small" />
-                                        <IconButton size="small" color="secondary">
-                                        <AddIcon />
-                                        </IconButton>
+                                        <div class="counter">
+                                            <span class="down" onClick='decreaseCount(event, this)'> <RemoveIcon/> </span>
+                                            <input type="text" min="0" value="1"></input>
+                                            <span class="up" onClick='increaseCount(event, this)'> <AddIcon/> </span>
+                                        </div>
                                     </Box>
                                 
-                                    <Fab color="secondary" aria-label="add" onClick={() => addToCart(food)}>
+                                    <Fab color="secondary" aria-label="add" onClick={()=>{handleClick(food.id)}}>
                                         <img src="img/mdi_basket-plus.png"></img>
                                     </Fab>
                                     
@@ -85,7 +93,20 @@ const MenuList = ({ foods, specialVal }) => {
         );
 }
 
+const mapStateToProps = (state)=>{
+    return {
+      items: state.items
+    }
+  }
+  
+  const mapDispatchToProps= (dispatch)=>{
+      
+    return{
+        addToCart: (id)=>{dispatch(addToCart(id))}
+    }
+  }
+      
+  
 
 
-
-export default MenuList;
+export default connect(mapStateToProps, mapDispatchToProps) (MenuList);

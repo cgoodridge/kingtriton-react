@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles, useTheme, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
-import Cart from './components/Cart';
+import Cart from './Cart';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import Badge from '@material-ui/core/Badge';
@@ -28,9 +28,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Basket from '@material-ui/icons/ShoppingBasket';
-
-import cartList from './pages/cartList';
-
+import { connect } from 'react-redux';
+import cartList from '../pages/cartList';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import { removeItem,addQuantity,subtractQuantity } from './actions/cartActions';
 
 const HideOnScroll = (props) => {
     const { children, window } = props;
@@ -58,6 +60,7 @@ const HideOnScroll = (props) => {
 
 
 
+
 const useStyles = makeStyles((theme) => ({
     list: {
       width: 250,
@@ -67,21 +70,19 @@ const useStyles = makeStyles((theme) => ({
       width: 'auto',
       
     },
+    inline: {
+        display: 'inline',
+    },
+    cartText: {
+        padding: "16px",
+        fontWeight: "bold",
+        textAlign: "center",
+        fontSize: "22px"
+    }
 }));
 
-export const addToCart = (foodObj) =>{
-    const exist = cartList.find((x) => x.id === foodObj.id);
-    
-    
-    if (exist) {
-        
-    }
-    else {
-
-    }
-}
   
-const Navbar = ({props, cart}) => {
+const Navbar = (props, {cart}) => {
 
     const classes = useStyles();
 
@@ -97,6 +98,18 @@ const Navbar = ({props, cart}) => {
         setState({ ...state, [anchor]: open });
     };
     
+    //to remove the item completely
+    const handleRemove = (id)=>{
+        this.props.removeItem(id);
+    }
+    //to add the quantity
+    const handleAddQuantity = (id)=>{
+        this.props.addQuantity(id);
+    }
+    //to substruct from the quantity
+    const handleSubtractQuantity = (id)=>{
+        this.props.subtractQuantity(id);
+    }
 
     const list = (anchor) => (
         <div
@@ -108,12 +121,43 @@ const Navbar = ({props, cart}) => {
             onKeyDown={toggleDrawer(anchor, false)}
         >
         
-            <List className="cart" style={{height: '500px'}}>
-                {cart.map((text, index) => (
-                <ListItem button key={index}>
-                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                    <ListItemText primary={text.name} />
-                </ListItem>
+            <List className="cart" style={{height: '500px', width: '100%'}}>
+                <Typography
+                    component="span"
+                    variant="body2"
+                    className={classes.cartText}
+                    color="textPrimary"
+                >
+                    
+                    Items in your cart
+
+                </Typography>
+                {props.items.map((food, index) => (
+                <>
+                    <ListItem button key={index} alignItems="flex-start">
+                        <ListItemAvatar>
+                            <Avatar alt={"Picture of " + food.name} src={food.image}/>
+                        </ListItemAvatar>
+                        <ListItemText primary={food.name + "   $" + food.price} secondary={
+                            <>
+                            
+                                <Typography
+                                    component="span"
+                                    variant="body2"
+                                    className={classes.inline}
+                                    color="textPrimary"
+                                >
+                                   
+                                    {"Quantity - " + food.quantity}
+
+                                </Typography>
+                            </>
+                        }/>
+                    </ListItem>
+                    {/* <Divider variant="inset" component="li" /> */}
+                    
+                </>
+
                 ))}
                 <ListItem>
                 <Button variant="contained" color="primary" style={{width: '100%'}}>
@@ -169,7 +213,20 @@ const Navbar = ({props, cart}) => {
 
 }
 
+const mapStateToProps = (state)=>{
+    return{
+        items: state.addedItems
+    }
+}
+
+const mapDispatchToProps = (dispatch)=>{
+    return{
+        removeItem: (id)=>{dispatch(removeItem(id))},
+        addQuantity: (id)=>{dispatch(addQuantity(id))},
+        subtractQuantity: (id)=>{dispatch(subtractQuantity(id))}
+    }
+}
+  
 
 
-
-export default Navbar;
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

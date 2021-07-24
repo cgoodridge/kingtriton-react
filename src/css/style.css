@@ -162,6 +162,20 @@ ul {
   align-items: center;
 }
 
+.MuiButtonGroup-contained {
+  border-radius: 20px !important;
+}
+.card .MuiButton-containedSecondary:nth-child(1) {
+  border-radius: 20px 0px 0px 20px !important;
+  color: white !important;
+}
+
+.card .MuiButton-containedSecondary:nth-child(2) {
+  border-radius: 0px 20px 20px 0px !important;
+  color: white !important;
+}
+
+
 .cardCount{
   outline: none;
   box-shadow: none;
@@ -211,6 +225,12 @@ ul {
   width: 100%;
 }
 
+.heroButton {
+  width: 100px;
+  border-radius: 5px !important;
+  color: white !important;
+}
+
 /* .grid-content{
   display: flex;
   justify-content: center;
@@ -222,6 +242,42 @@ ul {
   justify-content: space-around;
   padding-left: 10px;
   padding-bottom: 10px;
+}
+
+.counter {
+  width: 150px !important;
+  margin: auto;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.counter input {
+  width: 35px !important;
+  border: 0;
+  line-height: 0px !important;
+  font-size: 20px;
+  text-align: center;
+  height: 2.5rem !important;
+  background: #e6e5e5 !important;
+  padding: 0 8px !important;
+  border-radius: 5px !important;
+  appearance: none;
+  margin-bottom: 0 !important;
+  margin-left: 0px !important;
+  outline: 0;
+}
+
+.counter span {
+  display: block;
+  font-size: 25px;
+  padding: 0px 7px;
+  width: 35px !important;
+  background-color: #2196f3 !important;
+  border-radius: 5px !important;
+  cursor: pointer;
+  color: #ffffff;
+  user-select: none;
 }
 
 .control-counters {

@@ -12,7 +12,7 @@
             id: 2,
             name: "Lobster Mac & Cheese",
             price: 22,
-            image: "img/mains/lobster-mac.jpg",
+            image: "./img/mains/lobster-mac.jpg",
             course: "main",
             special: true
 

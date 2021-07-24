@@ -218,7 +218,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 20.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -230,7 +230,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 20.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -242,7 +242,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 8.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 8.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -254,7 +254,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 8.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 8.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -266,7 +266,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 8.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 8.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -278,7 +278,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 8.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 8.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -292,7 +292,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 20.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -304,7 +304,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 20.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -316,7 +316,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 1.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -328,7 +328,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 1.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -340,7 +340,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 1.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -352,7 +352,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 1.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -366,7 +366,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 20.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -378,7 +378,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 20.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 20.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -390,7 +390,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 1.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -402,7 +402,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 1.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -414,7 +414,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 1.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -426,7 +426,7 @@ function Reservations() {
                         </Typography>
                       </Grid>
                       <Grid item>
-                        <img src="/img/seating/Seating Area 1.png" className="seating"></img>
+                        <img src="img/seating/Seating Area 1.png" className="seating"></img>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -441,7 +441,7 @@ function Reservations() {
                           </Typography>
                         </Grid>
                         <Grid item>
-                          <img src="/img/seating/Seating Area 16.png" className="seating"></img>
+                          <img src="img/seating/Seating Area 16.png" className="seating"></img>
                         </Grid>
                       </Grid>
                     </Grid>
@@ -453,7 +453,7 @@ function Reservations() {
                           </Typography>
                         </Grid>
                         <Grid item>
-                          <img src="/img/seating/Seating Area 16.png" className="seating"></img>
+                          <img src="img/seating/Seating Area 16.png" className="seating"></img>
                         </Grid>
                       </Grid>
                     </Grid>
@@ -465,7 +465,7 @@ function Reservations() {
                           </Typography>
                         </Grid>
                         <Grid item>
-                          <img src="/img/seating/Seating Area 16.png" className="seating"></img>
+                          <img src="img/seating/Seating Area 16.png" className="seating"></img>
                         </Grid>
                       </Grid>
                     </Grid>
@@ -477,7 +477,7 @@ function Reservations() {
                           </Typography>
                         </Grid>
                         <Grid item>
-                          <img src="/img/seating/Seating Area 16.png" className="seating"></img>
+                          <img src="img/seating/Seating Area 16.png" className="seating"></img>
                         </Grid>
                       </Grid>
                     </Grid>

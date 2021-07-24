@@ -6,7 +6,7 @@ import Menu from './pages/Menu';
 import Reservations from './pages/Reservations';
 import Contact from './pages/Contact';
 import About from './pages/About';
-import Navbar from './Navbar';
+import Navbar from './components/Navbar';
 import cartList from './pages/cartList';
 import './css/style.css';
 import './css/materialize.css';
