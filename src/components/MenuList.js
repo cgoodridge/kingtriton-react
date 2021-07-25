@@ -41,9 +41,9 @@ const MenuList = (props) => {
             <>
                 {props.items.filter(item => item.special === props.specialVal).map((food, key) => {
                     return (
-                    <div className={classes.root}>
-                        <Grid item xs={12} sm={3} key={key} className={classes.card}>
-                            <Card className="card small" style={{borderRadius: "20px"}} key={food.id}>
+                    <div className={classes.root} key={food.id}>
+                        <Grid item xs={12} sm={3} className={classes.card}>
+                            <Card className="card small" style={{borderRadius: "20px"}} >
                                 <CardMedia
                                 component="img"
                                 alt={food.name}
@@ -52,27 +52,36 @@ const MenuList = (props) => {
                                 title={food.name}
                                 className="card-image"
                                 />
+
                                 <CardContent>
-                                <Grid container style={{marginBottom: '10px'}}>
-                                    <Grid item xs={10}>
-                                    <Typography gutterBottom variant="h6" component="h2" align="left">
-                                        {food.name} 
-                                    </Typography>
+                                    <Grid container style={{marginBottom: '10px'}}>
+                                        <Grid item xs={10}>
+                                            <Typography gutterBottom variant="h6" component="h2" align="left">
+                                                {food.name} 
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Typography gutterBottom variant="h6" component="h2" align="left">
+                                                ${food.price} 
+                                            </Typography>
+                                        </Grid>
                                     </Grid>
-                                    <Grid item xs={2}>
-                                    <Typography gutterBottom variant="h6" component="h2" align="left">
-                                        ${food.price} 
-                                    </Typography>
-                                    </Grid>
-                                </Grid>
                                 </CardContent>
+
                                 <CardActions className="controls">
 
                                     <Box className="control-counters">
                                         <div class="counter">
-                                            <span class="down" onClick='decreaseCount(event, this)'> <RemoveIcon/> </span>
-                                            <input type="text" min="0" value="1"></input>
-                                            <span class="up" onClick='increaseCount(event, this)'> <AddIcon/> </span>
+                                            <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}}>
+                                                <RemoveIcon fontSize="inherit" />
+                                            </IconButton> 
+
+                                            <input type="text" min="0" defaultValue={food.quantity}></input>
+                                            {/* <span>{food.quantity}</span> */}
+
+                                            <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}}>
+                                                <AddIcon fontSize="inherit"/> 
+                                            </IconButton> 
                                         </div>
                                     </Box>
                                 

@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function Checkout() {
+const Checkout = () => {
 
   const classes = useStyles();
   const theme = createMuiTheme({
@@ -99,52 +99,9 @@ function Checkout() {
     },
   });
 
-    const cardInfo = [
-        {image: "img/mains/shrimpalfredo.jpg", name: "Shrimp Alfredo", price:16,},
-        {image: "img/mains/lobster-mac.jpg", name: "Lobster Mac & Cheese", price:22,},
-        {image: "img/mains/fried-calamari.jpeg", name: "Fried Calamari", price:16,},
-        {image: "img/mains/fried-calamari.jpeg", name: "Fried Calamari", price:16,},
+   
 
-    ];
-
-    const renderCard = (card, index) => {
-        return(
-        
-            <Grid item xs={12} sm={3}>
-            <Card className="card small" style={{borderRadius: "20px"}} key={index}>
-                <CardMedia
-                component="img"
-                alt="Contemplative Reptile"
-                height="200"
-                image={card.image}
-                title="Contemplative Reptile"
-                className="card-image"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2" align="left">
-                        {card.name} 
-                    </Typography>
-                </CardContent>
-                <CardActions className={classes.controls}>
-                    <Box className={classes.controlCounters}>
-                        <IconButton size="small" color="primary">
-                        <RemoveIcon />
-                        </IconButton>
-                        <TextField id="filled-basic" className={classes.formSize} textAlign={'center'} defaultValue="1" size="small" />
-                        <IconButton size="small" color="primary">
-                        <AddIcon />
-                        </IconButton>
-                    </Box>
-                    <Fab color="primary" aria-label="add">
-                        <img src="img/mdi_basket-plus.png"></img>
-                    </Fab>
-                </CardActions>
-            </Card>
-            </Grid>
-
-        )
-    };
-
+    
     return (
         <div className="App" theme={theme}>
         <Container maxWidth="lg">

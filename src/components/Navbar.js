@@ -28,6 +28,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Basket from '@material-ui/icons/ShoppingBasket';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
 import { connect } from 'react-redux';
 import cartList from '../pages/cartList';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -63,7 +65,7 @@ const HideOnScroll = (props) => {
 
 const useStyles = makeStyles((theme) => ({
     list: {
-      width: 250,
+      width: 300,
       
     },
     fullList: {
@@ -100,15 +102,15 @@ const Navbar = (props, {cart}) => {
     
     //to remove the item completely
     const handleRemove = (id)=>{
-        this.props.removeItem(id);
+        props.removeItem(id);
     }
     //to add the quantity
     const handleAddQuantity = (id)=>{
-        this.props.addQuantity(id);
+        props.addQuantity(id);
     }
     //to substruct from the quantity
     const handleSubtractQuantity = (id)=>{
-        this.props.subtractQuantity(id);
+        props.subtractQuantity(id);
     }
 
     const list = (anchor) => (
@@ -128,31 +130,29 @@ const Navbar = (props, {cart}) => {
                     className={classes.cartText}
                     color="textPrimary"
                 >
-                    
                     Items in your cart
-
                 </Typography>
                 {props.items.map((food, index) => (
                 <>
-                    <ListItem button key={index} alignItems="flex-start">
+                    <ListItem key={index} alignItems="flex-start">
                         <ListItemAvatar>
                             <Avatar alt={"Picture of " + food.name} src={food.image}/>
                         </ListItemAvatar>
                         <ListItemText primary={food.name + "   $" + food.price} secondary={
                             <>
-                            
-                                <Typography
-                                    component="span"
-                                    variant="body2"
-                                    className={classes.inline}
-                                    color="textPrimary"
-                                >
-                                   
-                                    {"Quantity - " + food.quantity}
-
-                                </Typography>
+                                <div class="counter">
+                                    <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={()=>{this.handleAddQuantity(food.id)}}>
+                                        <RemoveIcon fontSize="inherit" />
+                                    </IconButton> 
+                                    <input type="text" min="0" defaultValue={food.quantity}></input>
+                                    <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={()=>{this.handleSubtractQuantity(food.id)}}>
+                                        <AddIcon fontSize="inherit"/> 
+                                    </IconButton> 
+                                </div>
                             </>
                         }/>
+                        <br></br>
+                        
                     </ListItem>
                     {/* <Divider variant="inset" component="li" /> */}
                     
