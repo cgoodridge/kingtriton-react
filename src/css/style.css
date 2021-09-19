@@ -103,6 +103,12 @@ ul {
   
 }
 
+.altNavbar{
+  position: absolute;
+  width: 100%;
+  z-index: 9999999999999;
+}
+
 /* Main Content */
 
 .card.small {

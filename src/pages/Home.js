@@ -40,7 +40,7 @@ const Home = () => {
   return (
     
     <section>
-      <LazyHero imageSrc="./img/bg-image.jpg" parallaxOffset={50} color="#000" minHeight="80vh">
+      <LazyHero imageSrc="img/bg-image.jpg" parallaxOffset={50} color="#000" minHeight="80vh">
         <Box className="hero-text">
           <Typography gutterBottom variant="h3" component="h2" align="center" className="main-font">
                       Dish of the Week
@@ -63,7 +63,7 @@ const Home = () => {
 
         <Container maxWidth="lg">
           <Grid container direction="row" className="grid-content"> 
-              <MenuList specialVal={true}/>
+              <MenuList foods={foodList} specialVal={true}/>
           </Grid>
         </Container>
           

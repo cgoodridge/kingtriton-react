@@ -18,7 +18,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 import {
   BrowserRouter as Router,
   Switch,
@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
 const Checkout = () => {
 
   const classes = useStyles();
-  const theme = createMuiTheme({
+  const theme = createTheme({
     palette: {
       primary: {
         light: '#757ce8',
@@ -110,9 +110,6 @@ const Checkout = () => {
             </Typography>
         </Container>
 
-            <Grid container direction="row" className={classes.gridContent}>
-            {cardInfo.map(renderCard)}
-            </Grid>
 
         </div>
     );

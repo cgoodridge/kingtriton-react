@@ -1,11 +1,8 @@
-# king-triton-react
+# King Triton's Seafood Palace
 
-A web app made in react to support a fictional seafood restaurant.
+Based on an end of semester UI project where the goal was to create website
 
 
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 

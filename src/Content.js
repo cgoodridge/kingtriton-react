@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import $ from "jquery";
 import { makeStyles, useTheme, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Home from './pages/Home';
@@ -7,6 +7,8 @@ import Reservations from './pages/Reservations';
 import Contact from './pages/Contact';
 import About from './pages/About';
 import Navbar from './components/Navbar';
+import Checkout from './components/Checkout';
+import AltNavbar from './components/AltNavbar';
 import cartList from './pages/cartList';
 import './css/style.css';
 import './css/materialize.css';
@@ -14,7 +16,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useLocation
 } from "react-router-dom";
 
 import { Component } from 'react';
@@ -38,17 +41,76 @@ const theme = createMuiTheme({
   },
 });
 
-const Content = () => {
+const RenderWithNavbar = (props) => {
+  return (
+    <header>
+      <Navbar cart={cartList}/>
+    </header>
+  );
+}
 
+const RenderWithoutNavbar = (props) => {
+  return( 
+    <header className="altNavbar">
+      <AltNavbar cart={cartList}/>
+    </header>
+  );
+}
+
+function RenderHeader(props) {
+  const isHomePage = props.isHomePage;
+  console.log(isHomePage);
+  if (isHomePage === '/') {
+    console.log(isHomePage);
+    return <RenderWithoutNavbar />;
+  }
+  else{
+    return <RenderWithNavbar />;
+  }
+}
+
+const useReactPath = () => {
+  const [path, setPath] = React.useState(window.location.pathname);
+  const listenToPopstate = () => {
+    const winPath = window.location.pathname;
+    setPath(winPath);
+  };
+  React.useEffect(() => {
+    window.addEventListener("popstate", listenToPopstate);
+    return () => {
+      window.removeEventListener("popstate", listenToPopstate);
+    };
+  }, []);
+  return path;
+};
+
+/*
+const usePageViews = () => {
+  // let location = useLocation();
+  React.useEffect(() => {
+    console.log('current location is ' + location.pathname)
+  }, [location]);
+}
+*/
+
+
+const Content = (props) => {
+ 
+  // usePageViews();
+  const path = useReactPath();
+  React.useEffect(() => {
+    // do something when path changes ...
+    const newPath = path;
+    console.log(newPath);
+  }, [path]);
 
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    <Router>
       <div className="App">
         <ThemeProvider theme={theme} >
 
-          <header>
-            <Navbar cart={cartList}/>
-          </header>
+
+          <RenderHeader isHomePage={path} />
 
           <main>
             <Switch>
@@ -66,6 +128,9 @@ const Content = () => {
               </Route>
               <Route path="/about" component={About}>
                 <About />
+              </Route>
+              <Route path="/checkout" component={Checkout}>
+                <Checkout />
               </Route>
             </Switch>
           </main>

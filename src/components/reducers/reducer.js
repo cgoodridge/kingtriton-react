@@ -1,98 +1,29 @@
 import { ADD_TO_CART, REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY} from '../actions/action-types/cart-actions';
 
-const initState = {
-    items: [
-        {
-            id: 1,
-            name: "Shrimp Alfredo",
-            price: 16,
-            image: "img/mains/shrimpalfredo.jpg",
-            course: "main",
-            quantity: 1,
-            special: true
-
-        },
-        {
-            id: 2,
-            name: "Lobster Mac & Cheese",
-            price: 22,
-            image: "./img/mains/lobster-mac.jpg",
-            course: "main",
-            quantity: 1,
-            special: true
-
-        },
-        {
-            id: 3,
-            name: "Fried Calamari",
-            price: 16,
-            image: "img/mains/fried-calamari.jpeg",
-            course: "appetizer",
-            quantity: 1,
-            special: true
-        },
-        {
-            id: 4,
-            name: "Fideua",
-            price: 20,
-            image: "img/mains/fideua.png",
-            course: "main",
-            quantity: 1,
-            special: true
-        },
-        {
-            id: 5,
-            name: "Coconut Ceviche",
-            price: 22,
-            image: "img/starters/cc.jpg",
-            course: "appetizer",
-            quantity: 1,
-            special: false
-        },
-        {
-            id: 6,
-            name: "Fish Taco",
-            price: 18,
-            image: "img/starters/fishtaco.jpg",
-            course: "appetizer",
-            quantity: 1,
-            special: false
-
-
-        },
-        {
-            id: 7,
-            name: "Lobster Risotto",
-            price: 24,
-            image: "img/starters/lobsterRisotto.jpg",
-            course: "main",
-            quantity: 1,
-            special: false
-
-        },
-        {
-            id: 8,
-            name: "Banana Pudding",
-            price: 14,
-            image: "img/desserts/bPudding.jpg",
-            course: "dessert",
-            quantity: 1,
-            special: false
-
-        }
-
-    ],
+export const initialState = {
+    cart: [],
     addedItems:[],
     total: 0
+};
 
-}
-const cartReducer= (state = initState,action)=>{
-    
+const reducer = (state = initialState, action) => {
+    console.log(action);
+    if (action.type === ADD_TO_CART) {
+        return {
+            ...state,
+            cart: [...state.cart, action.item]
+        };
+    }
+    else {
+
+    }
+
+    /*
     //INSIDE HOME COMPONENT
     if(action.type === ADD_TO_CART){
         let addedItem = state.items.find(item=> item.id === action.id)
         //check if the action id exists in the addedItems
-       let existed_item= state.addedItems.find(item=> action.id === item.id)
+        let existed_item= state.addedItems.find(item=> action.id === item.id)
        if(existed_item)
        {
           addedItem.quantity += 1 
@@ -160,5 +91,6 @@ const cartReducer= (state = initState,action)=>{
         
     }
     return state
+    */
 }
-export default cartReducer;
+export default reducer;

@@ -1,14 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import Cart from './Cart';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
 import Badge from '@material-ui/core/Badge';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PropTypes from 'prop-types';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
 import Slide from '@material-ui/core/Slide';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,6 +23,17 @@ import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+import Basket from '@material-ui/icons/ShoppingBasket';
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+import { connect } from 'react-redux';
+import cartList from '../pages/cartList';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
 import { removeItem,addQuantity,subtractQuantity } from './actions/cartActions';
 
 const HideOnScroll = (props) => {
@@ -31,6 +49,18 @@ const HideOnScroll = (props) => {
       </Slide>
     );
   }
+
+
+
+// const cart = [
+//     {
+//         name: "test",
+//         price: 16,
+
+//     }
+// ];
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -54,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
   
-const Navbar = (props, {cart}) => {
+const AltNavbar = (props, {cart}) => {
 
     const classes = useStyles();
 
@@ -102,7 +132,8 @@ const Navbar = (props, {cart}) => {
                 >
                     Items in your cart
                 </Typography>
-                {/* {props.items.map((food, index) => (
+{/*                 
+                {props.items.map((food, index) => (
                 <>
                     <ListItem key={index} alignItems="flex-start">
                         <ListItemAvatar>
@@ -128,8 +159,7 @@ const Navbar = (props, {cart}) => {
                     
                 </>
 
-                ))} 
-                */}
+                ))} */}
                 <ListItem>
                 <Button variant="contained" color="primary" style={{width: '100%'}}>
                     Checkout
@@ -147,8 +177,8 @@ const Navbar = (props, {cart}) => {
         <>
             <CssBaseline />
             <HideOnScroll {...props}>
-            <AppBar>
-                <Toolbar>
+            
+                {/* <Toolbar> */}
                     
                 <nav className="nav-col">
                     <div className="nav-wrapper">
@@ -164,9 +194,7 @@ const Navbar = (props, {cart}) => {
                             {['right'].map((anchor) => (
                                 <React.Fragment key={anchor}>
                                     <IconButton disableFocusRipple="true" onClick={toggleDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
-                                        <Badge badgeContent={4} style={{color:'white'}} color="secondary">
-                                            <ShoppingBasketIcon />
-                                        </Badge>
+                                        <ShoppingBasketIcon />
                                     </IconButton>
                                     <Drawer anchor={anchor} open={state[anchor]} onClose={toggleDrawer(anchor, false)}>
                                         {list(anchor)}
@@ -177,8 +205,8 @@ const Navbar = (props, {cart}) => {
                         </ul>
                     </div>
                 </nav>
-                </Toolbar>
-            </AppBar>
+                {/* </Toolbar> */}
+            
             </HideOnScroll>
             <Toolbar />    
         </>
@@ -202,4 +230,4 @@ const mapDispatchToProps = (dispatch)=>{
   
 
 
-export default Navbar;
+export default AltNavbar;

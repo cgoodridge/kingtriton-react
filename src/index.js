@@ -2,21 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import Content from './Content';
-import cartReducer from './components/reducers/cartReducer';
+import reducer, { initialState } from './components/reducers/reducer';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { configureStore } from './store';
-
 import reportWebVitals from './reportWebVitals';
+import { StateProvider } from './StateProvider';
 
-const store = createStore(cartReducer);
 
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <StateProvider initialState={initialState} reducer={reducer}>
       <Content />
-    </Provider>
+    </StateProvider>
   </React.StrictMode>,
  
   document.getElementById('root')
