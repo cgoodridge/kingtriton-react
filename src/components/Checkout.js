@@ -14,6 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import Subtotal from "./Subtotal";
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -105,9 +106,7 @@ const Checkout = () => {
     return (
         <div className="App" theme={theme}>
         <Container maxWidth="lg">
-            <Typography gutterBottom variant="h3" component="h2" align="left">
-                    Menu
-            </Typography>
+            <Subtotal/>
         </Container>
 
 

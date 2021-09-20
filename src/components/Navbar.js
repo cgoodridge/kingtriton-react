@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import { removeItem,addQuantity,subtractQuantity } from './actions/cartActions';
+import { useStateValue } from '../StateProvider';
 
 const HideOnScroll = (props) => {
     const { children, window } = props;
@@ -54,9 +55,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
   
-const Navbar = (props, {cart}) => {
+const Navbar = (props) => {
 
     const classes = useStyles();
+
+    const [{ cart }, dispatch] = useStateValue();
 
     const [state, setState] = React.useState({
         right: false,
@@ -131,9 +134,12 @@ const Navbar = (props, {cart}) => {
                 ))} 
                 */}
                 <ListItem>
-                <Button variant="contained" color="primary" style={{width: '100%'}}>
-                    Checkout
-                </Button>
+                    <Link to="/checkout">
+                        <Button variant="contained" color="primary" style={{width: '100%'}}>
+                            Checkout
+                        </Button>
+                    </Link>
+                    
                 </ListItem>
             </List>
             <Divider />
@@ -164,7 +170,7 @@ const Navbar = (props, {cart}) => {
                             {['right'].map((anchor) => (
                                 <React.Fragment key={anchor}>
                                     <IconButton disableFocusRipple="true" onClick={toggleDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
-                                        <Badge badgeContent={4} style={{color:'white'}} color="secondary">
+                                        <Badge badgeContent={cart?.length} style={{color:'white'}} color="secondary">
                                             <ShoppingBasketIcon />
                                         </Badge>
                                     </IconButton>

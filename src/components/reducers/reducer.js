@@ -6,6 +6,9 @@ export const initialState = {
     total: 0
 };
 
+export const getCartTotal = (cart) => cart?.reduce((amount, food) => food.price + amount, 0);
+
+
 const reducer = (state = initialState, action) => {
     console.log(action);
     if (action.type === ADD_TO_CART) {
