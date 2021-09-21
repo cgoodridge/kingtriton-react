@@ -1,0 +1,28 @@
+.loginCard{
+    text-align: center;
+    width: 300px;
+    margin: 16px auto;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none !important;
+}
+
+.loginCard input {
+   
+
+    padding: 0 8px !important;
+    
+    appearance: none;
+    margin-bottom: 0 !important;
+    margin-left: 0px !important;
+    outline: 0;
+  }
+
+.loginButton{
+    margin-top: 16px !important;
+    margin-bottom: 16px !important;
+}

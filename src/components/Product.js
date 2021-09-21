@@ -15,9 +15,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import { connect } from 'react-redux';
-import { addToCart } from './actions/cartActions';
+
 import { useStateValue } from '../StateProvider';
 
 

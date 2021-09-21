@@ -16,7 +16,6 @@ import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import { removeItem,addQuantity,subtractQuantity } from './actions/cartActions';
 import { useStateValue } from '../StateProvider';
 
 const HideOnScroll = (props) => {
@@ -73,18 +72,7 @@ const Navbar = (props) => {
         setState({ ...state, [anchor]: open });
     };
     
-    //to remove the item completely
-    const handleRemove = (id)=>{
-        props.removeItem(id);
-    }
-    //to add the quantity
-    const handleAddQuantity = (id)=>{
-        props.addQuantity(id);
-    }
-    //to substruct from the quantity
-    const handleSubtractQuantity = (id)=>{
-        props.subtractQuantity(id);
-    }
+    
 
     const list = (anchor) => (
         <div
@@ -166,6 +154,7 @@ const Navbar = (props) => {
                             <li><Link to="/reservations">Reservations</Link></li>
                             <li><Link to="/contact">Contact</Link></li>
                             <li><Link to="/about">About</Link></li>
+                            <li><Link to="/login">Login</Link></li>
                             <li>
                             {['right'].map((anchor) => (
                                 <React.Fragment key={anchor}>
@@ -192,19 +181,6 @@ const Navbar = (props) => {
 
 }
 
-const mapStateToProps = (state)=>{
-    return{
-        items: state.addedItems
-    }
-}
-
-const mapDispatchToProps = (dispatch)=>{
-    return{
-        removeItem: (id)=>{dispatch(removeItem(id))},
-        addQuantity: (id)=>{dispatch(addQuantity(id))},
-        subtractQuantity: (id)=>{dispatch(subtractQuantity(id))}
-    }
-}
   
 
 

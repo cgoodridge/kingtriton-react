@@ -1,4 +1,4 @@
-import { ADD_TO_CART, REMOVE_ITEM,SUB_QUANTITY,ADD_QUANTITY} from '../actions/action-types/cart-actions';
+import { ADD_TO_CART, REMOVE_FROM_CART,SUB_QUANTITY,ADD_QUANTITY} from '../actions/cart-actions';
 
 export const initialState = {
     cart: [],
@@ -12,13 +12,29 @@ export const getCartTotal = (cart) => cart?.reduce((amount, food) => food.price 
 const reducer = (state = initialState, action) => {
     console.log(action);
     if (action.type === ADD_TO_CART) {
+        /// TODO: Update quantity when the same item is added multiple times
         return {
             ...state,
             cart: [...state.cart, action.item]
         };
     }
-    else {
+    
+    if (action.type === REMOVE_FROM_CART) {
+        const index = state.cart.findIndex(
+            (cartItem) => cartItem.id === action.id
+        );
+        let newCart = [...state.cart];
 
+        if (index >= 0) {
+            newCart.splice(index, 1)
+        } else {
+            console.warn(`Can't remove item with id: ${action.id}, it is not in the cart.`)
+        }
+
+        return {
+            ...state,
+            cart: newCart
+        }
     }
 
     /*

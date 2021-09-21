@@ -26,6 +26,9 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import { ClassNames } from '@emotion/react';
+import { useStateValue } from '../StateProvider';
+import CheckoutItem from './CheckoutItem';
 // import { Button, Card, Row, Col } from 'react-materialize';
 
 
@@ -77,10 +80,23 @@ const useStyles = makeStyles((theme) => ({
   gridContent:{
     display: 'flex',
     justifyContent: 'center'
+  },
+
+  contentPadding:{
+    paddingTop: '16px',
+    paddingBottom: '16px',
+  },
+  cardPadding: {
+    paddingRight: '8px',
+    paddingLeft: '8px'
   }
 }));
 
+
+
 const Checkout = () => {
+
+  const [{ cart }, dispatch] = useStateValue();
 
   const classes = useStyles();
   const theme = createTheme({
@@ -105,11 +121,20 @@ const Checkout = () => {
     
     return (
         <div className="App" theme={theme}>
-        <Container maxWidth="lg">
-            <Subtotal/>
-        </Container>
-
-
+          <Container maxWidth="lg">
+              <Grid container direction="row"  className={classes.contentPadding}>
+                <Grid container direction="column" item xs={6} className={classes.gridContent}>
+                  {cart.map(item => (
+                    console.log(item),
+                    <CheckoutItem food={item}/>
+                  ))}
+                </Grid>
+                <Grid item xs={6} alignItems="flex-start" className={classes.gridContent}>
+                  <Subtotal/>
+                </Grid>
+              </Grid>
+              
+          </Container>
         </div>
     );
 }
