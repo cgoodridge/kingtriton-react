@@ -17,6 +17,7 @@ import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import { useStateValue } from '../StateProvider';
+import { auth } from '../firebaseConfigFile';
 
 const HideOnScroll = (props) => {
     const { children, window } = props;
@@ -58,7 +59,13 @@ const Navbar = (props) => {
 
     const classes = useStyles();
 
-    const [{ cart }, dispatch] = useStateValue();
+    const [{ cart, user }, dispatch] = useStateValue();
+
+    const handleAuth = () => {
+        if (user) {
+            auth.signOut();
+        }
+    }
 
     const [state, setState] = React.useState({
         right: false,
@@ -154,12 +161,14 @@ const Navbar = (props) => {
                             <li><Link to="/reservations">Reservations</Link></li>
                             <li><Link to="/contact">Contact</Link></li>
                             <li><Link to="/about">About</Link></li>
-                            <li><Link to="/login">Login</Link></li>
+                            {/* TODO: Make the user name a dropdown with the login button under it */}
+                            <li style={{marginLeft: '16px', marginRight: '8px', cursor:'pointer'}}>Hey, {user ? user.email : 'Guest'}</li>
+                            <li>{user ? <span style={{marginLeft: '16px', marginRight: '8px', cursor:'pointer'}} onClick={handleAuth}>Logout</span> : <Link to="/login">Login</Link>} </li>
                             <li>
                             {['right'].map((anchor) => (
                                 <React.Fragment key={anchor}>
                                     <IconButton disableFocusRipple="true" onClick={toggleDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
-                                        <Badge badgeContent={cart?.length} style={{color:'white'}} color="secondary">
+                                        <Badge badgeContent={cart?.length} color="secondary">
                                             <ShoppingBasketIcon />
                                         </Badge>
                                     </IconButton>

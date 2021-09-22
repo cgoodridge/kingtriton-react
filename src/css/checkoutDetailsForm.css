@@ -1,0 +1,19 @@
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none !important;
+}
+
+.formCard input {
+    padding: 0 8px !important;
+    appearance: none;
+    margin-bottom: 0 !important;
+    margin-left: 0px !important;
+    outline: 0;
+}
+
+.formCard {
+    margin: 0 auto;
+    width: 80%;
+}

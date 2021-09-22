@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import $ from "jquery";
-import { makeStyles, useTheme, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme, ThemeProvider, createTheme } from '@material-ui/core/styles';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Reservations from './pages/Reservations';
@@ -21,11 +20,11 @@ import {
   useLocation
 } from "react-router-dom";
 
-import { Component } from 'react';
-import { render } from '@testing-library/react';
-// import { Button, Card, Row, Col } from 'react-materialize';
+import { auth } from './firebaseConfigFile';
+import { useStateValue } from './StateProvider';
 
-const theme = createMuiTheme({
+
+const theme = createTheme({
   palette: {
     primary: {
       light: '#757ce8',
@@ -42,68 +41,30 @@ const theme = createMuiTheme({
   },
 });
 
-const RenderWithNavbar = (props) => {
-  return (
-    <header>
-      <Navbar cart={cartList}/>
-    </header>
-  );
-}
-
-const RenderWithoutNavbar = (props) => {
-  return( 
-    <header className="altNavbar">
-      <AltNavbar cart={cartList}/>
-    </header>
-  );
-}
-
-function RenderHeader(props) {
-  const isHomePage = props.isHomePage;
-  console.log(isHomePage);
-  if (isHomePage === '/') {
-    console.log(isHomePage);
-    return <RenderWithoutNavbar />;
-  }
-  else{
-    return <RenderWithNavbar />;
-  }
-}
-
-const useReactPath = () => {
-  const [path, setPath] = React.useState(window.location.pathname);
-  const listenToPopstate = () => {
-    const winPath = window.location.pathname;
-    setPath(winPath);
-  };
-  React.useEffect(() => {
-    window.addEventListener("popstate", listenToPopstate);
-    return () => {
-      window.removeEventListener("popstate", listenToPopstate);
-    };
-  }, []);
-  return path;
-};
-
-/*
-const usePageViews = () => {
-  // let location = useLocation();
-  React.useEffect(() => {
-    console.log('current location is ' + location.pathname)
-  }, [location]);
-}
-*/
-
 
 const Content = (props) => {
+  const [{ user }, dispatch] = useStateValue();
+  useEffect(() => {
+    auth.onAuthStateChanged(authUser => {
+      console.log('User is: ', authUser);
+
+
+      if (authUser) {
+        // The user just logged in/was logged in
+        dispatch({
+          type: 'SET_USER',
+          user: authUser
+        })
+      } else {
+        // The user is logged out
+        dispatch({
+          type: 'SET_USER',
+          user: null
+        })
+      }
+    })
+  }, [])
  
-  // usePageViews();
-  const path = useReactPath();
-  React.useEffect(() => {
-    // do something when path changes ...
-    const newPath = path;
-    console.log(newPath);
-  }, [path]);
 
   return (
     <Router>
@@ -111,7 +72,9 @@ const Content = (props) => {
         <ThemeProvider theme={theme} >
 
 
-          <RenderHeader isHomePage={path} />
+          <header>
+            <Navbar cart={cartList}/>
+          </header>
 
           <main>
             <Switch>

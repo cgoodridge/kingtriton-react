@@ -318,6 +318,13 @@ ul {
 /* End of Main Content */
 
 /* Footer */
+
+.page-footer{
+  position: relative;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
 .footer-col{
   background-color: #141414 !important;
 }

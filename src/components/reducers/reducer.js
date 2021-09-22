@@ -1,8 +1,9 @@
-import { ADD_TO_CART, REMOVE_FROM_CART,SUB_QUANTITY,ADD_QUANTITY} from '../actions/cart-actions';
+import { ADD_TO_CART, REMOVE_FROM_CART, SET_USER, SUB_QUANTITY,ADD_QUANTITY} from '../actions/cart-actions';
 
 export const initialState = {
     cart: [],
-    addedItems:[],
+    user: null,
+    addedItems: [],
     total: 0
 };
 
@@ -36,6 +37,14 @@ const reducer = (state = initialState, action) => {
             cart: newCart
         }
     }
+
+    if (action.type === SET_USER) {
+       return {
+           ...state,
+           user: action.user
+       }
+    }
+
 
     /*
     //INSIDE HOME COMPONENT

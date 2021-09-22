@@ -1,82 +1,21 @@
-//  import logo from './logo.svg';
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Card from '@material-ui/core/Card';
+import React, { useState } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import CardActions from '@material-ui/core/CardActions';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import IconButton from '@material-ui/core/IconButton';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Subtotal from "./Subtotal";
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import { createTheme } from '@material-ui/core/styles';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-import { ClassNames } from '@emotion/react';
 import { useStateValue } from '../StateProvider';
 import CheckoutItem from './CheckoutItem';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import CheckoutDetailsForm from './CheckoutDetailsForm';
 // import { Button, Card, Row, Col } from 'react-materialize';
 
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  details: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  content: {
-    flex: '1 0 auto',
-  },
-  cover: {
-    width: 151,
-  },
-  controls: {
-    display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'space-around',
-    
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  controlCounters: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    
-
-  },
-  playIcon: {
-    height: 38,
-    width: 38,
-  },
-
-  formSize:{
-    width: 20,
-    paddingTop: 0,
-    paddingBottom: 0,
-    textAlign: 'center'
-  
-  },
-  cardRadius:{
-    borderRadius: 10,
-  },
-
   gridContent:{
     display: 'flex',
     justifyContent: 'center'
@@ -93,9 +32,49 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
+
+
 
 const Checkout = () => {
 
+  const [value, setTabValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
   const [{ cart }, dispatch] = useStateValue();
 
   const classes = useStyles();
@@ -122,8 +101,19 @@ const Checkout = () => {
     return (
         <div className="App" theme={theme}>
           <Container maxWidth="lg">
+          <Box sx={{ width: '100%', marginTop: '16px' }}>
+            <Box>
+              <Tabs value={value} onChange={handleChange} aria-label="checkout page tabs" centered>
+                <Tab label="Review Items" {...a11yProps(0)} />
+                <Tab label="Enter Details" {...a11yProps(1)} />
+                <Tab label="Order Confirmation" {...a11yProps(2)} />
+              </Tabs>
+            </Box>
+            <TabPanel value={value} index={0}>
               <Grid container direction="row"  className={classes.contentPadding}>
                 <Grid container direction="column" item xs={6} className={classes.gridContent}>
+                  <h4 alignItems="flex-start">Items in Cart</h4>
+                  
                   {cart.map(item => (
                     console.log(item),
                     <CheckoutItem food={item}/>
@@ -133,6 +123,15 @@ const Checkout = () => {
                   <Subtotal/>
                 </Grid>
               </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <CheckoutDetailsForm/>
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+              Item Three
+            </TabPanel>
+          </Box>
+              
               
           </Container>
         </div>

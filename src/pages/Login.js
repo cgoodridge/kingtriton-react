@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/login.css';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -7,9 +7,16 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { useHistory } from 'react-router-dom';
+import { auth } from '../firebaseConfigFile';
+
 
 const Login = () => {
 
+
+
+    const history = useHistory();
+    /// TODO: Create dedicated register form
     const [email, setEmail] = useState('');
 
     const [password, setPassword] = useState('');
@@ -17,11 +24,31 @@ const Login = () => {
     const loginUser = (e) => {
         e.preventDefault();
         // Firebase stuff
+        auth
+        .signInWithEmailAndPassword(email, password)
+        .then((auth) => {
+            if (auth)
+            {
+                history.push('/')
+            }
+        })
+        .catch(error => alert(error.message))
+        
     }
 
     const register = (e) => {
         e.preventDefault();
-        // Firebase stuff
+        auth
+        .createUserWithEmailAndPassword(email, password)
+        .then((auth) => {
+            // New user successfully created
+           
+            if (auth) {
+                history.push('/')
+            }
+        })
+        .catch(error => alert(error.message))
+       
     }
 
     return (
