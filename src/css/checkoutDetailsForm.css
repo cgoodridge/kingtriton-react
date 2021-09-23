@@ -14,6 +14,39 @@ button:focus {
 }
 
 .formCard {
-    margin: 0 auto;
-    width: 80%;
+    margin: 16px auto;
+    width: 700px;
+}
+
+@media only screen and (max-width: 600px) {
+    .formCard{
+        width: 100%;
+        height: 350px;
+        margin: 20px auto;
+    }
+    .radioFieldContainer{
+        margin: auto;
+        width: 300px !important;
+        
+    }
+}
+
+
+.buttonAlign{
+    margin-top: 20px !important;
+    
+}
+
+.editButton{
+    float: right;
+}
+
+.radioFieldContainer{
+    margin: auto;
+    width: 700px;
+}
+
+.submitButton{
+    margin: auto;
+    width: 700px;
 }

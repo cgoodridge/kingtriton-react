@@ -5,6 +5,7 @@ import Menu from './pages/Menu';
 import Reservations from './pages/Reservations';
 import Contact from './pages/Contact';
 import About from './pages/About';
+import Orders from './pages/Orders';
 import Login from './pages/Login';
 import Navbar from './components/Navbar';
 import Checkout from './components/Checkout';
@@ -95,6 +96,9 @@ const Content = (props) => {
               </Route>
               <Route path="/checkout" component={Checkout}>
                 <Checkout />
+              </Route>
+              <Route path="/orders" component={Orders}>
+                <Orders />
               </Route>
               <Route path="/login" component={Login}>
                 <Login />

@@ -12,21 +12,12 @@ import CardContent from '@material-ui/core/CardContent';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { createMuiTheme } from '@material-ui/core/styles';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-// import { Button, Card, Row, Col } from 'react-materialize';
-
+import { createTheme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
 function Cart() {
 
   const classes = useStyles();
-  const theme = createMuiTheme({
+  const theme = createTheme({
     palette: {
       primary: {
         light: '#757ce8',

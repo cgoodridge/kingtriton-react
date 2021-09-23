@@ -1,23 +1,31 @@
-import { ADD_TO_CART, REMOVE_FROM_CART, SET_USER, SUB_QUANTITY,ADD_QUANTITY} from '../actions/cart-actions';
+import { ADD_TO_CART, REMOVE_FROM_CART, SET_USER, EMPTY_CART, SUB_QUANTITY,ADD_QUANTITY} from '../actions/cart-actions';
 
 export const initialState = {
     cart: [],
     user: null,
     addedItems: [],
-    total: 0
+    total: 0,
 };
 
-export const getCartTotal = (cart) => cart?.reduce((amount, food) => food.price + amount, 0);
+export const getCartTotal = (cart) => cart?.reduce((amount, food) => (food.price * food.qty) + amount, 0);
 
 
 const reducer = (state = initialState, action) => {
-    console.log(action);
+
     if (action.type === ADD_TO_CART) {
         /// TODO: Update quantity when the same item is added multiple times
+        console.log(action.item);
         return {
             ...state,
             cart: [...state.cart, action.item]
         };
+    }
+
+    if (action.type === EMPTY_CART) {
+        return {
+            ...state,
+            cart: []
+        }
     }
     
     if (action.type === REMOVE_FROM_CART) {

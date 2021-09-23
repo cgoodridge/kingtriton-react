@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { makeStyles, useTheme, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles, createTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import Toolbar from '@material-ui/core/Toolbar';

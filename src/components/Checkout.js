@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Subtotal from "./Subtotal";
 import Grid from '@material-ui/core/Grid';
@@ -12,7 +12,6 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import CheckoutDetailsForm from './CheckoutDetailsForm';
-// import { Button, Card, Row, Col } from 'react-materialize';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -106,7 +105,7 @@ const Checkout = () => {
               <Tabs value={value} onChange={handleChange} aria-label="checkout page tabs" centered>
                 <Tab label="Review Items" {...a11yProps(0)} />
                 <Tab label="Enter Details" {...a11yProps(1)} />
-                <Tab label="Order Confirmation" {...a11yProps(2)} />
+                
               </Tabs>
             </Box>
             <TabPanel value={value} index={0}>
@@ -127,9 +126,7 @@ const Checkout = () => {
             <TabPanel value={value} index={1}>
               <CheckoutDetailsForm/>
             </TabPanel>
-            <TabPanel value={value} index={2}>
-              Item Three
-            </TabPanel>
+            
           </Box>
               
               

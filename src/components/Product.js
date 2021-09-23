@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
 import { makeStyles} from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,12 +11,29 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-
+import '../css/product.css';
 import { useStateValue } from '../StateProvider';
 
 
 
 const Product = ({food}) => {
+
+    const [qtyValue, setQtyValue] = useState(1);
+
+    const handleQtyAdd = () => {
+        setQtyValue(qtyValue + 1);
+    };
+    const handleQtySub = () => {
+        if (qtyValue > 1 )
+        {
+            setQtyValue(qtyValue - 1);
+        }
+    };
+
+    const handleInput = (event) => {
+        setQtyValue(event.target.value);
+    };
+
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -41,8 +58,10 @@ const Product = ({food}) => {
                 price: food.price,
                 image: food.image,
                 course: food.course,
-                special: food.special
-            }
+                special: food.special,
+                qty: qtyValue
+            },
+            
         })
 
     }
@@ -81,14 +100,14 @@ const Product = ({food}) => {
 
                                     <Box className="control-counters">
                                         <div class="counter">
-                                            <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}}>
+                                            <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtySub}>
                                                 <RemoveIcon fontSize="inherit" />
                                             </IconButton> 
 
-                                            <input type="text" min="0" defaultValue={food.quantity}></input>
+                                            <input type="number" min="0" value={qtyValue} onChange={e => setQtyValue(parseInt(e.target.value))}></input>
                                             {/* <span>{food.quantity}</span> */}
 
-                                            <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}}>
+                                            <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtyAdd}>
                                                 <AddIcon fontSize="inherit"/> 
                                             </IconButton> 
                                         </div>

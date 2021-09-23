@@ -1,39 +1,14 @@
-//  import logo from './logo.svg';
-
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Card from '@material-ui/core/Card';
-import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
-import CardActions from '@material-ui/core/CardActions';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import IconButton from '@material-ui/core/IconButton';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import InputAdornment from '@material-ui/core/InputAdornment';
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import MailIcon from '@material-ui/icons/Mail';
 import PhoneIcon from '@material-ui/icons/PhoneAndroid';
 import LocationIcon from '@material-ui/icons/PinDrop';
-import PersonIcon from '@material-ui/icons/Person';
-import EmailIcon from '@material-ui/icons/Email';
-import SubjectIcon from '@material-ui/icons/Subject';
-import MessageIcon from '@material-ui/icons/Message';
-import RemoveIcon from '@material-ui/icons/Remove';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { createMuiTheme } from '@material-ui/core/styles';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
-// import { Button, Card, Row, Col } from 'react-materialize';
+import { createTheme } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -114,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
 function Contact() {
 
   const classes = useStyles();
-  const theme = createMuiTheme({
+  const theme = createTheme({
     palette: {
       primary: {
         light: '#757ce8',

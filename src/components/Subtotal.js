@@ -9,10 +9,10 @@ import Button from '@mui/material/Button';
 
 const Subtotal = () => {
     const history = useHistory();
-    const [{ cart }, dispatch] = useStateValue();
+    const [{ cart, qty }, dispatch] = useStateValue();
 
     return (
-        <Card className='cardStyle'>
+        <Card className='subtotalCardStyle'>
             <div className="subtotal">
                 <CurrencyFormat
                     renderText={(value) => (
