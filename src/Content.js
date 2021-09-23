@@ -47,8 +47,6 @@ const Content = (props) => {
   const [{ user }, dispatch] = useStateValue();
   useEffect(() => {
     auth.onAuthStateChanged(authUser => {
-      console.log('User is: ', authUser);
-
 
       if (authUser) {
         // The user just logged in/was logged in

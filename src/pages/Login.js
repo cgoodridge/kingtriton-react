@@ -10,8 +10,6 @@ import { auth } from '../firebaseConfigFile';
 
 const Login = () => {
 
-
-
     const history = useHistory();
     /// TODO: Create dedicated register form
     const [email, setEmail] = useState('');
@@ -20,7 +18,6 @@ const Login = () => {
 
     const loginUser = (e) => {
         e.preventDefault();
-        // Firebase stuff
         auth
         .signInWithEmailAndPassword(email, password)
         .then((auth) => {
