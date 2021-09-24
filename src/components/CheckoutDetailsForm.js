@@ -14,7 +14,18 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Checkbox from '@mui/material/Checkbox';
 import { useHistory } from 'react-router-dom'; 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { db } from '../firebaseConfigFile';
+import { getCartTotal } from './reducers/reducer';
+import moment from 'moment';
+
 
 
 
@@ -50,6 +61,17 @@ const savedAddresses = [
 
 const CheckoutDetailsForm = () => {
 
+const [open, setOpenForm] = useState(false);
+
+const handleClickOpen = () => {
+  setOpenForm(true);
+};
+
+const handleClose = () => {
+  setOpenForm(false);
+};
+
+
 const history = useHistory();
 const [cardProvider, setCardProvider] = useState('VISA');
 const [addressProvider, setAddressProvider] = useState('Home');
@@ -66,8 +88,32 @@ const [{ cart, user }, dispatch] = useStateValue();
     setSelectedValue(event.target.value);
   };
 
+  /// TODO: Create object models to handle data
   const handleOrder = () => {
+    db
+      .collection('users')
+      .doc(user?.uid)
+      .collection('orders')
+      .doc()
+      .set({
+        cart: cart,
+        amount: getCartTotal(cart),
+        createdAt: moment()
+      })
     history.push('/orders');
+  };
+
+  const handleAddress = async () => {
+    console.log('Address func called');
+    db
+      .collection('users')
+      .doc(user?.uid)
+      .collection('storedAddresses')
+      .doc()
+      .set({
+        name: 'home'
+      })
+      .catch(error => alert(error.message))
   };
 
     return (
@@ -100,7 +146,7 @@ const [{ cart, user }, dispatch] = useStateValue();
               </Typography>
                 <Grid container spacing={3}>
                   <Grid item xs={6} className="buttonAlign">
-                    <Button size='large' variant="outlined">Add New Address</Button>
+                    <Button size='large' variant="outlined" onClick={handleClickOpen}>Add New Address</Button>
                   </Grid>
                   <Grid item xs={6}>
                     <TextField
@@ -145,6 +191,79 @@ const [{ cart, user }, dispatch] = useStateValue();
                   neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
                   quasi quidem quibusdam.
                 </Typography>
+                
+                <Dialog open={open} onClose={handleClose} className="formCard">
+                  <form action="">
+                    <DialogTitle>New Delivery Address</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>
+                        To subscribe to this website, please enter your email address here. We
+                        will send updates occasionally.
+                      </DialogContentText>
+                      <FormGroup>
+                        <FormControlLabel control={<Checkbox />} label="Default Delivery Address" />
+                      </FormGroup>
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="Address Name"
+                        type="text"
+                        fullWidth
+                        required
+                        variant="standard"
+                      />
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        id="addressLine1"
+                        label="Address Line 1"
+                        type="text"
+                        fullWidth
+                        required
+                        variant="standard"
+                      />
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        id="addressLine2"
+                        label="Address Line 2"
+                        type="text"
+                        fullWidth
+                        variant="standard"
+                      />
+                      <TextField
+                          id="standard-select-address"
+                          select
+                          required
+                          fullWidth
+                          label="Select"
+                          value={addressProvider}
+                          onChange={handleAddressChange}
+                          helperText="Select your parish"
+                          variant="standard"
+                      >
+                      {savedAddresses.map((option) => (
+                          <MenuItem key={option.value} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                      ))}
+                    </TextField>
+                    <TextField
+                      id="standard-textarea"
+                      label="Directions"
+                      placeholder="Take a right by the white lion"
+                      multiline
+                      fullWidth
+                      variant="standard"
+                    />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleClose}>Cancel</Button>
+                      <Button onClick={handleAddress} type="submit">Save</Button>
+                    </DialogActions>
+                  </form>
+                </Dialog>
             </CardContent>
           </Card>
 

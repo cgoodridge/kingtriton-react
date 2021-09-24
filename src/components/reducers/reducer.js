@@ -14,6 +14,12 @@ const reducer = (state = initialState, action) => {
 
     if (action.type === ADD_TO_CART) {
         /// TODO: Update quantity when the same item is added multiple times
+        const addedItem = state.cart.find(item => item.id === action.item.id);
+        //check if the action id exists in the addedItems
+        const existed_item = state.addedItems.find(item => action.item.id === item.id);
+
+        console.log(existed_item);
+
         return {
             ...state,
             cart: [...state.cart, action.item]
