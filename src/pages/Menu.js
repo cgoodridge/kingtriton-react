@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '@material-ui/core/Container';
 import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
@@ -6,13 +6,18 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import MenuList from '../components/MenuList';
 import foodList from './food';
+import { auth, db } from '../firebaseConfigFile';
+import { useStateValue } from '../StateProvider';
 
 
 // import { Button, Card, Row, Col } from 'react-materialize';
 
 
-const Menu = () => {
+const Menu = ({food}) => {
     
+      const [{ cart, user }, dispatch] = useStateValue();
+      console.log(food.data);
+
       return (
         <div>
             
@@ -73,7 +78,7 @@ const Menu = () => {
               />
             
               <Grid container direction="row" className="grid-content">
-                <MenuList foods={foodList} specialVal={false}/>
+                <MenuList foods={food} specialVal={false}/>
               </Grid>
             </Container>
 

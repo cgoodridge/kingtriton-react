@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { auth } from '../firebaseConfigFile';
 
 
@@ -30,21 +30,6 @@ const Login = () => {
         
     }
 
-    const register = (e) => {
-        e.preventDefault();
-        auth
-        .createUserWithEmailAndPassword(email, password)
-        .then((auth) => {
-            // New user successfully created
-           
-            if (auth) {
-                history.push('/')
-            }
-        })
-        .catch(error => alert(error.message))
-       
-    }
-
     return (
         <Card className="loginCard">
             {/* Card Image */}
@@ -57,7 +42,7 @@ const Login = () => {
                     <Button variant="contained" className="loginButton" type="submit" onClick={loginUser}>Login</Button>
                 </form>
                 <div>
-                    <a href="" onClick={register}>Create an account</a>
+                    <Link to="/register">Create an account</Link>
                 </div>
             </CardContent>
         </Card>

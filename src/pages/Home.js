@@ -9,7 +9,8 @@ import LazyHero from 'react-lazy-hero';
 import foodList from './food';
 
 
-const Home = () => {
+const Home = ({food}) => {
+
 
   return (
     
@@ -37,7 +38,7 @@ const Home = () => {
 
         <Container maxWidth="lg">
           <Grid container direction="row" className="grid-content"> 
-              <MenuList foods={foodList} specialVal={true}/>
+              <MenuList foods={food} specialVal={true}/>
           </Grid>
         </Container>
           

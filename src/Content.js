@@ -7,6 +7,7 @@ import Contact from './pages/Contact';
 import About from './pages/About';
 import Orders from './pages/Orders';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Navbar from './components/Navbar';
 import Checkout from './components/Checkout';
 import AltNavbar from './components/AltNavbar';
@@ -21,7 +22,7 @@ import {
   useLocation
 } from "react-router-dom";
 
-import { auth } from './firebaseConfigFile';
+import { auth, db } from './firebaseConfigFile';
 import { useStateValue } from './StateProvider';
 
 
@@ -63,6 +64,23 @@ const Content = (props) => {
       }
     })
   }, [])
+
+  const [menu, setMenuItems] = useState([]);
+
+
+      useEffect(() => {
+          
+          db
+          .collection('menu')
+          .onSnapshot(snapshot => (
+            setMenuItems(snapshot.docs.map(doc => ({
+              id: doc.id,
+              data: doc.data()
+            })))
+          ))
+        
+        
+      }, [])
  
 
   return (
@@ -78,10 +96,10 @@ const Content = (props) => {
           <main>
             <Switch>
               <Route exact path="/" component={Home}>
-                <Home />
+                <Home food={menu}/>
               </Route>
               <Route path="/menu" component={Menu}>
-                <Menu />
+                <Menu food={menu} />
               </Route>
               <Route path="/reservations" component={Reservations}>
                 <Reservations />
@@ -100,6 +118,9 @@ const Content = (props) => {
               </Route>
               <Route path="/login" component={Login}>
                 <Login />
+              </Route>
+              <Route path="/register" component={Register}>
+                <Register />
               </Route>
             </Switch>
           </main>

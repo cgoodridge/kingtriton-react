@@ -98,40 +98,36 @@ const Checkout = () => {
 
     
     return (
-        <div className="App" theme={theme}>
+        // <div className="App" theme={theme}>
           <Container maxWidth="lg">
-          <Box sx={{ width: '100%', marginTop: '16px' }}>
-            <Box>
-              <Tabs value={value} onChange={handleChange} aria-label="checkout page tabs" centered>
-                <Tab label="Review Items" {...a11yProps(0)} />
-                <Tab label="Enter Details" {...a11yProps(1)} />
-                
-              </Tabs>
+            <Box sx={{ width: '100%', marginTop: '16px' }}>
+              <Box>
+                <Tabs value={value} onChange={handleChange} aria-label="checkout page tabs" centered>
+                  <Tab label="Review Items" {...a11yProps(0)} />
+                  <Tab label="Enter Details" {...a11yProps(1)} />
+                </Tabs>
+              </Box>
+              <TabPanel value={value} index={0}>
+                <Grid container direction="row"  className={classes.contentPadding}>
+                  <Grid container direction="column" item xs={6} className={classes.gridContent}>
+                    <h4 alignItems="flex-start">Items in Cart</h4>
+                    
+                    {cart.map(item => (
+                      console.log(item),
+                      <CheckoutItem food={item}/>
+                    ))}
+                  </Grid>
+                  <Grid item xs={6} alignItems="flex-start" className={classes.gridContent}>
+                    <Subtotal/>
+                  </Grid>
+                </Grid>
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <CheckoutDetailsForm/>
+              </TabPanel>
             </Box>
-            <TabPanel value={value} index={0}>
-              <Grid container direction="row"  className={classes.contentPadding}>
-                <Grid container direction="column" item xs={6} className={classes.gridContent}>
-                  <h4 alignItems="flex-start">Items in Cart</h4>
-                  
-                  {cart.map(item => (
-                    console.log(item),
-                    <CheckoutItem food={item}/>
-                  ))}
-                </Grid>
-                <Grid item xs={6} alignItems="flex-start" className={classes.gridContent}>
-                  <Subtotal/>
-                </Grid>
-              </Grid>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              <CheckoutDetailsForm/>
-            </TabPanel>
-            
-          </Box>
-              
-              
           </Container>
-        </div>
+        // </div>
     );
 }
 
