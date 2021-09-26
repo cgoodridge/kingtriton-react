@@ -4,6 +4,10 @@
     margin: 16px auto;
 }
 
+.cardContent{
+    padding: 16px 32px !important;
+}
+
 input:focus,
 select:focus,
 textarea:focus,

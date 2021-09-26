@@ -1,0 +1,8 @@
+.homeHeader{
+    /* background-color: yellow; */
+    height: auto !important;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+
+}

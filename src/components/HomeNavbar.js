@@ -23,6 +23,7 @@ import ListItemText from '@mui/material/ListItemText';
 import '../css/navbar.css';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import '../css/homeHeader.css';
 
 const HideOnScroll = (props) => {
     const { children, window } = props;
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
   
-const Navbar = (props) => {
+const HomeNavbar = (props) => {
 
     const classes = useStyles();
 
@@ -249,11 +250,10 @@ const Navbar = (props) => {
 
     return (
 
-        <header>
+        <header className="homeHeader">
             <CssBaseline />
             <HideOnScroll {...props}>
-            <AppBar>
-                <Toolbar>
+            
                     
                 <nav className="nav-col">
                     <div className="nav-wrapper">
@@ -342,8 +342,7 @@ const Navbar = (props) => {
                         ))}
                     </div>
                 </nav>
-                </Toolbar>
-            </AppBar>
+              
             </HideOnScroll>
             <Toolbar />    
         </header>
@@ -354,4 +353,4 @@ const Navbar = (props) => {
   
 
 
-export default Navbar;
+export default HomeNavbar;

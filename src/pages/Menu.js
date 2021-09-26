@@ -7,16 +7,81 @@ import TextField from '@material-ui/core/TextField';
 import MenuList from '../components/MenuList';
 import foodList from './food';
 import { auth, db } from '../firebaseConfigFile';
+import ListItem from '@mui/material/ListItem';
 import { useStateValue } from '../StateProvider';
+import Radio from '@mui/material/Radio';
+import MenuItem from '@mui/material/MenuItem';
 
 
 // import { Button, Card, Row, Col } from 'react-materialize';
 
 
 const Menu = ({food}) => {
-    
+  
+      const filters = [
+          {
+            value: 'All',
+            label: 'All',
+          },
+          {
+            value: 'main',
+            label: 'Mains',
+          },
+          {
+            value: 'appetizer',
+            label: 'Appetizer',
+          },
+          {
+            value: 'drinks',
+            label: 'Drinks',
+          },
+          {
+            value: 'desserts',
+            label: 'Desserts',
+          },
+      ];
+
       const [{ cart, user }, dispatch] = useStateValue();
-      console.log(food.data);
+      const [filterProvider, setFilterParam] = useState('All');
+      const [chipColor, setChipColour] = useState('All');
+
+
+      const [selectedValue, setSelectedValue] = useState('a');
+
+      const handleChange = (event) => {
+        setSelectedValue(event.target.value);
+        console.log(selectedValue);
+      };
+
+      /// TODO: Find a more dynamic way to do this
+
+      /*
+      const handleAllChipClick = () => {
+        console.info('You clicked the All Chip.');
+        setFilterParam('All');
+        console.log(filter);
+      };
+      const handleStarterChipClick = () => {
+        console.info('You clicked the starter Chip.');
+        setFilterParam('Starter');
+        console.log(filter);
+      };
+      const handleMainChipClick = () => {
+        console.info('You clicked the main Chip.');
+        setFilterParam('Main');
+        console.log(filter);
+      };
+      const handleDessertChipClick = () => {
+        console.info('You clicked the dessert Chip.');
+        setFilterParam('Dessert');
+        console.log(filter);
+      };
+      const handleDrinkChipClick = () => {
+        console.info('You clicked the drink Chip.');
+        setFilterParam('Drink');
+        console.log(filter);
+      };
+      */
 
       return (
         <div>
@@ -45,11 +110,15 @@ const Menu = ({food}) => {
                 </Grid>
                 
               </Grid>
-              
-              <Chip
+              <ListItem>
+
+              </ListItem>
+
+              {/* <Chip
                 style={{margin: 4}}
                 label="All"
                 clickable
+                onChange={handleChange}
                 color="secondary"
               />
               <Chip
@@ -62,6 +131,7 @@ const Menu = ({food}) => {
                 style={{margin: 4}}
                 label="Mains"
                 clickable
+                value="main"
                 color="#010101"
               />
               <Chip
@@ -75,10 +145,25 @@ const Menu = ({food}) => {
                 label="Desserts"
                 clickable
                 color="#010101"
-              />
-            
+              /> */}
+              <TextField
+                  id="standard-select-filter-type"
+                  select
+                  required
+                  // fullWidth
+                  value={filterProvider} 
+                  onChange={e => setFilterParam(e.target.value)}
+                  label="Filter"
+                  variant="standard"
+              >
+              {filters.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+              ))}
+              </TextField>
               <Grid container direction="row" className="grid-content">
-                <MenuList foods={food} specialVal={false}/>
+                <MenuList foods={food} filterParam={filterProvider}/>
               </Grid>
             </Container>
 

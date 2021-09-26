@@ -128,7 +128,7 @@ ul {
   height: 200px !important;
 }
 .container{
-  width: 90% !important;
+  /* width: 90% !important; */
 }
 
 .card-controls{

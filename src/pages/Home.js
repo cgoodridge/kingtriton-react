@@ -5,6 +5,7 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import MenuList from '../components/MenuList';
+import SpecialMenuList from '../components/SpecialMenuList';
 import LazyHero from 'react-lazy-hero';
 import foodList from './food';
 
@@ -38,7 +39,7 @@ const Home = ({food}) => {
 
         <Container maxWidth="lg">
           <Grid container direction="row" className="grid-content"> 
-              <MenuList foods={food} specialVal={true}/>
+              <SpecialMenuList foods={food}/>
           </Grid>
         </Container>
           

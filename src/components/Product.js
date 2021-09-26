@@ -13,10 +13,28 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import '../css/product.css';
 import { useStateValue } from '../StateProvider';
+import Snackbar from '@mui/material/Snackbar';
 
 
 
 const Product = ({food}) => {
+
+    const [state, setState] = useState({
+        open: false,
+        vertical: 'top',
+        horizontal: 'center',
+    });
+
+    const { vertical, horizontal, open } = state;
+
+    const handleClick = (newState) => () => {
+        setState({ open: true, ...newState });
+        addToBasket();
+    };
+
+    const handleClose = () => {
+        setState({ ...state, open: false });
+    };
 
     const [qtyValue, setQtyValue] = useState(1);
 
@@ -50,6 +68,7 @@ const Product = ({food}) => {
 
     const addToBasket = () => {
 
+
         dispatch({
             type: 'ADD_TO_CART',
             item: {
@@ -70,57 +89,74 @@ const Product = ({food}) => {
 
     return (
         <div className={classes.root} key={food.id}>
-                        <Grid item xs={12} sm={3} className={classes.card}>
-                            <Card className="card small" style={{borderRadius: "20px"}} >
-                                <CardMedia
-                                component="img"
-                                alt={food.name}
-                                height="225"
-                                image={food.image}
-                                title={food.name}
-                                className="card-image"
-                                />
+            {/* <Snackbar
+                anchorOrigin={{ vertical, horizontal }}
+                open={open}
+                autoHideDuration={3000}
+                onClose={handleClose}
+                message= {food.name + ' added to Cart'} 
+                key={vertical + horizontal}
+            /> */}
+            <Card component={Snackbar} 
+                anchorOrigin={{ vertical, horizontal }}
+                open={open}
+                autoHideDuration={3000}
+                onClose={handleClose}
+                key={vertical + horizontal}
+                sx={{ display: 'flex' }}>
+                {/* <img src={food.image} alt={food.name}  height="151"/> */}
+                <CardContent>
+                    <p>{food.name + ' added to Cart'} </p>
+                </CardContent>
+            </Card>
+            <Grid item xs={12} sm={3} className={classes.card}>
+                <Card className="card small" style={{borderRadius: "20px"}} >
+                    <CardMedia
+                    component="img"
+                    alt={food.name}
+                    height="225"
+                    image={food.image}
+                    title={food.name}
+                    className="card-image"
+                    />
 
-                                <CardContent>
-                                    <Grid container style={{marginBottom: '10px'}}>
-                                        <Grid item xs={10}>
-                                            <Typography gutterBottom variant="h6" component="h2" align="left">
-                                                {food.name} 
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={2}>
-                                            <Typography gutterBottom variant="h6" component="h2" align="left">
-                                                ${food.price} 
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </CardContent>
-
-                                <CardActions className="controls">
-
-                                    <Box className="control-counters">
-                                        <div class="counter">
-                                            <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtySub}>
-                                                <RemoveIcon fontSize="inherit" />
-                                            </IconButton> 
-
-                                            <input type="number" min="0" value={qtyValue} onChange={e => setQtyValue(parseInt(e.target.value))}></input>
-                                            {/* <span>{food.quantity}</span> */}
-
-                                            <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtyAdd}>
-                                                <AddIcon fontSize="inherit"/> 
-                                            </IconButton> 
-                                        </div>
-                                    </Box>
-                                
-                                    <Fab color="secondary" aria-label="add" onClick={addToBasket}>
-                                        <img src="img/mdi_basket-plus.png"></img>
-                                    </Fab>
-                                    
-                                </CardActions>
-                            </Card>
+                    <CardContent>
+                        <Grid container style={{marginBottom: '10px'}}>
+                            <Grid item xs={10}>
+                                <Typography gutterBottom variant="h6" component="h2" align="left">
+                                    {food.name} 
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={2}>
+                                <Typography gutterBottom variant="h6" component="h2" align="left">
+                                    ${food.price} 
+                                </Typography>
+                            </Grid>
                         </Grid>
-                    </div>
+                    </CardContent>
+
+                    <CardActions className="controls">
+                        <Box className="control-counters">
+                            <div class="counter">
+                                <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtySub}>
+                                    <RemoveIcon fontSize="inherit" />
+                                </IconButton> 
+
+                                <input type="number" min="0" value={qtyValue} onChange={e => setQtyValue(parseInt(e.target.value))}></input>
+                                {/* <span>{food.quantity}</span> */}
+
+                                <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtyAdd}>
+                                    <AddIcon fontSize="inherit"/> 
+                                </IconButton> 
+                            </div>
+                        </Box>
+                        <Fab color="secondary" aria-label="add" onClick={handleClick ({ vertical: 'top', horizontal: 'right', })}>
+                            <img src="img/mdi_basket-plus.png"></img>
+                        </Fab>
+                    </CardActions>
+                </Card>
+            </Grid>
+        </div>
     );
 }
 

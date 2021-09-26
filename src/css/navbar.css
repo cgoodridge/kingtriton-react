@@ -39,3 +39,10 @@
         display: none !important;
     }
 }
+
+.brand-logo{
+    padding: 0 16px !important;
+}
+.nav-col{
+    padding-right: 16px !important;
+}

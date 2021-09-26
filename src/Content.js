@@ -10,7 +10,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Navbar from './components/Navbar';
 import Checkout from './components/Checkout';
-import AltNavbar from './components/AltNavbar';
+import HomeNavbar from './components/HomeNavbar';
 import cartList from './pages/cartList';
 import './css/style.css';
 import './css/materialize.css';
@@ -89,41 +89,64 @@ const Content = (props) => {
         <ThemeProvider theme={theme} >
 
 
-          <header>
-            <Navbar cart={cartList}/>
-          </header>
+         
+          
 
-          <main>
             <Switch>
               <Route exact path="/" component={Home}>
-                <Home food={menu}/>
+                <HomeNavbar cart={cartList}/>
+                <main>
+                  <Home food={menu} specialVal={true}/>
+                </main>
               </Route>
               <Route path="/menu" component={Menu}>
-                <Menu food={menu} />
+                <Navbar cart={cartList}/>
+                <main>
+                  <Menu food={menu} />
+                </main>
               </Route>
               <Route path="/reservations" component={Reservations}>
-                <Reservations />
+                <Navbar cart={cartList}/>
+                <main>
+                  <Reservations />
+                </main>
               </Route>
               <Route path="/contact" component={Contact}>
-                <Contact/>
+                <Navbar cart={cartList}/>
+                <main>
+                  <Contact />
+                </main>
               </Route>
               <Route path="/about" component={About}>
-                <About />
+                <Navbar cart={cartList}/>
+                <main>
+                  <About />
+                </main>
               </Route>
               <Route path="/checkout" component={Checkout}>
-                <Checkout />
+                <Navbar cart={cartList}/>
+                <main>
+                  <Checkout />
+                </main>
               </Route>
               <Route path="/orders" component={Orders}>
-                <Orders />
+                <Navbar cart={cartList}/>
+                <main>
+                  <Orders />
+                </main>
               </Route>
               <Route path="/login" component={Login}>
-                <Login />
+                <main>
+                  <Login />
+                </main>
               </Route>
               <Route path="/register" component={Register}>
-                <Register />
+                <main>
+                  <Register />
+                </main>
               </Route>
             </Switch>
-          </main>
+          
 
           <footer className="page-footer footer-col">
             <div className="row">

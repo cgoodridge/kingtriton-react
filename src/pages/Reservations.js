@@ -99,14 +99,6 @@ function Reservations() {
     },
   });
 
-    const cardInfo = [
-        {image: "img/mains/shrimpalfredo.jpg", name: "Shrimp Alfredo", price:16,},
-        {image: "img/mains/lobster-mac.jpg", name: "Lobster Mac & Cheese", price:22,},
-        {image: "img/mains/fried-calamari.jpeg", name: "Fried Calamari", price:16,},
-        {image: "img/mains/fried-calamari.jpeg", name: "Fried Calamari", price:16,},
-
-    ];
-
 
     return (
         <div className="App" theme={theme} style={{padding: '25px'}}>
@@ -118,12 +110,12 @@ function Reservations() {
 
               <ThemeProvider theme={theme}>
                 <Grid container direction="row" className={classes.gridContent}>
-                  <Grid item xs={12}>
-                      <Grid container>
+                  {/* <Grid item xs={12}> */}
+                      {/* <Grid container direction="row"> */}
                           <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
                             <TextField 
                               id="standard-basic" 
-                              fullWidth 
+                              
                               label="Date"                            
                               InputProps={{ 
                                 disableUnderline: true,     
@@ -133,7 +125,7 @@ function Reservations() {
                           <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
                             <TextField 
                               id="standard-basic" 
-                              fullWidth 
+                              
                               label="Time" 
                               color="primary"
                               InputProps={{ 
@@ -144,7 +136,7 @@ function Reservations() {
                           <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
                             <TextField 
                               id="standard-basic" 
-                              fullWidth 
+                              
                               label="People" 
                               color="primary"
                               InputProps={{   
@@ -155,7 +147,7 @@ function Reservations() {
                           <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
                             <TextField 
                               id="standard-basic" 
-                              fullWidth 
+                              
                               label="Table" 
                               color="primary"
                               InputProps={{   
@@ -169,25 +161,14 @@ function Reservations() {
                             </Button>
                           </Grid>
                       </Grid>
-                    </Grid>
-                  </Grid>
+                    {/* </Grid> */}
+                  {/* </Grid> */}
                 </ThemeProvider>
 
               <Typography gutterBottom variant="h4" component="h2" align="left" className={classes.mainFont}>
                 Preferred Seating
               </Typography>
-              <Chip
-                style={{margin: 4}}
-                label="Lower Floor"
-                clickable
-                color="primary"
-              />
-              <Chip
-                style={{margin: 4}}
-                label=" Upper Floor"
-                clickable
-                color="#010101"
-              />
+              
               <Grid container className={classes.resArea}>
                   <Grid item xs={12} sm={2}>
                     <Grid container style={{display: 'flex', flexDirection:'column'}}>

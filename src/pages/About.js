@@ -10,6 +10,7 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { createTheme } from '@material-ui/core/styles';
+import '../css/about.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,36 +23,6 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flex: '1 0 auto',
   },
-  cover: {
-    width: 151,
-  },
-  controls: {
-    display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'space-around',
-    
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  controlCounters: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    
-
-  },
-  playIcon: {
-    height: 38,
-    width: 38,
-  },
-
-  formSize:{
-    width: 20,
-    paddingTop: 0,
-    paddingBottom: 0,
-    textAlign: 'center'
-  
-  },
   cardRadius:{
     borderRadius: 10,
   },
@@ -62,10 +33,13 @@ const useStyles = makeStyles((theme) => ({
   },
   mainFont:{
     fontFamily: 'Poiret One'
-  }
+  },
+  card: {
+    padding: theme.spacing(1),
+  },
 }));
 
-function About() {
+const About = () => {
 
   const classes = useStyles();
   const theme = createTheme({
@@ -88,7 +62,7 @@ function About() {
     const cardInfo = [
         {image: "img/owner.jpg", name: "Barbara Gordon", position:"Owner, King Triton's Seafood Palace",},
         {image: "img/head-chef.jpg", name: "Sara Lance", position:"Head Chef, King Triton's Seafood Palace",},
-        {image: "/img/sous-chef.jpg", name: "Lucius Fox", position:"Sous Chef, King Triton's Seafood Palace",},
+        {image: "img/sous-chef.jpg", name: "Lucius Fox", position:"Sous Chef, King Triton's Seafood Palace",},
         
 
     ];
@@ -96,41 +70,42 @@ function About() {
     const renderCard = (card, index) => {
         return(
         
-            <Grid item xs={12} sm={3}>
-            <Card className="card small" style={{borderRadius: "20px"}} key={index}>
-                <CardMedia
-                component="img"
-                alt={card.position}
-                height="200"
-                image={card.image}
-                title={card.owner}
-                className="card-image"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h4" component="h2" align="center" style={{fontFamily: 'Poiret One', fontWeight: 'bold'}}>
-                        {card.name} 
-                    </Typography>
-                    <Typography gutterBottom variant="h6" component="h2" align="center">
-                        {card.position} 
-                    </Typography>
-                </CardContent>
-                <CardActions className={classes.controls}>
-                    
-                        <IconButton size="small" color="primary">
-                          <a href="#"><FontAwesomeIcon icon={['fab','linkedin']} size="lg" /></a>
-                        </IconButton>
-                    
-        
-                </CardActions>
-            </Card>
+            <Grid item xs={12} sm={3} className={classes.card}>
+              <Card className="card small" style={{borderRadius: "20px"}} key={index}>
+                  <CardMedia
+                  component="img"
+                  alt={card.position}
+                  height="200"
+                  image={card.image}
+                  title={card.owner}
+                  className="card-image"
+                  />
+                  <CardContent>
+                      <Typography gutterBottom variant="h4" component="h2" align="center" style={{fontFamily: 'Poiret One', fontWeight: 'bold'}}>
+                          {card.name} 
+                      </Typography>
+                      <Typography gutterBottom variant="h6" component="h2" align="center">
+                          {card.position} 
+                      </Typography>
+                  </CardContent>
+                  <CardActions className={classes.controls}>
+                      
+                          <IconButton size="small" color="primary">
+                            <a href="#"><FontAwesomeIcon icon={['fab','linkedin']} size="lg" /></a>
+                          </IconButton>
+                      
+          
+                  </CardActions>
+              </Card>
             </Grid>
 
         )
     };
 
     return (
-        <div className="App" theme={theme} style={{padding: '25px'}}>
-        <Container maxWidth="lg">
+        // <div className="App" theme={theme} style={{padding: '25px'}}>
+        <>
+         <Container maxWidth="lg">
             <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont} >
                     About
             </Typography>
@@ -145,8 +120,10 @@ function About() {
             <Grid container direction="row" className={classes.gridContent}>
             {cardInfo.map(renderCard)}
             </Grid>
+        </>
+       
 
-        </div>
+        // </div>
     );
 }
 
