@@ -1,0 +1,12 @@
+.closeButton{
+    float: right;
+}
+
+.cartItemImage{
+    height: 80px !important;
+    width: 80px;
+    overflow: hidden;
+    object-fit: cover;
+    object-position: 40% 10%;
+    border-radius: 10px;
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles, useTheme, ThemeProvider, createTheme } from '@material-ui/core/styles';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Reservations from './pages/Reservations';
@@ -7,23 +7,30 @@ import Contact from './pages/Contact';
 import About from './pages/About';
 import Orders from './pages/Orders';
 import Login from './pages/Login';
+import PageNotFound from './pages/404Page';
 import Register from './pages/Register';
 import Navbar from './components/Navbar';
 import Checkout from './components/Checkout';
 import HomeNavbar from './components/HomeNavbar';
+import Footer from './components/Footer';
 import cartList from './pages/cartList';
 import './css/style.css';
-import './css/materialize.css';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, useElements } from '@stripe/react-stripe-js'
+
+
 import {
   BrowserRouter as Router,
+
   Switch,
   Route,
-  Link,
-  useLocation
+  Redirect
 } from "react-router-dom";
-
 import { auth, db } from './firebaseConfigFile';
 import { useStateValue } from './StateProvider';
+
+const promise = loadStripe('pk_test_51JelBJESzl8Ss9eHeAVZ8WozJuU1eiPQ1pOXak0vXrnqM8N6uoX659QmFv8DZ15JxEmMYeAyEmw6l6RCxBVg42uj006vt0mzoA');
+
 
 
 const theme = createTheme({
@@ -87,103 +94,76 @@ const Content = (props) => {
     <Router>
       <div className="App">
         <ThemeProvider theme={theme} >
-
-
-         
-          
-
             <Switch>
               <Route exact path="/" component={Home}>
                 <HomeNavbar cart={cartList}/>
                 <main>
-                  <Home food={menu} specialVal={true}/>
+                  <Home food={menu} loading={menu.length <= 0 ? true : false}/>
                 </main>
+                <Footer/>
               </Route>
-              <Route path="/menu" component={Menu}>
+              <Route exact path="/menu" component={Menu}>
                 <Navbar cart={cartList}/>
                 <main>
-                  <Menu food={menu} />
+                  <Menu food={menu} loading={menu.length <= 0 ? true : false}/>
                 </main>
+                <Footer/>
               </Route>
-              <Route path="/reservations" component={Reservations}>
+              <Route exact path="/reservations" component={Reservations}>
                 <Navbar cart={cartList}/>
                 <main>
                   <Reservations />
                 </main>
+                <Footer/>
               </Route>
-              <Route path="/contact" component={Contact}>
+              <Route exact path="/contact" component={Contact}>
                 <Navbar cart={cartList}/>
                 <main>
                   <Contact />
                 </main>
+                <Footer/>
               </Route>
-              <Route path="/about" component={About}>
+              <Route exact path="/about" component={About}>
                 <Navbar cart={cartList}/>
                 <main>
                   <About />
                 </main>
+                <Footer/>
               </Route>
-              <Route path="/checkout" component={Checkout}>
+              <Route exact path="/checkout" component={Checkout}>
                 <Navbar cart={cartList}/>
                 <main>
-                  <Checkout />
+                  <Elements stripe={promise}> 
+                    <Checkout />
+                  </Elements>
                 </main>
+                <Footer/>
               </Route>
-              <Route path="/orders" component={Orders}>
+              <Route exact path="/orders" component={Orders}>
                 <Navbar cart={cartList}/>
                 <main>
                   <Orders />
                 </main>
+                <Footer/>
               </Route>
-              <Route path="/login" component={Login}>
+              <Route exact path="/login" component={Login}>
                 <main>
                   <Login />
                 </main>
               </Route>
-              <Route path="/register" component={Register}>
+              <Route exact path="/register"  component={Register}>
                 <main>
                   <Register />
+                </main>
+              </Route>
+              <Route component={PageNotFound}>
+                <main>
+                  <PageNotFound />
                 </main>
               </Route>
             </Switch>
           
 
-          <footer className="page-footer footer-col">
-            <div className="row">
-                <div className="col s12 m6 l3 center-align">
-                  <img id="footer-logo" src="./img/Logo.png" alt="Site Logo"></img>
-                  <h5 className="white-text">King Triton's Seafood Palace</h5>
-                  <p>(246)439-9000</p>
-                  <p>info@triton.com</p>
-                </div>
-    
-                <div className="col s12 m6 l3 center-align">
-                  <h5 className="white-text">Opening Hours</h5>
-                  <p>Mon - Sat: 11AM - 4PM</p>
-                  <p>Sunday: Closed</p>
-                </div>
-    
-                <div className="col s12 m6 l3 center-align">
-                  <h5 className="white-text">Location</h5>
-                  <p>Hastings Main Road Ch Ch</p>
-                </div>
-    
-                <div className="col s12 m6 l3 center-align">
-                  <h5 className="white-text center-align">Follow Us</h5>
-                  <div className="row center-align" style={{padding: "8px"}}>
-                    <a href="#" style={{padding: "8px", color:'white'}}><i class="devicon-twitter-original"></i></a>
-                    <a href="#" style={{padding: "8px", color:'white'}}><i class="devicon-facebook-original"></i></a>
-                  </div>
-                </div>
-    
-            </div>
-    
-            <div className="footer-copyright">
-              <div className="container center-align">
-              © 2021 King Triton's Seafood Palace
-              </div>
-            </div>
-          </footer>
         </ThemeProvider>
       </div>
 

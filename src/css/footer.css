@@ -1,0 +1,38 @@
+footer{
+    position: relative;
+    /* left: 0; */
+    /* margin-top: -10px; */
+    bottom: -150px;
+    width: 100%;
+    background-color: #141414 !important;
+    padding-top: 16px;
+}
+
+.footer-copyright{
+    background-color: #0f0f0f !important;
+    height: 30px;
+    text-align: center;
+    /* vertical-align: middle; */
+    /* align-items: center; */
+    color: white;
+    /* padding: 16px 0; */
+
+}
+
+.footerHeaders{
+    font-family: 'Poiret One' !important;
+}
+
+#footer-logo
+{
+    height: 80px;
+}
+
+.grid-content{
+  text-align: center;
+  color: white;
+} 
+
+.grid-content p{
+    font-size: 18px;
+} 

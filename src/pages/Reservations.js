@@ -1,56 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
-import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { createTheme } from '@material-ui/core/styles';
+import MenuItem from '@mui/material/MenuItem';
+import { db } from '../firebaseConfigFile';
+import { useStateValue } from '../StateProvider';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-  details: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  content: {
-    flex: '1 0 auto',
-  },
-  cover: {
-    width: 151,
-  },
-  controls: {
-    display: 'flex',
-    alignItems: 'flex-end',
-    justifyContent: 'space-around',
-    
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  controlCounters: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  playIcon: {
-    height: 38,
-    width: 38,
-  },
-  formSize:{
-    width: 20,
-    paddingTop: 0,
-    paddingBottom: 0,
-    textAlign: 'center'
-  },
-  cardRadius:{
-    borderRadius: 10,
-  },
+
   gridContent:{
     display: 'flex',
-    justifyContent: 'start'
+    justifyContent: 'start',
+    flexWrap: 'wrap'
   },
   mainFont:{
     fontFamily: 'Poiret One'
@@ -79,7 +48,49 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const tables = [
+  {
+    value: 'home',
+    label: 'Home',
+  },
+  {
+    value: 'school',
+    label: 'School',
+  },
+  {
+    value: 'work',
+    label: 'Work',
+  },
+];
+
 function Reservations() {
+
+  const [selectedTable, setSelectedTable] = useState('');
+  const [{ user }, dispatch] = useStateValue();
+
+  const handleTableChange = (event) => {
+    setSelectedTable(event.target.value);
+  };
+
+  const handleResevation = (e) => {
+    e.preventDefault();
+    db
+      .collection('users')
+      .doc(user?.uid)
+      .collection('storedAddresses')
+      .doc()
+      .set({
+        defaultAddress: 'addressState',
+        name: 'addressName',
+        addressLine1: 'addressLine1',
+        addressLine2: 'addressLine2',
+        parish: 'parish',
+        directions: 'directions'
+      })
+      .catch(error => alert(error.message))
+
+  };
+
 
   const classes = useStyles();
   const theme = createTheme({
@@ -109,60 +120,67 @@ function Reservations() {
               </Typography>
 
               <ThemeProvider theme={theme}>
-                <Grid container direction="row" className={classes.gridContent}>
-                  {/* <Grid item xs={12}> */}
-                      {/* <Grid container direction="row"> */}
-                          <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
-                            <TextField 
-                              id="standard-basic" 
-                              
-                              label="Date"                            
-                              InputProps={{ 
-                                disableUnderline: true,     
-                              }}                          
+                <form action="" style={{width: '100%'}}>
+                  <Grid container direction="row" className={classes.gridContent}>
+                        <Grid item xs={12} md={6} lg={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
+                          <TextField 
+                            id="standard-basic" 
+                            fullWidth
+                            type="date"
+                            placeholder="test"
+                            label="Date"                            
+                         
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
+                          <TextField 
+                            id="standard-basic" 
+                            fullWidth
+                            type="time"
+                            label="Time" 
+                            color="primary"
                             />
-                          </Grid>
-                          <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
-                            <TextField 
-                              id="standard-basic" 
-                              
-                              label="Time" 
-                              color="primary"
-                              InputProps={{ 
-                                
-                                disableUnderline: true,                           
-                              }}/>
-                          </Grid>
-                          <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
-                            <TextField 
-                              id="standard-basic" 
-                              
-                              label="People" 
-                              color="primary"
-                              InputProps={{   
-                                disableUnderline: true,                           
-                              }}
-                            />
-                          </Grid>
-                          <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
-                            <TextField 
-                              id="standard-basic" 
-                              
-                              label="Table" 
-                              color="primary"
-                              InputProps={{   
-                                disableUnderline: true,                           
-                              }}
-                            />
-                          </Grid>
-                          <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
-                            <Button variant="contained" color="primary" style={{width: 100}}>
-                              Book
-                            </Button>
-                          </Grid>
-                      </Grid>
-                    {/* </Grid> */}
-                  {/* </Grid> */}
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
+                          <TextField 
+                            id="standard-basic" 
+                            fullWidth
+                            label="People" 
+                            color="primary"
+                            
+                          />
+                        </Grid>
+                        <Grid item xs={12} md={6} lg={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
+                          <TextField
+                              id="standard-select-table"
+                              select
+                              required
+                              fullWidth
+                              value={selectedTable} 
+                              onChange={e => setSelectedTable(e.target.value)}
+                              label="Table"
+                              margin="normal"
+                              variant="standard"
+                          >
+                          {tables.map((option) => (
+                              <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                              </MenuItem>
+                          ))}
+                          </TextField>
+
+                        </Grid>
+                        {/* <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}> */}
+                        <div>
+                          <Button variant="contained" color="primary" type="submit" style={{width: 100, marginBottom:"16px"}}>
+                            Book
+                          </Button>
+                        </div>
+                          
+                        {/* </Grid> */}
+                    </Grid>
+                  </form>
+                  
                 </ThemeProvider>
 
               <Typography gutterBottom variant="h4" component="h2" align="left" className={classes.mainFont}>

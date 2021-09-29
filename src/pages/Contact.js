@@ -123,9 +123,7 @@ function Contact() {
                           id="standard-basic" 
                           fullWidth 
                           label="Name"                            
-                          InputProps={{ 
-                            disableUnderline: true,     
-                          }}                          
+                                               
                         />
                       </Grid>
 
@@ -134,10 +132,7 @@ function Contact() {
                           id="standard-basic" 
                           fullWidth label="Email" 
                           color="primary"
-                          InputProps={{ 
-                            style: { color: '#fff' },
-                            disableUnderline: true,                           
-                           }}
+                          
                            
                        />
                       </Grid>
@@ -148,11 +143,6 @@ function Contact() {
                           id="standard-basic" 
                           label="Subject" 
                           color="primary"
-                          InputProps={{ 
-                            disableUnderline: true,
-                            
-                            
-                            }}
                           
                         />
                     

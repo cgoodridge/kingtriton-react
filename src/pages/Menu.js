@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Container from '@material-ui/core/Container';
-import Chip from '@material-ui/core/Chip';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import MenuList from '../components/MenuList';
-import foodList from './food';
-import { auth, db } from '../firebaseConfigFile';
 import ListItem from '@mui/material/ListItem';
 import { useStateValue } from '../StateProvider';
-import Radio from '@mui/material/Radio';
 import MenuItem from '@mui/material/MenuItem';
+import Search from '@material-ui/icons/Search';
+
 
 
 // import { Button, Card, Row, Col } from 'react-materialize';
 
 
-const Menu = ({food}) => {
+const Menu = ({food, loading}) => {
+  
   
       const filters = [
           {
@@ -36,7 +36,7 @@ const Menu = ({food}) => {
             label: 'Drinks',
           },
           {
-            value: 'desserts',
+            value: 'dessert',
             label: 'Desserts',
           },
       ];
@@ -44,14 +44,16 @@ const Menu = ({food}) => {
       const [{ cart, user }, dispatch] = useStateValue();
       const [filterProvider, setFilterParam] = useState('All');
       const [chipColor, setChipColour] = useState('All');
+      const [searchQuery, setSearchQuery] = useState('');
 
 
       const [selectedValue, setSelectedValue] = useState('a');
 
       const handleChange = (event) => {
         setSelectedValue(event.target.value);
-        console.log(selectedValue);
       };
+
+      
 
       /// TODO: Find a more dynamic way to do this
 
@@ -86,7 +88,7 @@ const Menu = ({food}) => {
       return (
         <div>
             
-            <Container maxWidth="lg">
+            <Container maxWidth="lg" style={{marginTop: '32px'}}>
               <Grid container>
                 <Grid item xs={12} sm={9}> 
                   <Typography gutterBottom variant="h3" component="h2" align="left" className="main-font">
@@ -99,13 +101,15 @@ const Menu = ({food}) => {
                     fullWidth
                     label="Search" 
                     color="primary"
+                    variant="standard"
+                    value={searchQuery} 
+                    onChange={e => setSearchQuery(e.target.value)}
                     InputProps={{ 
-                      // startAdornment:(
-                      //   <InputAdornment position="end">
-                      //     <Search />
-                      //   </InputAdornment>
-                      // ),
-                      disableUnderline: true,                           
+                      startAdornment:(
+                        <InputAdornment position="end">
+                          <Search />
+                        </InputAdornment>
+                      ),                           
                   }}/>
                 </Grid>
                 
@@ -163,7 +167,7 @@ const Menu = ({food}) => {
               ))}
               </TextField>
               <Grid container direction="row" className="grid-content">
-                <MenuList foods={food} filterParam={filterProvider}/>
+                <MenuList foods={food} loading={loading} filterParam={filterProvider} searchQuery={searchQuery}/>
               </Grid>
             </Container>
 

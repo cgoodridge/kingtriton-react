@@ -1,8 +1,36 @@
 .homeHeader{
     /* background-color: yellow; */
     height: auto !important;
-    position: absolute;
+    position: absolute !important;
     z-index: 1;
     width: 100%;
-
 }
+.nav-col{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-col a{
+    text-decoration: none;
+    color: white;
+}
+.nav-col li{
+    font-size: 16px;
+}
+.homeText{
+    margin-left: 24px;
+}
+
+.brand-logo{
+    
+}
+
+.homeNav{
+    margin-right: 24px !important;
+    /* float: right; */
+    margin: 0;
+    padding: 0; 
+}
+

@@ -6,14 +6,12 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useHistory } from 'react-router-dom';
 import { auth, db } from '../firebaseConfigFile';
-import { useStateValue } from '../StateProvider';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
 const Register = () => {
 
-    const [{ user }, dispatch] = useStateValue();
 
     const history = useHistory();
     const [email, setEmail] = useState('');
@@ -21,7 +19,6 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [fName, setFirstName] = useState('');
     const [lName, setLastName] = useState('');
-    const [userId, setUID] = useState('');
     const [fieldVal, setFieldVal] = useState('password');
 
     const [showPassword, setPasswordVisibility] = useState(false);

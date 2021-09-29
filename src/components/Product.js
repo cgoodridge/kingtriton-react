@@ -67,8 +67,6 @@ const Product = ({food}) => {
     const [{ cart }, dispatch] = useStateValue();
 
     const addToBasket = () => {
-
-
         dispatch({
             type: 'ADD_TO_CART',
             item: {
@@ -79,36 +77,33 @@ const Product = ({food}) => {
                 course: food.course,
                 special: food.special,
                 qty: qtyValue
-            },
-            
+            },  
         })
-
     }
-
-
 
     return (
         <div className={classes.root} key={food.id}>
-            {/* <Snackbar
+            <Snackbar
                 anchorOrigin={{ vertical, horizontal }}
                 open={open}
                 autoHideDuration={3000}
                 onClose={handleClose}
                 message= {food.name + ' added to Cart'} 
                 key={vertical + horizontal}
-            /> */}
-            <Card component={Snackbar} 
+            />
+
+            {/* <Card component={Snackbar} 
                 anchorOrigin={{ vertical, horizontal }}
                 open={open}
                 autoHideDuration={3000}
                 onClose={handleClose}
                 key={vertical + horizontal}
                 sx={{ display: 'flex' }}>
-                {/* <img src={food.image} alt={food.name}  height="151"/> */}
                 <CardContent>
                     <p>{food.name + ' added to Cart'} </p>
                 </CardContent>
-            </Card>
+            </Card> */}
+
             <Grid item xs={12} sm={3} className={classes.card}>
                 <Card className="card small" style={{borderRadius: "20px"}} >
                     <CardMedia
@@ -142,7 +137,7 @@ const Product = ({food}) => {
                                     <RemoveIcon fontSize="inherit" />
                                 </IconButton> 
 
-                                <input type="number" min="0" value={qtyValue} onChange={e => setQtyValue(parseInt(e.target.value))}></input>
+                                <input type="number" min="0" value={qtyValue} onChange={e => setQtyValue(parseInt(e.target.value))} className="qtyField"></input>
                                 {/* <span>{food.quantity}</span> */}
 
                                 <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtyAdd}>

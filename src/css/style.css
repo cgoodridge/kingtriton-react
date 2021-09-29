@@ -1,11 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap');
-/*$yale-blue: #144585ff; //Blue
-$light-french-beige: #d1ae68ff; //Yellow
-$eerie-black: #141414ff; //Black
-$light-cyan: #cffcffff; //Light Blue
-$cultured: #f5f5f5ff; // That Whiteish Text
-*/
 
 html, body{
 margin: 0;
@@ -48,7 +42,7 @@ h4{
 
 input[type="text"], textarea {
 
-  background-color : #f0f0f0; 
+  /* background-color : #f0f0f0;  */
 
 }
 
@@ -56,7 +50,7 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-    outline: none;
+    /* outline: none; */
 }
 
 .area{
@@ -127,9 +121,6 @@ ul {
 .card-image img{
   height: 200px !important;
 }
-.container{
-  /* width: 90% !important; */
-}
 
 .card-controls{
  padding-top: 32px !important;
@@ -160,13 +151,7 @@ ul {
   margin: 0 !important;
 }
 
-.button-control{
-  background-color: #e4e4e4;
-  border-radius: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 
 .MuiButtonGroup-contained {
   border-radius: 20px !important;
@@ -182,32 +167,7 @@ ul {
 }
 
 
-.cardCount{
-  outline: none;
-  box-shadow: none;
-  border-bottom: none !important;
-  width: 20px;
-  padding-top: 0;
-  padding-bottom: 0;
-    
-}
-.cardCount::after{
-  outline: none;
-  box-shadow: none;
-  border-bottom: none !important;
-  width: 20px;
-  padding-top: 0;
-  padding-bottom: 0;
-    
-}
-.cardCount:focus{
-  outline: none !important;
-  box-shadow: none !important;
-  width: 20px;
-  padding-top: 0;
-  padding-bottom: 0;
-    
-}
+
 
 .seating:hover{
   filter: invert(56%) sepia(37%) saturate(4667%) hue-rotate(169deg) brightness(89%) contrast(103%);
@@ -232,7 +192,7 @@ ul {
 }
 
 .heroButton {
-  width: 100px;
+  width: auto;
   border-radius: 5px !important;
   color: white !important;
 }
@@ -242,60 +202,7 @@ ul {
   justify-content: center;
 }  */
 
-.controls {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  padding-left: 10px;
-  padding-bottom: 10px;
-}
 
-.counter {
-  width: 150px !important;
-  margin: 16px !important;
-  
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.counter input {
-  width: 35px !important;
-  border: 0;
-  line-height: 0px !important;
-  font-size: 20px;
-  text-align: center;
-  height: 2rem !important;
-  background: #e6e5e5 !important;
-  padding: 0 8px !important;
-  border-radius: 5px !important;
-  appearance: none;
-  margin-bottom: 0 !important;
-  margin-left: 0px !important;
-  outline: 0;
-}
-
-.counter span {
-  display: block;
-  font-size: 25px;
-  /* padding: 0px 7px; */
-  width: 25px !important;
-  height: 25px !important;
-  margin: 0 auto !important;
-
-  cursor: pointer;
-  -webkit-box-shadow: 10px 10px 35px -9px rgba(0,0,0,0.57);
-  -moz-box-shadow: 10px 10px 35px -9px rgba(0,0,0,0.57);
-  box-shadow: 10px 10px 35px -9px rgba(0,0,0,0.57);
-  color: #ffffff;
-  user-select: none;
-}
-
-.control-counters {
-  display: 'flex';
-  align-items: 'center';
-  justify-content: 'space-around'; 
-}
 
 .main-font{
   font-family: 'Poiret One' !important;
@@ -316,76 +223,6 @@ ul {
 }
 
 /* End of Main Content */
-
-/* Footer */
-
-.page-footer{
-  position: relative;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-}
-.footer-col{
-  background-color: #141414 !important;
-}
-.footer-copyright{
-  background-color: #0f0f0f !important;
-}
-
-footer h5{
-  font-family: 'Poiret One';
-}
-
-#footer-logo
-{
-  height: 80px;
-}
-/* Footer End */
-
-
-/*---Media Queries --*/
-@media only screen and (min-width: 960px) {
-
-}
-@media (max-width: 992px) {
-  
-  }
-@media (max-width: 768px) {
-
-}
-@media (max-width: 576px) {
-
-}
-
-
-
-
-/*--- Bootstrap Padding Fix --*/
-[class*="col-"] {
-    padding: 1rem;
-}
-
-
-
-
-/*
-Extra small (xs) devices (portrait phones, less than 576px)
-No media query since this is the default in Bootstrap
-
-Small (sm) devices (landscape phones, 576px and up)
-@media (min-width: 576px) { ... }
-
-Medium (md) devices (tablets, 768px and up)
-@media (min-width: 768px) { ... }
-
-Large (lg) devices (desktops, 992px and up)
-@media (min-width: 992px) { ... }
-
-Extra (xl) large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) { ... }
-*/
-
-
 
 
 

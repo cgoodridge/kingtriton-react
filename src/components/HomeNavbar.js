@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import Badge from '@material-ui/core/Badge';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import AppBar from '@material-ui/core/AppBar';
+import Box from '@material-ui/core/Box';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -254,94 +255,108 @@ const HomeNavbar = (props) => {
             <CssBaseline />
             <HideOnScroll {...props}>
             
-                    
-                <nav className="nav-col">
-                    <div className="nav-wrapper">
-                        <a href="#!" className="brand-logo">King Triton's</a>
+            <Box flexGrow={1}>
+                <AppBar position="absolute" color="transparent" elevation={0}>
+                    <Toolbar>
+                    <nav className="nav-col">
                         {['left'].map((anchor) => (
-                                <React.Fragment key={anchor}>
-                                        <a href="#" data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></a>
+                            <React.Fragment key={anchor}>
+                                <Box sx={{ display: { md: 'flex', lg: 'none' } }} >
+                                    <a href="#" data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></a>
                                     <Drawer anchor={anchor} open={menuState[anchor]} onClose={toggleMenuDrawer(anchor, false)}>
                                         {navList(anchor)}
                                     </Drawer>
-                                </React.Fragment>
-                            ))}
-                        <ul className="right hide-on-med-and-down">
-                            <li><Link to="/">Home</Link></li>
-                            <li><Link to="/menu">Menu</Link></li>
-                            <li><Link to="/reservations">Reservations</Link></li>
-                            <li><Link to="/contact">Contact</Link></li>
-                            <li><Link to="/about">About</Link></li>
-                            {/* TODO: Make the user name a dropdown with the login button under it */}
-                            <li style={{marginLeft: '16px', marginRight: '8px', cursor:'pointer'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? displayName : 'Guest'}</li>            
-                            <li>
-                            {['right'].map((anchor) => (
-                                <React.Fragment key={anchor}>
-                                    <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
+                                </Box>
+
+                            </React.Fragment>
+                        ))}
+                        <a href="#!" className="brand-logo">King Triton's</a>
+                        {['right'].map((anchor) => (
+                            <React.Fragment key={anchor}>
+                                <Box  >
+                                    <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" className="cartButton" aria-label="open shopping cart">
                                         <Badge badgeContent={cart?.length} color="secondary">
                                             <ShoppingBasketIcon />
                                         </Badge>
                                     </IconButton>
-                                    <Drawer anchor={anchor} open={cartState[anchor]} onClose={toggleCartDrawer(anchor, false)}>
+                                    <Drawer anchor={anchor} ModalProps={{ keepMounted: true,}} open={cartState[anchor]} onClose={toggleCartDrawer(anchor, false)}>
                                         {cartList(anchor)}
                                     </Drawer>
-                                </React.Fragment>
-                            ))}
-                            </li>
-
-                        </ul>
-                        <Menu
-                            id="loggedInMenu"
-                            anchorEl={loggedInAnchor}
-                            open={loggedInOpen}
-                            onClose={handleLoggedInMenuClose}
-                            MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                            }}
-                        >
-                            <MenuItem onClick={handleLoggedInMenuClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleLoggedInMenuClose}>My account</MenuItem>
-                            <MenuItem onClick={handleLoggedInMenuClose}>
-        
-                                <Button size='small' variant="contained" color="secondary" onClick={handleAuth}>
-                                    Logout
-                                </Button> 
-                            </MenuItem>
-                        </Menu>
-                        <Menu
-                            id="loggedOutMenu"
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleMenuClose}
-                            MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                            }}
-                        >
-                            <MenuItem onClick={handleMenuClose}>
-                               <Button size='small' variant="contained" color="secondary" component={Link} to="/login">
-                                    Login
-                                </Button> 
-                            </MenuItem>
-                            <MenuItem onClick={handleMenuClose}>
-                                <Button size='small' variant="outlined" color="secondary" component={Link} to="/register">
-                                    Create an Account
-                                </Button> 
-                            </MenuItem>
-                        </Menu>
-                        {['right'].map((anchor) => (
-                            <React.Fragment key={anchor}>
-                                <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" className="cartButton" aria-label="open shopping cart">
-                                    <Badge badgeContent={cart?.length} color="secondary">
-                                        <ShoppingBasketIcon />
-                                    </Badge>
-                                </IconButton>
-                                <Drawer anchor={anchor} open={cartState[anchor]} onClose={toggleCartDrawer(anchor, false)}>
-                                    {cartList(anchor)}
-                                </Drawer>
+                                </Box>
                             </React.Fragment>
                         ))}
-                    </div>
-                </nav>
+                        {/* <p>Test</p> */}
+                        <Box sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }} className="nav-wrapper">
+                            
+                            <ul className="right">
+                                <li><Link to="/">Home</Link></li>
+                                <li><Link to="/menu">Menu</Link></li>
+                                <li><Link to="/reservations">Reservations</Link></li>
+                                <li><Link to="/contact">Contact</Link></li>
+                                <li><Link to="/about">About</Link></li>
+                                <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? displayName : 'Guest'}</li>            
+                                <li>
+                                {['right'].map((anchor) => (
+                                    <React.Fragment key={anchor}>
+                                        <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
+                                            <Badge badgeContent={cart?.length} color="secondary">
+                                                <ShoppingBasketIcon />
+                                            </Badge>
+                                        </IconButton>
+                                        <Drawer anchor={anchor} open={cartState[anchor]} onClose={toggleCartDrawer(anchor, false)}>
+                                            {cartList(anchor)}
+                                        </Drawer>
+                                    </React.Fragment>
+                                ))}
+                                </li>
+
+                            </ul>
+                            <Menu
+                                id="loggedInMenu"
+                                anchorEl={loggedInAnchor}
+                                open={loggedInOpen}
+                                onClose={handleLoggedInMenuClose}
+                                MenuListProps={{
+                                'aria-labelledby': 'basic-button',
+                                }}
+                            >
+                                <MenuItem onClick={handleLoggedInMenuClose}>Profile</MenuItem>
+                                <MenuItem onClick={handleLoggedInMenuClose}>My account</MenuItem>
+                                <MenuItem onClick={handleLoggedInMenuClose}>
+            
+                                    <Button size='small' variant="contained" color="secondary" onClick={handleAuth}>
+                                        Logout
+                                    </Button> 
+                                </MenuItem>
+                            </Menu>
+                            <Menu
+                                id="loggedOutMenu"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleMenuClose}
+                                MenuListProps={{
+                                'aria-labelledby': 'basic-button',
+                                }}
+                            >
+                                <MenuItem onClick={handleMenuClose}>
+                                <Button size='small' variant="contained" color="secondary" component={Link} to="/login">
+                                        Login
+                                    </Button> 
+                                </MenuItem>
+                                <MenuItem onClick={handleMenuClose}>
+                                    <Button size='small' variant="outlined" color="secondary" component={Link} to="/register">
+                                        Create an Account
+                                    </Button> 
+                                </MenuItem>
+                            </Menu>
+                            
+                            
+                        </Box>
+                    </nav>
+                    </Toolbar>
+                </AppBar>
+            </Box>
+
               
             </HideOnScroll>
             <Toolbar />    

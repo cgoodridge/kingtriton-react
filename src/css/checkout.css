@@ -1,0 +1,15 @@
+
+
+.addButton{
+    margin: 16px 0 !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .addButtonContainer{
+        display: flex;
+        justify-content: center;
+    }
+}
+
+
+

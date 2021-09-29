@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@mui/material/TextField';
@@ -25,6 +25,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { db } from '../firebaseConfigFile';
 import { getCartTotal } from './reducers/reducer';
 import moment from 'moment';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import CurrencyFormat from 'react-currency-format';
+import axios from '../axios';
 
 
 
@@ -109,7 +112,8 @@ const parishes = [
 
 const CheckoutDetailsForm = () => {
 
-const [open, setOpenForm] = useState(false);
+const [{ cart, user }, dispatch] = useStateValue();
+
 
 const handleClickOpen = () => {
   setOpenForm(true);
@@ -119,8 +123,44 @@ const handleClose = () => {
   setOpenForm(false);
 };
 
+const handleCardSubmit = async (e) => {
+
+  e.preventDefault();
+  setProcessing(true);
+
+  const payload = await stripe.confirmCardPayment(clientSecret, {
+    payment_method: {
+      card: elements.getElement(CardElement)
+    }
+  }).then(({ paymentIntent }) => {
+
+
+    setSucceeded(true);
+    setError(null);
+    setProcessing(false);
+
+    dispatch({
+      type: 'EMPTY_CART'
+    })
+
+    history.replace('/orders')
+  })
+
+}
+
+const handleCardChange = (e) => {
+  setDisabled(e.empty);
+  setError(e.error ? e.error.message : "");
+}
+
+
+const stripe = useStripe();
+const elements = useElements();
 
 const history = useHistory();
+
+const [open, setOpenForm] = useState(false);
+
 const [cardProvider, setCardProvider] = useState('VISA');
 const [addressNameSelection, setAddressNameSelection] = useState('home');
 const [selectedValue, setSelectedValue] = useState('card');
@@ -133,7 +173,29 @@ const [addressLine2, setAddressLine2] = useState('');
 const [parish, setParish] = useState('');
 const [directions, setDirections] = useState('');
 
-  const [{ cart, user }, dispatch] = useStateValue();
+
+const [succeeded, setSucceeded] = useState(false);
+const [processing, setProcessing] = useState(false);
+const [clientSecret, setClientSecret] = useState(true);
+
+useEffect(() => {
+  const getClientSecret = async () => {
+    const response = await axios({
+      method: 'post',
+      url: `/checkout/create?total=${getCartTotal(cart) * 100}`
+    });
+    setClientSecret(response.data.clientSecret)
+  }
+
+  getClientSecret();
+}, [cart]);
+
+console.log('The client\'s secret is ', clientSecret);
+
+const [error, setError] = useState(null);
+const [disabled, setDisabled] = useState(null);
+
+
   /// TODO: Create object models to handle data
 
   const handleChange = (event) => {
@@ -168,8 +230,6 @@ const [directions, setDirections] = useState('');
 
   const handleAddress = (e) => {
     e.preventDefault();
-    console.log('Address func called');
-    console.log(user.uid);
     db
       .collection('users')
       .doc(user?.uid)
@@ -191,13 +251,12 @@ const [directions, setDirections] = useState('');
     return (
       <>
 
-        <Dialog open={open} onClose={handleClose} className="modalCard">
+        <Dialog open={open} onClose={handleClose} className="modalCard" style={{ alignItems: "center", justifyContent: "center" }}>
           <form action="">
             <DialogTitle>New Delivery Address</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                To subscribe to this website, please enter your email address here. We
-                will send updates occasionally.
+                Save an address for faster checkout next time.
               </DialogContentText>
               <FormGroup>
                 <FormControlLabel control={<Checkbox checked={addressState} onChange={handleCheckboxChange}/>} label="Default Delivery Address" />
@@ -272,8 +331,8 @@ const [directions, setDirections] = useState('');
           </form>
         </Dialog>
 
-        <Grid container>
-          <form action="">
+        <div>
+          {/* <form action=""> */}
             <Card className="checkoutCard">
               <CardContent>
                 <Typography variant="h6" sx={{ fontSize: 22 }} gutterBottom>
@@ -301,7 +360,7 @@ const [directions, setDirections] = useState('');
                 </Typography>
                   <Grid container spacing={3}>
                     <Grid item xs={6} className="buttonAlign">
-                      <Button size='large' variant="outlined" onClick={handleClickOpen}>Add New Address</Button>
+                      <Button size='small' variant="outlined" onClick={handleClickOpen}>Add New Address</Button>
                     </Grid>
                     <Grid item xs={6}>
                       <TextField
@@ -312,7 +371,7 @@ const [directions, setDirections] = useState('');
                             label="Select"
                             value={addressNameSelection}
                             onChange={handleAddressNameSelection}
-                            helperText="Please select your delivery address"
+                            helperText="Choose delivery address"
                             variant="standard"
                         >
                         {savedAddresses.map((option) => (
@@ -331,23 +390,19 @@ const [directions, setDirections] = useState('');
                       </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Button variant="outlined" className="editButton" startIcon={<EditIcon />}>
+                      <Button variant="outlined" size="small" className="editButton" startIcon={<EditIcon />}>
                         Edit
                       </Button>
                     </Grid> 
                   </Grid>
 
-                  <Typography variant="h6" sx={{ fontSize: 18 }} gutterBottom>
+                  <Typography variant="h6" gutterBottom>
                         Delivery Directions
                   </Typography>
-                  <Typography variant="body1" gutterBottom mb={1}>
+                  <Typography variant="body1" gutterBottom mb={3} style={{overflow: 'truncate'}}>
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-                    blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur,
-                    neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
-                    quasi quidem quibusdam.
+                    blanditiis tenetur unde suscipit.
                   </Typography>
-                  
-                  
               </CardContent>
             </Card>
 
@@ -380,6 +435,12 @@ const [directions, setDirections] = useState('');
                 <Typography variant="h6" sx={{ fontSize: 18 }} gutterBottom>
                   Payment Info
                 </Typography>
+
+                <form onSubmit={handleCardSubmit}>
+                  <CardElement onChange={handleCardChange}/>
+                </form>
+
+{/*                 
                   <div>
                       <TextField
                           id="standard-select-card"
@@ -411,18 +472,31 @@ const [directions, setDirections] = useState('');
                     </Grid>
                     <Grid item xs={3}>
                       <TextField fullWidth id="standard-basic" label="CVV" variant="standard" required/>
-                    </Grid> 
-                  </Grid>
+                    </Grid>  
+                  </Grid> */}
               </CardContent>
             </Card> : 
             
             <div></div>}
 
             <div className="submitButton">
-              <Button variant="contained" type="submit" onClick={handleOrder}>Place Order</Button>
+                  <CurrencyFormat
+                    renderText={(value) => (
+                    <>
+                      <Button {...processing ? disabled : null} variant="contained" type="submit" onClick={handleCardSubmit}>{processing ?  "Processing" : "Pay " + value}</Button>
+                    </>
+                    )}
+                    decimalScale={2}
+                    value={getCartTotal(cart)} 
+                    displayType={"text"}
+                    thousandSeparator={true}
+                    prefix={"$"}
+                  />
             </div>
-          </form>
-        </Grid>
+            {/* Error Section */}
+            {error && <div>{error}</div>}
+          {/* </form> */}
+        </div>
         
       </>
     );

@@ -18,13 +18,12 @@ const Subtotal = () => {
                     renderText={(value) => (
                     <>
                         <p>
-                        {/* Part of the homework */}
                         Subtotal ({cart?.length} items): <strong>{value}</strong>
                         </p>
                     </>
                     )}
                     decimalScale={2}
-                    value={getCartTotal(cart)} // Part of the homework
+                    value={getCartTotal(cart)} 
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"$"}

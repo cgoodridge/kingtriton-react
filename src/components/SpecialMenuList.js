@@ -1,5 +1,7 @@
 import React from 'react';
 import Product from '../components/Product';
+import MenuLoadingSkeleton from './MenuLoadingSkeleton';
+
 
 const SpecialMenuList = (props) => {
     
@@ -11,11 +13,16 @@ const SpecialMenuList = (props) => {
         // TODO: Alter code so it's possible to display all food items on the main menu page, without excluding the special items
         
             <>
-                {props.foods.filter(food => food.data.special === true).map((filteredFood) => {
-                    return (
-                        <Product food={filteredFood.data} />
-                    );
-                })}
+                {
+                    props.loading ?
+                    <MenuLoadingSkeleton/>
+                    :
+                    props.foods.filter(food => food.data.special === true).map((filteredFood) => {
+                        return (
+                            <Product food={filteredFood.data} />
+                        );
+                    })
+                }
                     
             </>
         );

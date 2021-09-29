@@ -1,0 +1,14 @@
+.code, h3{
+  font-family: 'Poiret One';
+  
+
+}
+
+.notFoundContent{
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+}
