@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -63,12 +63,14 @@ const useStyles = makeStyles((theme) => ({
 
   
 const Navbar = (props) => {
+    const _isMounted = useRef(true);
+
 
     const classes = useStyles();
 
     const [{ cart, user }, dispatch] = useStateValue();
-    const [displayName, setDisplayName] = useState({ firstName: ''});
-    console.log(user ? 'user logged in' : 'user not logged in');
+    const [displayName, setDisplayName] = useState("");
+    // console.log(user ? 'user logged in' : 'user not logged in');
 
 
     useEffect(() => {
@@ -79,13 +81,14 @@ const Navbar = (props) => {
             .get()
             .then((snapshot) => {
                 setDisplayName(snapshot.data().firstName)
-                console.log(snapshot.data())
             })
             .catch((e) => console.log(e))
             
         } else {
             setDisplayName()
         }
+
+        
     }, [user])
 
     const handleAuth = () => {

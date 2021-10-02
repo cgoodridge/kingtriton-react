@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@mui/material/TextField';
@@ -112,7 +112,13 @@ const parishes = [
 
 const CheckoutDetailsForm = () => {
 
+const _isMounted = useRef(true);
+
 const [{ cart, user }, dispatch] = useStateValue();
+
+const [succeeded, setSucceeded] = useState(false);
+const [processing, setProcessing] = useState(false);
+const [clientSecret, setClientSecret] = useState("");
 
 
 const handleClickOpen = () => {
@@ -134,6 +140,17 @@ const handleCardSubmit = async (e) => {
     }
   }).then(({ paymentIntent }) => {
 
+    db
+      .collection('users')
+      .doc(user?.uid)
+      .collection('orders')
+      .doc(paymentIntent.id)
+      .set({
+        cart: cart,
+        amount: paymentIntent.amount,
+        createdAt: paymentIntent.created
+        // test: 'Transaction was successful'
+      })
 
     setSucceeded(true);
     setError(null);
@@ -174,9 +191,6 @@ const [parish, setParish] = useState('');
 const [directions, setDirections] = useState('');
 
 
-const [succeeded, setSucceeded] = useState(false);
-const [processing, setProcessing] = useState(false);
-const [clientSecret, setClientSecret] = useState(true);
 
 useEffect(() => {
   const getClientSecret = async () => {
@@ -188,6 +202,10 @@ useEffect(() => {
   }
 
   getClientSecret();
+
+  return () => { // ComponentWillUnmount 
+    _isMounted.current = false;
+  }
 }, [cart]);
 
 console.log('The client\'s secret is ', clientSecret);
@@ -212,21 +230,6 @@ const [disabled, setDisabled] = useState(null);
     setAddressState(event.target.checked);
   };
 
-
-
-  const handleOrder = () => {
-    db
-      .collection('users')
-      .doc(user?.uid)
-      .collection('orders')
-      .doc()
-      .set({
-        cart: cart,
-        amount: getCartTotal(cart),
-        createdAt: moment()
-      })
-    history.push('/orders');
-  };
 
   const handleAddress = (e) => {
     e.preventDefault();

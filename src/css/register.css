@@ -1,3 +1,17 @@
+.registerCardContainer{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: whitesmoke;
+
+}
+
+.registerCardContent h2{
+    font-family: 'Poiret One';
+}
+
 .registerCard{
     text-align: center;
     width: 400px;
@@ -8,18 +22,11 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-    outline: none !important;
+    /* outline: none !important; */
 }
 
 .registerCard input {
-   
-
-    padding: 0 8px !important;
-    
-    appearance: none;
-    margin-bottom: 0 !important;
-    margin-left: 0px !important;
-    outline: 0;
+    margin-bottom: 8px !important;
   }
 
 .registerButton{

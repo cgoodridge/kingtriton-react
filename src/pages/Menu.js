@@ -5,11 +5,10 @@ import Grid from '@material-ui/core/Grid';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import MenuList from '../components/MenuList';
-import ListItem from '@mui/material/ListItem';
 import { useStateValue } from '../StateProvider';
 import MenuItem from '@mui/material/MenuItem';
 import Search from '@material-ui/icons/Search';
-
+import '../css/menu.css';
 
 
 // import { Button, Card, Row, Col } from 'react-materialize';
@@ -114,9 +113,7 @@ const Menu = ({food, loading}) => {
                 </Grid>
                 
               </Grid>
-              <ListItem>
-
-              </ListItem>
+            
 
               {/* <Chip
                 style={{margin: 4}}
@@ -153,7 +150,7 @@ const Menu = ({food, loading}) => {
               <TextField
                   id="standard-select-filter-type"
                   select
-                  required
+                  className="filterForm"
                   // fullWidth
                   value={filterProvider} 
                   onChange={e => setFilterParam(e.target.value)}

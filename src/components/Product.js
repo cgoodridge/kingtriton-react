@@ -29,7 +29,7 @@ const Product = ({food}) => {
 
     const handleClick = (newState) => () => {
         setState({ open: true, ...newState });
-        addToBasket();
+        // addToBasket();
     };
 
     const handleClose = () => {
@@ -64,8 +64,9 @@ const Product = ({food}) => {
 
     const classes = useStyles();
 
-    const [{ cart }, dispatch] = useStateValue();
+    // const [{ cart }, dispatch] = useStateValue();
 
+    /*
     const addToBasket = () => {
         dispatch({
             type: 'ADD_TO_CART',
@@ -80,6 +81,8 @@ const Product = ({food}) => {
             },  
         })
     }
+    */
+   
 
     return (
         <div className={classes.root} key={food.id}>

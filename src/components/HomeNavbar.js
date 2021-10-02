@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -25,6 +25,8 @@ import '../css/navbar.css';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import '../css/homeHeader.css';
+import { selectUser } from '../features/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const HideOnScroll = (props) => {
     const { children, window } = props;
@@ -63,42 +65,31 @@ const useStyles = makeStyles((theme) => ({
 
   
 const HomeNavbar = (props) => {
+    const _isMounted = useRef(true);
+    const user = useSelector(selectUser);
+    console.log('User state is ', user);
+
+    const dispatch = useDispatch();
+    // const userInfo = useSelector(selectUser);
 
     const classes = useStyles();
 
-    const [{ cart, user }, dispatch] = useStateValue();
-    const [displayName, setDisplayName] = useState({ firstName: ''});
+    // const [{ cart, user }, dispatch] = useStateValue();
+    // const [displayName, setDisplayName] = useState("");
 
 
-    useEffect(() => {
-        if (user) {
-            db
-            .collection('users')
-            .doc(user?.uid)
-            .get()
-            .then((snapshot) => {
-                setDisplayName(snapshot.data().firstName)
-                console.log(snapshot.data())
-            })
-            .catch((e) => console.log(e))
-            
-        } else {
-            setDisplayName()
-        }
-    }, [user])
 
-    const handleAuth = () => {
-        if (user) {
-            auth.signOut();
-        }
-        handleMenuClose();
+    
+    const logout = () => {
+       dispatch(logout());
+       auth.signOut();
     }
-
+ 
     const [cartState, setCartState] = useState({
         right: false,
     });
 
-    
+   
     const toggleCartDrawer = (anchor, open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -275,7 +266,7 @@ const HomeNavbar = (props) => {
                             <React.Fragment key={anchor}>
                                 <Box  >
                                     <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" className="cartButton" aria-label="open shopping cart">
-                                        <Badge badgeContent={cart?.length} color="secondary">
+                                        <Badge badgeContent={4/*cart?.length*/} color="secondary">
                                             <ShoppingBasketIcon />
                                         </Badge>
                                     </IconButton>
@@ -294,12 +285,12 @@ const HomeNavbar = (props) => {
                                 <li><Link to="/reservations">Reservations</Link></li>
                                 <li><Link to="/contact">Contact</Link></li>
                                 <li><Link to="/about">About</Link></li>
-                                <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? displayName : 'Guest'}</li>            
+                                <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? user.displayName : 'Guest'}</li>            
                                 <li>
                                 {['right'].map((anchor) => (
                                     <React.Fragment key={anchor}>
                                         <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
-                                            <Badge badgeContent={cart?.length} color="secondary">
+                                            <Badge badgeContent={4/*cart?.length*/} color="secondary">
                                                 <ShoppingBasketIcon />
                                             </Badge>
                                         </IconButton>
@@ -324,7 +315,7 @@ const HomeNavbar = (props) => {
                                 <MenuItem onClick={handleLoggedInMenuClose}>My account</MenuItem>
                                 <MenuItem onClick={handleLoggedInMenuClose}>
             
-                                    <Button size='small' variant="contained" color="secondary" onClick={handleAuth}>
+                                    <Button size='small' variant="contained" color="secondary"  onClick={logout}>
                                         Logout
                                     </Button> 
                                 </MenuItem>

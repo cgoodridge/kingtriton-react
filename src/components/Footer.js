@@ -40,10 +40,10 @@ const Footer = () => {
                 </Typography>
                 <div className="row center-align" style={{padding: "8px"}}>
                   <IconButton style={{padding: "8px", color:'white'}}>
-                    <i class="devicon-twitter-original"></i>
+                    <i className="devicon-twitter-original"></i>
                   </IconButton>
                   <IconButton style={{padding: "8px", color:'white'}}>
-                    <i class="devicon-facebook-original"></i>
+                    <i className="devicon-facebook-original"></i>
                   </IconButton>
                 </div>
               </Grid>

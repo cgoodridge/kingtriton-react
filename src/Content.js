@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
@@ -17,6 +17,9 @@ import cartList from './pages/cartList';
 import './css/style.css';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useElements } from '@stripe/react-stripe-js'
+import ProtectedRoute from './components/ProtectedRoute';
+import AuthRoute from './components/AuthRoute';
+import { logout, login } from './features/userSlice';
 
 
 import {
@@ -28,6 +31,8 @@ import {
 } from "react-router-dom";
 import { auth, db } from './firebaseConfigFile';
 import { useStateValue } from './StateProvider';
+import { useDispatch } from 'react-redux';
+
 
 const promise = loadStripe('pk_test_51JelBJESzl8Ss9eHeAVZ8WozJuU1eiPQ1pOXak0vXrnqM8N6uoX659QmFv8DZ15JxEmMYeAyEmw6l6RCxBVg42uj006vt0mzoA');
 
@@ -52,26 +57,49 @@ const theme = createTheme({
 
 
 const Content = (props) => {
-  const [{ user }, dispatch] = useStateValue();
-  useEffect(() => {
-    auth.onAuthStateChanged(authUser => {
+  const _isMounted = useRef(true);
+
+  // const [{ user }, dispatch] = useStateValue();
+  const [isAuth, setIsAuth] = useState(false);
+  const dispatch = useDispatch();
+
+  
+  useEffect(()  => {
+      auth.onAuthStateChanged(authUser => {
 
       if (authUser) {
         // The user just logged in/was logged in
-        dispatch({
-          type: 'SET_USER',
-          user: authUser
-        })
+        dispatch(
+          login({
+            email: authUser.email,
+            uid: authUser.uid,
+            displayName: authUser.displayName,
+          }))
       } else {
         // The user is logged out
-        dispatch({
-          type: 'SET_USER',
-          user: null
-        })
+        dispatch(logout());
       }
-    })
-  }, [])
+    });
 
+    // return () => { // ComponentWillUnmount 
+    //   _isMounted.current = false;
+    // }
+  }, []);
+/*
+  useEffect(() => {
+
+    if (user) {
+      console.log('User is logged in');
+      setIsAuth(true);
+    }
+    else {
+      console.log('User is logged out');
+
+      setIsAuth(false);
+    }
+
+  }, [user])
+*/
   const [menu, setMenuItems] = useState([]);
 
 
@@ -86,6 +114,9 @@ const Content = (props) => {
             })))
           ))
         
+          return () => { // ComponentWillUnmount 
+            _isMounted.current = false;
+          }
         
       }, [])
  
@@ -95,42 +126,42 @@ const Content = (props) => {
       <div className="App">
         <ThemeProvider theme={theme} >
             <Switch>
-              <Route exact path="/" component={Home}>
-                <HomeNavbar cart={cartList}/>
+              <Route exact path="/">
+                <HomeNavbar/>
                 <main>
                   <Home food={menu} loading={menu.length <= 0 ? true : false}/>
                 </main>
                 <Footer/>
               </Route>
-              <Route exact path="/menu" component={Menu}>
+              <Route exact path="/menu">
                 <Navbar cart={cartList}/>
                 <main>
                   <Menu food={menu} loading={menu.length <= 0 ? true : false}/>
                 </main>
                 <Footer/>
               </Route>
-              <Route exact path="/reservations" component={Reservations}>
+              <Route exact path="/reservations" >
                 <Navbar cart={cartList}/>
                 <main>
                   <Reservations />
                 </main>
                 <Footer/>
               </Route>
-              <Route exact path="/contact" component={Contact}>
+              <Route exact path="/contact">
                 <Navbar cart={cartList}/>
                 <main>
                   <Contact />
                 </main>
                 <Footer/>
               </Route>
-              <Route exact path="/about" component={About}>
+              <Route exact path="/about" >
                 <Navbar cart={cartList}/>
                 <main>
                   <About />
                 </main>
                 <Footer/>
               </Route>
-              <Route exact path="/checkout" component={Checkout}>
+              <Route exact path="/checkout">
                 <Navbar cart={cartList}/>
                 <main>
                   <Elements stripe={promise}> 
@@ -139,23 +170,10 @@ const Content = (props) => {
                 </main>
                 <Footer/>
               </Route>
-              <Route exact path="/orders" component={Orders}>
-                <Navbar cart={cartList}/>
-                <main>
-                  <Orders />
-                </main>
-                <Footer/>
-              </Route>
-              <Route exact path="/login" component={Login}>
-                <main>
-                  <Login />
-                </main>
-              </Route>
-              <Route exact path="/register"  component={Register}>
-                <main>
-                  <Register />
-                </main>
-              </Route>
+              <Route exact path="/login" component={Login}/>              
+              <Route exact path="/register" component={Register}/>
+              {/* <AuthRoute exact path="/orders" comp={Orders}/> */}
+               <Route exact  path={ isAuth ? "/orders" : "/"} />
               <Route component={PageNotFound}>
                 <main>
                   <PageNotFound />
@@ -172,60 +190,5 @@ const Content = (props) => {
     </Router>
   );
 }
-
-
- 
-  
-  /*
-  addToBasket(data) {
-    // create a clone of your array of players; don't modify objects on the state directly
-    const cart = this.state.cart.slice(0);
-
-    cart.push({
-      image: data.image, name: data.name, price:data.price,
-    });
-
-    this.setState({
-      cart: cart,
-    });
-  }
-  */
-
-
-  /*
-      <div className="App" >
-        <Router>
-          <header>
-  
-            <nav className="nav-col">
-              <div className="nav-wrapper">
-                <a href="#!" className="brand-logo">Logo</a>
-                <a href="#" data-target="mobile-demo" className="sidenav-trigger"><i className="material-icons">menu</i></a>
-                <ul className="right hide-on-med-and-down">
-                  <li><Link to="/">Home</Link></li>
-                  <li><Link to="/menu">Menu</Link></li>
-                  <li><Link to="/reservations">Reservations</Link></li>
-                  <li><Link to="/contact">Contact</Link></li>
-                  <li><Link to="/about">About</Link></li>  
-                </ul>
-              </div>
-            </nav>
-  
-            <ul className="sidenav" id="mobile-demo">
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/menu">Menu</Link></li>
-              <li><Link to="/reservations">Reservations</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
-              <li><Link to="/about">About</Link></li>
-              <li><Link to="/cart"><i class="material-icons">shopping_basket</i></Link></li>
-            </ul>
-          </header>    
-        </Router>
-
-      </div>
-      */
-  
-
-
 
 export default Content;
