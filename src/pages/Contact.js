@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { createTheme } from '@material-ui/core/styles';
-
+import '../css/contact.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -118,22 +118,21 @@ function Contact() {
                   <Grid item xs={12} sm={6}>
                       <Grid container>
                         
-                          <Grid item xs={6} style={{paddingRight: '20px', paddingBottom: '20px'}}>
+                          <Grid item xs={12} style={{ paddingBottom: '20px'}}>
                             <TextField 
                               id="standard-basic" 
                               fullWidth 
                               label="Name"                            
-                                                  
+                                              
                             />
                           </Grid>
 
-                          <Grid item xs={6} style={{paddingBottom: '20px'}}>
+                          <Grid item xs={12} style={{paddingBottom: '20px'}}>
                             <TextField 
                               id="standard-basic" 
-                              fullWidth label="Email" 
+                              fullWidth 
+                              label="Email" 
                               color="primary"
-                              
-                              
                           />
                           </Grid>
 
@@ -142,10 +141,8 @@ function Contact() {
                               fullWidth 
                               id="standard-basic" 
                               label="Subject" 
-                              color="primary"
-                              
+                              color="primary"          
                             />
-                        
                           </Grid>
 
                           <Grid item xs={12} style={{paddingBottom: '20px'}}>
@@ -165,7 +162,7 @@ function Contact() {
                       </Grid>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <img style={{paddingLeft: '15px', paddingBottom: '20px', minWidth:'200px'}} className="responsive-img" src="./img/Mapsicle-Map.png"></img>
+                    <img style={{paddingLeft: '15px', paddingBottom: '20px'}} className="responsive-img" src="./img/Mapsicle-Map.png"></img>
                   </Grid>
                 </Grid>
 

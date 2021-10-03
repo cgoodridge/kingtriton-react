@@ -11,7 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
-import { login } from '../features/userSlice';
+import { login } from '../slices/userSlice';
 
 const Login = () => {
 

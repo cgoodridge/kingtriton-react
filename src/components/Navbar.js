@@ -25,6 +25,11 @@ import '../css/navbar.css';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import CartItem from './CartItem';
+import { selectUser } from '../slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectItems } from '../slices/cartSlice';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 
 const HideOnScroll = (props) => {
     const { children, window } = props;
@@ -68,28 +73,14 @@ const Navbar = (props) => {
 
     const classes = useStyles();
 
-    const [{ cart, user }, dispatch] = useStateValue();
+    // const [{ cart, user }, dispatch] = useStateValue();
     const [displayName, setDisplayName] = useState("");
     // console.log(user ? 'user logged in' : 'user not logged in');
 
+    const user = useSelector(selectUser);
+    const cart = useSelector(selectItems);
 
-    useEffect(() => {
-        if (user) {
-            db
-            .collection('users')
-            .doc(user?.uid)
-            .get()
-            .then((snapshot) => {
-                setDisplayName(snapshot.data().firstName)
-            })
-            .catch((e) => console.log(e))
-            
-        } else {
-            setDisplayName()
-        }
-
-        
-    }, [user])
+    const dispatch = useDispatch();
 
     const handleAuth = () => {
         if (user) {
@@ -171,7 +162,7 @@ const Navbar = (props) => {
                 {cart.map((food, index) => (
                 <>
                     <div key={index} style={{padding:'8px 16px', marginTop: '16px'}}>
-                        <CartItem item={food}/>
+                        <CartItem id={food.id} name={food.name} price={food.price} image={food.image}/>
                     </div>
                     {/* <Divider variant="inset" component="li" /> */}
                     
@@ -280,7 +271,7 @@ const Navbar = (props) => {
                                     <li><Link to="/reservations">Reservations</Link></li>
                                     <li><Link to="/contact">Contact</Link></li>
                                     <li><Link to="/about">About</Link></li>
-                                    <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? displayName : 'Guest'}</li>            
+                                    <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? user.displayName : 'Guest'} <KeyboardArrowDownIcon mt={2}/></li> 
                                     <li>
                                     {['right'].map((anchor) => (
                                         <React.Fragment key={anchor}>

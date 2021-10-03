@@ -25,8 +25,11 @@ import '../css/navbar.css';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import '../css/homeHeader.css';
-import { selectUser } from '../features/userSlice';
+import CartItem from './CartItem';
+import { selectUser } from '../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectItems } from '../slices/cartSlice';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const HideOnScroll = (props) => {
     const { children, window } = props;
@@ -67,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
 const HomeNavbar = (props) => {
     const _isMounted = useRef(true);
     const user = useSelector(selectUser);
+    const cart = useSelector(selectItems);
     console.log('User state is ', user);
 
     const dispatch = useDispatch();
@@ -154,34 +158,17 @@ const HomeNavbar = (props) => {
                 >
                     Items in your cart
                 </Typography>
-                {/* {props.items.map((food, index) => (
+                <Divider/>
+                {cart.map((food, index) => (
                 <>
-                    <ListItem key={index} alignItems="flex-start">
-                        <ListItemAvatar>
-                            <Avatar alt={"Picture of " + food.name} src={food.image}/>
-                        </ListItemAvatar>
-                        <ListItemText primary={food.name + "   $" + food.price} secondary={
-                            <>
-                                <div class="counter">
-                                    <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={()=>{this.handleAddQuantity(food.id)}}>
-                                        <RemoveIcon fontSize="inherit" />
-                                    </IconButton> 
-                                    <input type="text" min="0" defaultValue={food.quantity}></input>
-                                    <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={()=>{this.handleSubtractQuantity(food.id)}}>
-                                        <AddIcon fontSize="inherit"/> 
-                                    </IconButton> 
-                                </div>
-                            </>
-                        }/>
-                        <br></br>
-                        
-                    </ListItem>
-                    {/* <Divider variant="inset" component="li" /> 
+                    <div key={index} style={{padding:'8px 16px', marginTop: '16px'}}>
+                        <CartItem id={food.id} name={food.name} price={food.price} image={food.image}/>
+                    </div>
+                    {/* <Divider variant="inset" component="li" /> */}
                     
                 </>
 
                 ))} 
-                */}
                 <ListItem>
                     <Link to="/checkout">
                         <Button variant="contained" color="primary" style={{width: '100%'}}>
@@ -285,12 +272,12 @@ const HomeNavbar = (props) => {
                                 <li><Link to="/reservations">Reservations</Link></li>
                                 <li><Link to="/contact">Contact</Link></li>
                                 <li><Link to="/about">About</Link></li>
-                                <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? user.displayName : 'Guest'}</li>            
+                                <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? user.displayName : 'Guest'} <KeyboardArrowDownIcon /></li>            
                                 <li>
                                 {['right'].map((anchor) => (
                                     <React.Fragment key={anchor}>
                                         <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
-                                            <Badge badgeContent={4/*cart?.length*/} color="secondary">
+                                            <Badge badgeContent={cart?.length} color="secondary">
                                                 <ShoppingBasketIcon />
                                             </Badge>
                                         </IconButton>

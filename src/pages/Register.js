@@ -10,7 +10,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useDispatch } from 'react-redux';
-import { login } from '../features/userSlice';
+import { login } from '../slices/userSlice';
 
 const Register = () => {
 

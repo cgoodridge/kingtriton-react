@@ -18,8 +18,7 @@ import './css/style.css';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useElements } from '@stripe/react-stripe-js'
 import ProtectedRoute from './components/ProtectedRoute';
-import AuthRoute from './components/AuthRoute';
-import { logout, login } from './features/userSlice';
+import { logout, login } from './slices/userSlice';
 
 
 import {
@@ -170,10 +169,10 @@ const Content = (props) => {
                 </main>
                 <Footer/>
               </Route>
-              <Route exact path="/login" component={Login}/>              
-              <Route exact path="/register" component={Register}/>
-              {/* <AuthRoute exact path="/orders" comp={Orders}/> */}
-               <Route exact  path={ isAuth ? "/orders" : "/"} />
+              <ProtectedRoute exact path="/login" comp={Login}/>              
+              <ProtectedRoute exact path="/register" comp={Register}/>
+              <Route exact path="/orders" comp={Orders}/>
+              
               <Route component={PageNotFound}>
                 <main>
                   <PageNotFound />

@@ -40,7 +40,7 @@ const Menu = ({food, loading}) => {
           },
       ];
 
-      const [{ cart, user }, dispatch] = useStateValue();
+      
       const [filterProvider, setFilterParam] = useState('All');
       const [chipColor, setChipColour] = useState('All');
       const [searchQuery, setSearchQuery] = useState('');

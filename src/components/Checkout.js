@@ -15,6 +15,9 @@ import CheckoutDetailsForm from './CheckoutDetailsForm';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import '../css/checkout.css';
+import { useSelector } from 'react-redux';
+import { selectItems } from '../slices/cartSlice';
+
 
 const useStyles = makeStyles((theme) => ({
   gridContent:{
@@ -87,7 +90,9 @@ const Checkout = () => {
   };
 
   const [cartContainsItems, setCartState] = useState(false);
-  const [{ cart }, dispatch] = useStateValue();
+  // const [{ cart }, dispatch] = useStateValue();
+  const cart = useSelector(selectItems);
+
   
 
   const classes = useStyles();
@@ -130,7 +135,7 @@ const Checkout = () => {
                       !cart.length <= 0 ? 
                       cart.map(item => (
                         
-                        <CheckoutItem food={item}/>
+                        <CheckoutItem id={item.id} name={item.name} image={item.image} price={item.price}/>
                       ))
                       : <EmptyCart/>
 

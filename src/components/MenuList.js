@@ -39,7 +39,7 @@ const MenuList = (props) => {
                         
                     
                         : 
-                        props.foods.filter(food => food.data.name.includes(props.searchQuery)).map((foodSearch, key) => {
+                        props.foods.filter(food => food.data.name.toLowerCase().includes(props.searchQuery)).map((foodSearch, key) => {
                         
                             return (
                                 <Product key={key} food={foodSearch.data} />

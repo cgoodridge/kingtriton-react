@@ -1,137 +1,137 @@
-import { ADD_TO_CART, REMOVE_FROM_CART, SET_USER, EMPTY_CART, SUB_QUANTITY,ADD_QUANTITY} from '../actions/cart-actions';
+// import { ADD_TO_CART, REMOVE_FROM_CART, SET_USER, EMPTY_CART, SUB_QUANTITY,ADD_QUANTITY} from '../actions/cart-actions';
 
-export const initialState = {
-    cart: [],
-    user: null,
-    addedItems: [],
-    total: 0,
-};
+// export const initialState = {
+//     cart: [],
+//     user: null,
+//     addedItems: [],
+//     total: 0,
+// };
 
-export const getCartTotal = (cart) => cart?.reduce((amount, food) => (food.price * food.qty) + amount, 0);
+// export const getCartTotal = (cart) => cart?.reduce((amount, food) => (food.price * food.qty) + amount, 0);
 
 
-const reducer = (state = initialState, action) => {
+// const reducer = (state = initialState, action) => {
 
-    if (action.type === ADD_TO_CART) {
-        /// TODO: Update quantity when the same item is added multiple times
-        const addedItem = state.cart.find(item => item.id === action.item.id);
-        //check if the action id exists in the addedItems
-        const existed_item = state.addedItems.find(item => action.item.id === item.id);
+//     if (action.type === ADD_TO_CART) {
+//         /// TODO: Update quantity when the same item is added multiple times
+//         const addedItem = state.cart.find(item => item.id === action.item.id);
+//         //check if the action id exists in the addedItems
+//         const existed_item = state.addedItems.find(item => action.item.id === item.id);
 
-        console.log(existed_item);
+//         console.log(existed_item);
 
-        return {
-            ...state,
-            cart: [...state.cart, action.item]
-        };
-    }
+//         return {
+//             ...state,
+//             cart: [...state.cart, action.item]
+//         };
+//     }
 
-    if (action.type === EMPTY_CART) {
-        return {
-            ...state,
-            cart: []
-        }
-    }
+//     if (action.type === EMPTY_CART) {
+//         return {
+//             ...state,
+//             cart: []
+//         }
+//     }
     
-    if (action.type === REMOVE_FROM_CART) {
-        const index = state.cart.findIndex(
-            (cartItem) => cartItem.id === action.id
-        );
-        let newCart = [...state.cart];
+//     if (action.type === REMOVE_FROM_CART) {
+//         const index = state.cart.findIndex(
+//             (cartItem) => cartItem.id === action.id
+//         );
+//         let newCart = [...state.cart];
 
-        if (index >= 0) {
-            newCart.splice(index, 1)
-        } else {
-            console.warn(`Can't remove item with id: ${action.id}, it is not in the cart.`)
-        }
+//         if (index >= 0) {
+//             newCart.splice(index, 1)
+//         } else {
+//             console.warn(`Can't remove item with id: ${action.id}, it is not in the cart.`)
+//         }
 
-        return {
-            ...state,
-            cart: newCart
-        }
-    }
+//         return {
+//             ...state,
+//             cart: newCart
+//         }
+//     }
 
-    if (action.type === SET_USER) {
-       return {
-           ...state,
-           user: action.user
-       }
-    }
+//     if (action.type === SET_USER) {
+//        return {
+//            ...state,
+//            user: action.user
+//        }
+//     }
 
 
-    /*
-    //INSIDE HOME COMPONENT
-    if(action.type === ADD_TO_CART){
-        let addedItem = state.items.find(item=> item.id === action.id)
-        //check if the action id exists in the addedItems
-        let existed_item= state.addedItems.find(item=> action.id === item.id)
-       if(existed_item)
-       {
-          addedItem.quantity += 1 
-           return{
-              ...state,
-               total: state.total + addedItem.price 
-                }
-      }
-       else{
-          addedItem.quantity = 1;
-          //calculating the total
-          let newTotal = state.total + addedItem.price 
+//     /*
+//     //INSIDE HOME COMPONENT
+//     if(action.type === ADD_TO_CART){
+//         let addedItem = state.items.find(item=> item.id === action.id)
+//         //check if the action id exists in the addedItems
+//         let existed_item= state.addedItems.find(item=> action.id === item.id)
+//        if(existed_item)
+//        {
+//           addedItem.quantity += 1 
+//            return{
+//               ...state,
+//                total: state.total + addedItem.price 
+//                 }
+//       }
+//        else{
+//           addedItem.quantity = 1;
+//           //calculating the total
+//           let newTotal = state.total + addedItem.price 
           
-          return{
-              ...state,
-              addedItems: [...state.addedItems, addedItem],
-              total : newTotal
-          }
+//           return{
+//               ...state,
+//               addedItems: [...state.addedItems, addedItem],
+//               total : newTotal
+//           }
           
-      }
-    }
-    if(action.type === REMOVE_ITEM){
-        let itemToRemove= state.addedItems.find(item=> action.id === item.id)
-        let new_items = state.addedItems.filter(item=> action.id !== item.id)
+//       }
+//     }
+//     if(action.type === REMOVE_ITEM){
+//         let itemToRemove= state.addedItems.find(item=> action.id === item.id)
+//         let new_items = state.addedItems.filter(item=> action.id !== item.id)
         
-        //calculating the total
-        let newTotal = state.total - (itemToRemove.price * itemToRemove.quantity )
-        console.log(itemToRemove)
-        return{
-            ...state,
-            addedItems: new_items,
-            total: newTotal
-        }
-    }
-    //INSIDE CART COMPONENT
-    if(action.type=== ADD_QUANTITY){
-        let addedItem = state.items.find(item=> item.id === action.id)
-            addedItem.quantity += 1 
-            let newTotal = state.total + addedItem.price
-            return{
-                ...state,
-                total: newTotal
-            }
-    }
-    if(action.type=== SUB_QUANTITY){  
-        let addedItem = state.items.find(item=> item.id === action.id) 
-        //if the qt == 0 then it should be removed
-        if(addedItem.quantity === 1){
-            let new_items = state.addedItems.filter(item=>item.id !== action.id)
-            let newTotal = state.total - addedItem.price
-            return{
-                ...state,
-                addedItems: new_items,
-                total: newTotal
-            }
-        }
-        else {
-            addedItem.quantity -= 1
-            let newTotal = state.total - addedItem.price
-            return{
-                ...state,
-                total: newTotal
-            }
-        }
+//         //calculating the total
+//         let newTotal = state.total - (itemToRemove.price * itemToRemove.quantity )
+//         console.log(itemToRemove)
+//         return{
+//             ...state,
+//             addedItems: new_items,
+//             total: newTotal
+//         }
+//     }
+//     //INSIDE CART COMPONENT
+//     if(action.type=== ADD_QUANTITY){
+//         let addedItem = state.items.find(item=> item.id === action.id)
+//             addedItem.quantity += 1 
+//             let newTotal = state.total + addedItem.price
+//             return{
+//                 ...state,
+//                 total: newTotal
+//             }
+//     }
+//     if(action.type=== SUB_QUANTITY){  
+//         let addedItem = state.items.find(item=> item.id === action.id) 
+//         //if the qt == 0 then it should be removed
+//         if(addedItem.quantity === 1){
+//             let new_items = state.addedItems.filter(item=>item.id !== action.id)
+//             let newTotal = state.total - addedItem.price
+//             return{
+//                 ...state,
+//                 addedItems: new_items,
+//                 total: newTotal
+//             }
+//         }
+//         else {
+//             addedItem.quantity -= 1
+//             let newTotal = state.total - addedItem.price
+//             return{
+//                 ...state,
+//                 total: newTotal
+//             }
+//         }
         
-    }
-    return state
-    */
-}
-export default reducer;
+//     }
+//     return state
+//     */
+// }
+// export default reducer;

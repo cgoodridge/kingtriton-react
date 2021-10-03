@@ -4,12 +4,17 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@mui/material/Container';
 import { db } from '../firebaseConfigFile';
 import { useStateValue } from '../StateProvider';
+import { selectUser } from '../slices/userSlice';
+import { useSelector } from 'react-redux';
 import Order from '../components/Order';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const Orders = () => {
+    const user = useSelector(selectUser);
 
-    const [{user}, dispatch] = useStateValue();
     const [orders, setOrders] = useState([]);
+
 
     useEffect(() => {
 
@@ -34,17 +39,19 @@ const Orders = () => {
 
     return (
         <>
-            <Container>
-                <Typography variant="h3" gutterBottom component="div" style={{textAlign: 'left', marginTop: '16px'}}>
-                    Order History
-                </Typography>
+            <Navbar />
+                <Container>
+                    <Typography variant="h3" gutterBottom component="div" style={{textAlign: 'left', marginTop: '16px'}}>
+                        Order History
+                    </Typography>
 
-                {orders?.map(order => (
+                    {orders?.map(order => (
 
-                    <Order order={order}/>
-                ))}
-                
-            </Container>
+                        <Order order={order}/>
+                    ))}
+                    
+                </Container>
+            <Footer />
         </>
         
     );
