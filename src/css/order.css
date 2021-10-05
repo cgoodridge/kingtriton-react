@@ -1,0 +1,9 @@
+.orderHistoryCard{
+    max-width: 460px;
+    margin-bottom: 16px;
+}
+
+.listContainer{
+    background-color: yellow !important;
+    /* width: ; */
+}

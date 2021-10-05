@@ -6,6 +6,7 @@ import Reservations from './pages/Reservations';
 import Contact from './pages/Contact';
 import About from './pages/About';
 import Orders from './pages/Orders';
+import Account from './pages/Account';
 import Login from './pages/Login';
 import PageNotFound from './pages/404Page';
 import Register from './pages/Register';
@@ -62,9 +63,9 @@ const Content = (props) => {
   const [isAuth, setIsAuth] = useState(false);
   const dispatch = useDispatch();
 
-  
-  useEffect(()  => {
-      auth.onAuthStateChanged(authUser => {
+
+  useEffect(() => {
+    auth.onAuthStateChanged(authUser => {
 
       if (authUser) {
         // The user just logged in/was logged in
@@ -84,108 +85,113 @@ const Content = (props) => {
     //   _isMounted.current = false;
     // }
   }, []);
-/*
-  useEffect(() => {
-
-    if (user) {
-      console.log('User is logged in');
-      setIsAuth(true);
-    }
-    else {
-      console.log('User is logged out');
-
-      setIsAuth(false);
-    }
-
-  }, [user])
-*/
+  /*
+    useEffect(() => {
+  
+      if (user) {
+        console.log('User is logged in');
+        setIsAuth(true);
+      }
+      else {
+        console.log('User is logged out');
+  
+        setIsAuth(false);
+      }
+  
+    }, [user])
+  */
   const [menu, setMenuItems] = useState([]);
 
 
-      useEffect(() => {
-          
-          db
-          .collection('menu')
-          .onSnapshot(snapshot => (
-            setMenuItems(snapshot.docs.map(doc => ({
-              id: doc.id,
-              data: doc.data()
-            })))
-          ))
-        
-          return () => { // ComponentWillUnmount 
-            _isMounted.current = false;
-          }
-        
-      }, [])
- 
+  useEffect(() => {
+
+    db
+      .collection('menu')
+      .onSnapshot(snapshot => (
+        setMenuItems(snapshot.docs.map(doc => ({
+          id: doc.id,
+          data: doc.data()
+        })))
+      ))
+
+    return () => { // ComponentWillUnmount 
+      _isMounted.current = false;
+    }
+
+  }, []);
+
 
   return (
     <Router>
       <div className="App">
         <ThemeProvider theme={theme} >
-            <Switch>
-              <Route exact path="/">
-                <HomeNavbar/>
-                <main>
-                  <Home food={menu} loading={menu.length <= 0 ? true : false}/>
-                </main>
-                <Footer/>
-              </Route>
-              <Route exact path="/menu">
-                <Navbar cart={cartList}/>
-                <main>
-                  <Menu food={menu} loading={menu.length <= 0 ? true : false}/>
-                </main>
-                <Footer/>
-              </Route>
-              <Route exact path="/reservations" >
-                <Navbar cart={cartList}/>
-                <main>
-                  <Reservations />
-                </main>
-                <Footer/>
-              </Route>
-              <Route exact path="/contact">
-                <Navbar cart={cartList}/>
-                <main>
-                  <Contact />
-                </main>
-                <Footer/>
-              </Route>
-              <Route exact path="/about" >
-                <Navbar cart={cartList}/>
-                <main>
-                  <About />
-                </main>
-                <Footer/>
-              </Route>
-              <Route exact path="/checkout">
-                <Navbar cart={cartList}/>
-                <main>
-                  <Elements stripe={promise}> 
-                    <Checkout />
-                  </Elements>
-                </main>
-                <Footer/>
-              </Route>
-              <ProtectedRoute exact path="/login" comp={Login}/>              
-              <ProtectedRoute exact path="/register" comp={Register}/>
-              <Route exact path="/orders" comp={Orders}/>
-              
-              <Route component={PageNotFound}>
-                <main>
-                  <PageNotFound />
-                </main>
-              </Route>
-            </Switch>
-          
+          <Switch>
+            <Route exact path="/">
+              <HomeNavbar />
+              <main>
+                <Home food={menu} loading={menu.length <= 0 ? true : false} />
+              </main>
+              <Footer />
+            </Route>
+            <Route exact path="/menu">
+              <Navbar cart={cartList} />
+              <main>
+                <Menu food={menu} loading={menu.length <= 0 ? true : false} />
+              </main>
+              <Footer />
+            </Route>
+            <Route exact path="/reservations" >
+              <Navbar cart={cartList} />
+              <main>
+                <Reservations />
+              </main>
+              <Footer />
+            </Route>
+            <Route exact path="/contact">
+              <Navbar cart={cartList} />
+              <main>
+                <Contact />
+              </main>
+              <Footer />
+            </Route>
+            <Route exact path="/about" >
+              <Navbar cart={cartList} />
+              <main>
+                <About />
+              </main>
+              <Footer />
+            </Route>
+            <Route exact path="/account" >
+              <Navbar />
+              <main>
+                <Account />
+              </main>
+              <Footer />
+            </Route>
+            <Route exact path="/checkout">
+              <Navbar cart={cartList} />
+              <main>
+                <Elements stripe={promise}>
+                  <Checkout />
+                </Elements>
+              </main>
+              <Footer />
+            </Route>
+            <ProtectedRoute exact path="/login" comp={Login} />
+            <ProtectedRoute exact path="/register" comp={Register} />
+            <Route component={PageNotFound}>
+              <main>
+                <PageNotFound />
+              </main>
+            </Route>
+          </Switch>
+
 
         </ThemeProvider>
       </div>
 
 
-        
+
     </Router>
   );
 }

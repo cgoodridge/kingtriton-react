@@ -16,7 +16,10 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import '../css/checkout.css';
 import { useSelector } from 'react-redux';
-import { selectItems } from '../slices/cartSlice';
+import { selectItems, selectTotal } from '../slices/cartSlice';
+import { selectUser } from '../slices/userSlice';
+import CurrencyFormat from 'react-currency-format';
+import Card from '@material-ui/core/Card';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -84,17 +87,22 @@ const EmptyCart = () => {
 const Checkout = () => {
 
   const [value, setTabValue] = useState(0);
+  const total = useSelector(selectTotal);
+  const cart = useSelector(selectItems);
+  const user = useSelector(selectUser);
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
   };
 
+  const handleProceedButton = () => {
+    setTabValue(1);
+  };
+
   const [cartContainsItems, setCartState] = useState(false);
   // const [{ cart }, dispatch] = useStateValue();
-  const cart = useSelector(selectItems);
 
   
-
   const classes = useStyles();
   const theme = createTheme({
     palette: {
@@ -123,7 +131,12 @@ const Checkout = () => {
               <Box>
                 <Tabs value={value} onChange={handleChange} aria-label="checkout page tabs" centered>
                   <Tab label="Review Items" {...a11yProps(0)} />
-                  <Tab label="Enter Details" {...a11yProps(1)} />
+                  {user ? 
+                  
+                  <Tab label="Enter Details" {...a11yProps(1)}/>
+                  :
+                  <Tab label="Enter Details" {...a11yProps(1)} disabled/>
+                  }
                 </Tabs>
               </Box>
               <TabPanel value={value} index={0}>
@@ -135,14 +148,38 @@ const Checkout = () => {
                       !cart.length <= 0 ? 
                       cart.map(item => (
                         
-                        <CheckoutItem id={item.id} name={item.name} image={item.image} price={item.price}/>
+                        <CheckoutItem id={item.id} name={item.name} image={item.image} price={item.price} qty={item.qty}/>
                       ))
                       : <EmptyCart/>
-
                     }
                   </Grid>
                   <Grid item xs={12} md={6} sm={6} alignItems="flex-start" className={classes.gridContent}>
-                    <Subtotal/>
+                    <Card className='subtotalCardStyle'>
+                      <div className="subtotal">
+                          <CurrencyFormat
+                              renderText={(value) => (
+                              <>
+                                  <p>
+                                  Subtotal ({cart?.length} items): <strong>{value}</strong>
+                                  </p>
+                              </>
+                              )}
+                              decimalScale={2}
+                              value={total} 
+                              displayType={"text"}
+                              thousandSeparator={true}
+                              prefix={"$"}
+                          />
+              {  console.log('The total is ', total)}
+
+                      {user ? 
+                      
+                        <Button variant="contained" className="loginButton" onClick={handleProceedButton}>Proceed to Checkout</Button>
+                        :
+                        <Button variant="contained" className="loginButton" component={Link} to="/login">Sign In To Continue</Button>
+                      }
+                      </div>
+                    </Card>
                   </Grid>
                 </Grid>
               </TabPanel>

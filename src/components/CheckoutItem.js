@@ -12,6 +12,13 @@ import { useStateValue } from '../StateProvider';
 import { removeFromCart } from '../slices/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '../slices/cartSlice';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-function CheckoutItem({id, name, image, price}) {
+function CheckoutItem({id, name, image, price, qty}) {
     const classes = useStyles();
 
     const dispatch = useDispatch();
@@ -88,15 +95,50 @@ function CheckoutItem({id, name, image, price}) {
     }
 
     return (
-        <> 
-            <Card className='checkoutItem'>
+        <Card className="listCard"> 
+          <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+            <ListItem
+            secondaryAction={
+                <IconButton edge="end" aria-label="delete" onClick={removeItemFromCart}>
+                    <DeleteIcon />
+                </IconButton>
+            }
+            >
+            <ListItemAvatar>
+                <Avatar alt={name} src={image} />
+            </ListItemAvatar>
+            <ListItemText
+                primary={name}
+                secondary={'x'+qty}
+            />
+            <CurrencyFormat
+                renderText={(value) => (
+                <>
+                    <p>
+                    <strong>{value}</strong>
+                    </p>
+                </>
+                )}
+                decimalScale={2}
+                value={price} 
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+            />
+            
+            </ListItem>
+            {/* <Divider variant="inset" component="li" /> */}
+            
+        </List>
+            {/* <Card className='checkoutItem'>
                 <Grid container direction="row">
                     <Grid item xs={6}>
                         <img src={image} alt={name} className='card-image-alt'/>
                     </Grid>
-                    <Grid item xs={6} direction="column" container justifyContent="space-around">
+                    <Grid item xs={6} direction="column" container justifyContent="space-evenly">
                         <CardContent>
-                            <Grid container direction="column" justifyContent="space-between">
+                            <Grid container direction="column" justifyContent="space-evenly"> 
+                                
                                 <Grid item container direction="row" justifyContent="space-between">
                                     <Grid item xs={10}>
                                         <Typography gutterBottom variant="subtitle1" component="div" style={{verticalAlign: 'middle'}}>
@@ -120,8 +162,6 @@ function CheckoutItem({id, name, image, price}) {
                                 </Grid>
                                 <pre>
 
-
-                                    
                                 </pre>
                                 <Grid>
                                     <CurrencyFormat
@@ -139,12 +179,14 @@ function CheckoutItem({id, name, image, price}) {
                                         prefix={"$"}
                                     />
                                 </Grid>
-                            </Grid>
+                            {</Grid> 
                         </CardContent>    
                     </Grid>
                 </Grid>
-            </Card>
-        </>
+            </Card> 
+                            */}
+
+        </Card>
        
     )
 }

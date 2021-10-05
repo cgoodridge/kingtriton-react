@@ -195,30 +195,42 @@ const HomeNavbar = (props) => {
         
             <List className="cart" style={{height: '500px', width: '100%'}}>
                 
-                <ListItem disablePadding>
+                <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/">
                         <ListItemText primary="Home"  />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/menu">
                         <ListItemText primary="Menu"  />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/reservations">
                         <ListItemText primary="Reservations"  />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/contact">
                         <ListItemText primary="Contact"  />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/about">
                         <ListItemText primary="About"  />
                     </ListItemButton>
+                </ListItem>
+                <ListItem disablepadding = "true">
+                    {user ? 
+                    <ListItemButton>
+                        <ListItemText primary={user.displayName} />
+                    </ListItemButton> 
+                    : 
+                    <ListItemButton component={Link} to="/login">
+                        <ListItemText primary="Login"  />
+                    </ListItemButton>
+                    }
+                    
                 </ListItem>
             
             </List>
@@ -245,7 +257,6 @@ const HomeNavbar = (props) => {
                                         {navList(anchor)}
                                     </Drawer>
                                 </Box>
-
                             </React.Fragment>
                         ))}
                         <a href="#!" className="brand-logo">King Triton's</a>
@@ -253,7 +264,7 @@ const HomeNavbar = (props) => {
                             <React.Fragment key={anchor}>
                                 <Box  >
                                     <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" className="cartButton" aria-label="open shopping cart">
-                                        <Badge badgeContent={4/*cart?.length*/} color="secondary">
+                                        <Badge badgeContent={cart?.length} color="secondary">
                                             <ShoppingBasketIcon />
                                         </Badge>
                                     </IconButton>
@@ -264,15 +275,14 @@ const HomeNavbar = (props) => {
                             </React.Fragment>
                         ))}
                         {/* <p>Test</p> */}
-                        <Box sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }} className="nav-wrapper">
-                            
+                        <Box sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }} className="nav-wrapper"> 
                             <ul className="right">
                                 <li><Link to="/">Home</Link></li>
                                 <li><Link to="/menu">Menu</Link></li>
                                 <li><Link to="/reservations">Reservations</Link></li>
                                 <li><Link to="/contact">Contact</Link></li>
                                 <li><Link to="/about">About</Link></li>
-                                <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? user.displayName : 'Guest'} <KeyboardArrowDownIcon /></li>            
+                                <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? user.displayName : 'Guest'} <KeyboardArrowDownIcon sx={{marginTop: '4px'}} /></li>            
                                 <li>
                                 {['right'].map((anchor) => (
                                     <React.Fragment key={anchor}>
@@ -287,7 +297,6 @@ const HomeNavbar = (props) => {
                                     </React.Fragment>
                                 ))}
                                 </li>
-
                             </ul>
                             <Menu
                                 id="loggedInMenu"
@@ -298,10 +307,8 @@ const HomeNavbar = (props) => {
                                 'aria-labelledby': 'basic-button',
                                 }}
                             >
-                                <MenuItem onClick={handleLoggedInMenuClose}>Profile</MenuItem>
-                                <MenuItem onClick={handleLoggedInMenuClose}>My account</MenuItem>
+                                <MenuItem onClick={handleLoggedInMenuClose} component={Link} to="/account">My Account</MenuItem>
                                 <MenuItem onClick={handleLoggedInMenuClose}>
-            
                                     <Button size='small' variant="contained" color="secondary"  onClick={logout}>
                                         Logout
                                     </Button> 
@@ -327,15 +334,11 @@ const HomeNavbar = (props) => {
                                     </Button> 
                                 </MenuItem>
                             </Menu>
-                            
-                            
                         </Box>
                     </nav>
                     </Toolbar>
                 </AppBar>
-            </Box>
-
-              
+            </Box>     
             </HideOnScroll>
             <Toolbar />    
         </header>

@@ -196,30 +196,42 @@ const Navbar = (props) => {
         
             <List className="cart" style={{height: '500px', width: '100%'}}>
                 
-                <ListItem disablePadding>
+                <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/">
                         <ListItemText primary="Home"  />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/menu">
                         <ListItemText primary="Menu"  />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/reservations">
                         <ListItemText primary="Reservations"  />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/contact">
                         <ListItemText primary="Contact"  />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/about">
                         <ListItemText primary="About"  />
                     </ListItemButton>
+                </ListItem>
+                <ListItem disablepadding = "true">
+                    {user ? 
+                    <ListItemButton>
+                        <ListItemText primary={user.displayName} />
+                    </ListItemButton> 
+                    : 
+                    <ListItemButton component={Link} to="/login">
+                        <ListItemText primary="Login"  />
+                    </ListItemButton>
+                    }
+                    
                 </ListItem>
             
             </List>
@@ -297,10 +309,8 @@ const Navbar = (props) => {
                                     'aria-labelledby': 'basic-button',
                                     }}
                                 >
-                                    <MenuItem onClick={handleLoggedInMenuClose}>Profile</MenuItem>
-                                    <MenuItem onClick={handleLoggedInMenuClose}>My account</MenuItem>
+                                    <MenuItem onClick={handleLoggedInMenuClose} component={Link} to="/account">My Account</MenuItem>
                                     <MenuItem onClick={handleLoggedInMenuClose}>
-                
                                         <Button size='small' variant="contained" color="secondary" onClick={handleAuth}>
                                             Logout
                                         </Button> 

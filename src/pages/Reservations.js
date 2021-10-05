@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 16,
     paddingLeft: 20,
     borderRadius: 20,
-    display: 'flex',
+    display: 'flex ',
     flexDirection: 'row wrap',
     justifyContent: 'space-around',
     alignItems: 'center',

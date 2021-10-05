@@ -6,84 +6,65 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@mui/material/Grid';
 import moment from 'moment';
 import CheckoutItem from './CheckoutItem';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Divider from '@mui/material/Divider';
+import '../css/order.css';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 
 
 const Order = (props) => {
-    console.log('Props are ', props);
     return (
         <>
-            <Navbar />
-            <main>
-                <Typography variant="h5" gutterBottom component="div">
+            <Container>
+                <Typography className="headerStyle" variant="h4" component="div">
                     {moment.unix(props.order.data.createdAt).format("MMM Do YYYY, h:mma")}
                 </Typography>
                 {props.order.data.cart?.map((item, key) => (
-                    <CheckoutItem key={key} food={item}/>
-                ))}
+                    // <CheckoutItem key={key} id={item.id} name={item.name} price={item.price} image={item.image}/>
+                    <div className="listContainer">
+                        <Card className="orderHistoryCard"> 
+                            <List sx={{ width: '100%' }}>
+                                <ListItem
+                                secondaryAction={
+                                    <IconButton edge="end" aria-label="delete">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                }
+                                >
+                                <ListItemAvatar>
+                                    <Avatar alt={item.name} src={item.image} />
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={item.name + ' x' + item.qty}
+                                    secondary={'$'+item.price}
+                                />
+                                </ListItem>
+                                {/* <Divider variant="inset" component="li" /> */}
+                            </List>
+                            <CardContent>
+                                <Box sx={{display: 'flex', justifyContent:'space-between'}}>
+                                    <Typography variant="p" component="div">
+                                        Order Status
+                                    </Typography>
+                                    <Typography style={{color: 'green'}} variant="p" component="div">
+                                        Delivered
+                                    </Typography>
+                                </Box>
+                            </CardContent>
+                        </Card>
+                    </div>
 
-                <Card className="cardStyle">
-                    <CardContent>
-                        
-                        <Grid container mb={3}>
-                            <Grid item xs={6}>
-                            
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h5" gutterBottom component="div" style={{textAlign: 'right'}}>
-                                    65$
-                                </Typography>
-                            </Grid>
-                        </Grid>    
-                        <Grid container>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" gutterBottom component="div">
-                                    Order Status
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" gutterBottom component="div" style={{textAlign: 'right'}}>
-                                    Delivered
-                                </Typography>
-                            </Grid>
-                        </Grid>   
-                        <Grid container>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" gutterBottom component="div">
-                                    Order 
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" gutterBottom component="div" style={{textAlign: 'right'}}>
-                                    x2 Lobster Mac &amp; Cheese
-                                </Typography>
-                            </Grid>
-                        </Grid>  
-                        <Grid container>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" gutterBottom component="div">
-                                    Payment method
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Typography variant="h6" gutterBottom component="div" style={{textAlign: 'right'}}>
-                                    VISA ending with 9999
-                                </Typography>
-                            </Grid>
-                        </Grid>  
-                        <Grid container mt={2}>
-                            <Grid item xs={6}>
-                                <Button size='large' variant="contained">Add to Cart</Button>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <Button size='small' variant="outlined" className="detailsButton">Order Details</Button>
-                            </Grid>
-                        </Grid>  
-                    </CardContent>
-                </Card>
-            </main>
+                ))}
+            </Container>
+
         </>
     );
 }

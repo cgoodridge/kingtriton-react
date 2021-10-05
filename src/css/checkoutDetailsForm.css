@@ -6,15 +6,12 @@ button:focus {
 }
 
 .checkoutCard input {
-    padding: 0 8px !important;
-    appearance: none;
-    margin-bottom: 0 !important;
-    margin-left: 0px !important;
-    outline: 0;
+    /* padding: 0 8px !important; */
+    
 }
 
 .checkoutCard {
-    margin: 0 auto !important;
+    margin: 16px auto !important;
     width: 60%;
 }
 

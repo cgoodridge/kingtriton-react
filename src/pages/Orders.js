@@ -9,12 +9,102 @@ import { useSelector } from 'react-redux';
 import Order from '../components/Order';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import Skeleton from '@mui/material/Skeleton';
+
+
+const LoadingSkeleton = () => {
+    return (
+        <>
+            <div style={{marginBottom: '32px', marginTop: '32px'}}>
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="250px"
+                style={{ marginBottom: 6 }}
+                />
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="300px"
+                style={{ marginBottom: 6 }}
+                />
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="100px"
+                style={{ marginBottom: 6 }}
+                />
+            </div>
+            <div style={{marginBottom: '32px'}}>
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="250px"
+                style={{ marginBottom: 6 }}
+                />
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="300px"
+                style={{ marginBottom: 6 }}
+                />
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="100px"
+                style={{ marginBottom: 6 }}
+                />
+            </div>
+            <div style={{marginBottom: '32px'}}>
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="250px"
+                style={{ marginBottom: 6 }}
+                />
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="300px"
+                style={{ marginBottom: 6 }}
+                />
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="100px"
+                style={{ marginBottom: 6 }}
+                />
+            </div>
+            <div style={{marginBottom: '32px'}}>
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="250px"
+                style={{ marginBottom: 6 }}
+                />
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="300px"
+                style={{ marginBottom: 6 }}
+                />
+                <Skeleton
+                animation="wave"
+                height={10}
+                width="100px"
+                style={{ marginBottom: 6 }}
+                />
+            </div>
+        </>
+    );
+};
+
 
 const Orders = () => {
     const user = useSelector(selectUser);
 
     const [orders, setOrders] = useState([]);
-
+    console.log(orders);
 
     useEffect(() => {
 
@@ -33,25 +123,26 @@ const Orders = () => {
         } else {
             setOrders([])
         }
-        
-
     }, [user])
 
     return (
         <>
-            <Navbar />
-                <Container>
-                    <Typography variant="h3" gutterBottom component="div" style={{textAlign: 'left', marginTop: '16px'}}>
-                        Order History
-                    </Typography>
+            <Container>
+                <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{textAlign: 'center', marginTop: '16px'}}>
+                    Order History
+                </Typography>
 
-                    {orders?.map(order => (
-
-                        <Order order={order}/>
-                    ))}
-                    
-                </Container>
-            <Footer />
+                {
+                    !orders.length <= 0 ?
+                        orders?.map(order => (
+                            <Order order={order}/>
+                        ))
+                    :
+                        <LoadingSkeleton />
+                
+                
+                }
+            </Container>
         </>
         
     );
