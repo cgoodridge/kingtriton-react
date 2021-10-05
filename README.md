@@ -27,22 +27,22 @@ With this being a full stack project, I employed technologies including:
 ## Project Features
 
 * Stripe Payment
-![Stripe Form](./doc-images/stripe.png)
+![Stripe Form](https://github.com/cgoodridge/kingtriton-react/blob/main/public/doc-images/stripe.png)
 * User authentication with Firebase
-![User Authentication](./doc-images/auth.png)
+![User Authentication](https://github.com/cgoodridge/kingtriton-react/blob/main/public/doc-images/auth.png)
 * Functional cart & checkout system
-![Cart & Checkout](./doc-images/cart.png)
+![Cart & Checkout](https://github.com/cgoodridge/kingtriton-react/blob/main/public/doc-images/cart.png)
 * User profile and order history
-![User Account](./doc-images/account.png)
+![User Account](https://github.com/cgoodridge/kingtriton-react/blob/main/public/doc-images/account.png)
 * Menu screen with search and filter options
-![Menu Page](./doc-images/menu.png)
+![Menu Page](https://github.com/cgoodridge/kingtriton-react/blob/main/public/doc-images/menu.png)
 * Form based reservation booking
-![Reservations Page](./doc-images/reserve.png)
+![Reservations Page](https://github.com/cgoodridge/kingtriton-react/blob/main/public/doc-images/reserve.png)
 
 ## In Progress Features
 
 * Graphical reservation booking
-![Reservations Graphic](./doc-images/reserve-graphic.png)
+![Reservations Graphic](https://github.com/cgoodridge/kingtriton-react/blob/main/public/doc-images/reserve-graphic.png)
 * Profile image uploading
 
 
