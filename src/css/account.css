@@ -1,0 +1,36 @@
+.pageContainer {
+    display: flex;
+}
+
+.tabPanelContainer{
+    flex-grow: 1;
+}
+
+.sidePanelCard{
+    width: 300px;
+    height: 100vh;
+    background-color: 'whitesmoke';
+}
+.panelText{
+    text-align: center !important;
+    padding-top: 16px  !important;
+    
+}
+.sidePanelCard h4{
+    font-family: 'Poiret One';
+}
+
+.tabs{
+    text-align: right !important;
+}
+
+.tabPanel{
+    /* height: 100vh; */
+    display: flex;
+    justify-content: center;
+    /* overflow-y: scroll; */
+}
+
+.tabContent{
+    /* overflow: scroll; */
+}

@@ -105,7 +105,7 @@ const About = () => {
     return (
         // <div className="App" theme={theme} style={{padding: '25px'}}>
         <>
-         <Container maxWidth="lg">
+         <Container maxWidth="lg" style={{marginTop: '16px'}}>
             <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont} >
                     About
             </Typography>

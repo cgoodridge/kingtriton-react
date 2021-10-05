@@ -4,19 +4,22 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory, Link, withRouter } from 'react-router-dom';
 import { auth } from '../firebaseConfigFile';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
+import { useDispatch } from 'react-redux';
+import { login } from '../slices/userSlice';
 
 const Login = () => {
 
     const history = useHistory();
-    /// TODO: Create dedicated register form
     const [email, setEmail] = useState('');
 
+
+    const dispatch = useDispatch();
     const [password, setPassword] = useState('');
     const [fieldVal, setFieldVal] = useState('password');
     const [showPassword, setPasswordVisibility] = useState(false);
@@ -37,39 +40,43 @@ const Login = () => {
         e.preventDefault();
         auth
         .signInWithEmailAndPassword(email, password)
-        .then((auth) => {
-            if (auth)
-            {
-                history.push('/')
-            }
+        .then((userAuth) => {
+            dispatch(login({
+                email: userAuth.user.email,
+                uid: userAuth.user.uid,
+                displayName: userAuth.user.displayName,
+            }))
         })
         .catch(error => alert(error.message))
         
     }
 
     return (
-        <Card className="loginCard">
-            {/* Card Image */}
-            <CardContent className="cardContent">
-                <h4>Login</h4>
-                <form action="">
-                    <Box>
-                    <TextField fullWidth value={email} onChange={e => setEmail(e.target.value)} id="standard-basic" label="E-Mail" variant="standard" />
-                    <TextField fullWidth value={password} onChange={e => setPassword(e.target.value)} id="standard-basic" label="Password" type={fieldVal} variant="standard" />
-                    <FormGroup>
-                        <FormControlLabel control={<Checkbox checked={showPassword} onChange={handlePasswordVisibility} inputProps={{ 'aria-label': 'controlled' }}/>} label="Show Password" />
-                    </FormGroup>
-                    </Box>
-                    
-                    <div>
-                        <Button variant="contained" className="loginButton" type="submit" onClick={loginUser}>Login</Button>
+        <div className="loginCardContainer">
+            <Card className="loginCard">
+                {/* Card Image */}
+                <CardContent className="loginCardContent">
+                    <h2>Login</h2>
+                    <form action="">
+                        <Box>
+                        <TextField fullWidth value={email} onChange={e => setEmail(e.target.value)} id="email" label="E-Mail" variant="standard" margin="dense"/>
+                        <TextField fullWidth value={password} onChange={e => setPassword(e.target.value)} id="password" label="Password" type={fieldVal} variant="standard" margin="dense"/>
+                        <FormGroup>
+                            <FormControlLabel control={<Checkbox checked={showPassword} onChange={handlePasswordVisibility} inputProps={{ 'aria-label': 'controlled' }}/>} label="Show Password" />
+                        </FormGroup>
+                        </Box>
+                        
+                        <div>
+                            <Button variant="contained" className="loginButton" type="submit" onClick={loginUser}>Login</Button>
+                        </div>
+                    </form>
+                    <div className="createAccount">
+                        <Link to="/register" >Create an account</Link>
                     </div>
-                </form>
-                <div>
-                    <Link to="/register">Create an account</Link>
-                </div>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
+        </div>
+
     );
 }
 

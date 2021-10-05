@@ -17,32 +17,32 @@ const MenuList = (props) => {
                     :
                     props.searchQuery === '' ?
                         props.filterParam === 'All' ? 
-                            props.foods.map((food) => {
+                            props.foods.map((food, key) => {
                             
                                 return (
 
                                     
-                                    <Product food={food.data} />
+                                    <Product key={key} food={food.data} />
                                     
                                     
                                 );
                                 
                             })
                             : 
-                            props.foods.filter(food => food.data.course === props.filterParam).map((food) => {
+                            props.foods.filter(food => food.data.course === props.filterParam).map((food, key) => {
                             
                                 return (
-                                    <Product food={food.data} />
+                                    <Product key={key} food={food.data} />
                                 );
                                 
                             })
                         
                     
                         : 
-                        props.foods.filter(food => food.data.name.includes(props.searchQuery)).map((foodSearch) => {
+                        props.foods.filter(food => food.data.name.toLowerCase().includes(props.searchQuery)).map((foodSearch, key) => {
                         
                             return (
-                                <Product food={foodSearch.data} />
+                                <Product key={key} food={foodSearch.data} />
                             );
                             
                         })

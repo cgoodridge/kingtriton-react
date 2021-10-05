@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import { createTheme } from '@material-ui/core/styles';
-
+import '../css/contact.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -108,89 +108,86 @@ function Contact() {
 
     return (
         <div className="App" theme={theme} style={{padding: '25px'}}>
-        <Container maxWidth="lg">
-            <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont}>
-                    Contact Us
-            </Typography>
-        </Container>
+          <ThemeProvider theme={theme}>
+            <Container maxWidth="lg">
+                <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont}>
+                        Contact Us
+                </Typography>
 
-            <Grid container direction="row" className={classes.gridContent}>
-              <Grid item xs={12} sm={6}>
-                  <Grid container>
-                    <ThemeProvider theme={theme}>
-                      <Grid item xs={6} style={{paddingRight: '20px', paddingBottom: '20px'}}>
-                        <TextField 
-                          id="standard-basic" 
-                          fullWidth 
-                          label="Name"                            
-                                               
-                        />
-                      </Grid>
-
-                      <Grid item xs={6} style={{paddingBottom: '20px'}}>
-                        <TextField 
-                          id="standard-basic" 
-                          fullWidth label="Email" 
-                          color="primary"
-                          
-                           
-                       />
-                      </Grid>
-
-                      <Grid item xs={12} style={{paddingBottom: '20px'}}>
-                        <TextField 
-                          fullWidth 
-                          id="standard-basic" 
-                          label="Subject" 
-                          color="primary"
-                          
-                        />
-                    
-                      </Grid>
-
-                      <Grid item xs={12} style={{paddingBottom: '20px'}}>
-                      <TextField
-                        id="standard-multiline-static"
-                        label="Multiline"
-                        fullWidth
-                        multiline
-                        rows={4}
+                <Grid container direction="row" className={classes.gridContent}>
+                  <Grid item xs={12} sm={6}>
+                      <Grid container>
                         
-                      />
-                      </Grid>
-                      
-                        <Button variant="contained" color="primary" style={{width: 100}}>
-                          Send
-                        </Button>
-                      </ThemeProvider>
-                  </Grid>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <img style={{paddingLeft: '15px', paddingBottom: '20px', minWidth:'200px'}} className="responsive-img" src="./img/Mapsicle-Map.png"></img>
-              </Grid>
-            </Grid>
+                          <Grid item xs={12} style={{ paddingBottom: '20px'}}>
+                            <TextField 
+                              id="standard-basic" 
+                              fullWidth 
+                              label="Name"                            
+                                              
+                            />
+                          </Grid>
 
-            <ThemeProvider theme={theme}>
-              <Grid container direction="row" className={classes.gridContent}>
-                <Grid item  xs={12} sm={4} className={classes.gridItemContent}>
-                  <MailIcon style={{ fontSize: 40 }} color="primary"/>
-                  <Typography gutterBottom variant="h4" component="h2" align="center" className={classes.mainFont}>
-                        info@triton
-                  </Typography>
+                          <Grid item xs={12} style={{paddingBottom: '20px'}}>
+                            <TextField 
+                              id="standard-basic" 
+                              fullWidth 
+                              label="Email" 
+                              color="primary"
+                          />
+                          </Grid>
+
+                          <Grid item xs={12} style={{paddingBottom: '20px'}}>
+                            <TextField 
+                              fullWidth 
+                              id="standard-basic" 
+                              label="Subject" 
+                              color="primary"          
+                            />
+                          </Grid>
+
+                          <Grid item xs={12} style={{paddingBottom: '20px'}}>
+                          <TextField
+                            id="standard-multiline-static"
+                            label="Message"
+                            fullWidth
+                            multiline
+                            rows={4}
+                            
+                          />
+                          </Grid>
+                          
+                            <Button variant="contained" color="primary" style={{width: 100}}>
+                              Send
+                            </Button>
+                      </Grid>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <img style={{paddingLeft: '15px', paddingBottom: '20px'}} className="responsive-img" src="./img/Mapsicle-Map.png"></img>
+                  </Grid>
                 </Grid>
-                <Grid item  xs={12} sm={4} className={classes.gridItemContent}>
-                  <PhoneIcon style={{ fontSize: 40 }} color="primary"/>
-                  <Typography gutterBottom variant="h5" component="h2" align="center" className={classes.mainFont}>
-                        (246)439-9000
-                  </Typography>
+
+                <Grid container direction="row" className={classes.gridContent}>
+                  <Grid item  xs={12} sm={4} className={classes.gridItemContent}>
+                    <MailIcon style={{ fontSize: 40 }} color="primary"/>
+                    <Typography gutterBottom variant="h4" component="h2" align="center" className={classes.mainFont}>
+                          info@triton
+                    </Typography>
+                  </Grid>
+                  <Grid item  xs={12} sm={4} className={classes.gridItemContent}>
+                    <PhoneIcon style={{ fontSize: 40 }} color="primary"/>
+                    <Typography gutterBottom variant="h5" component="h2" align="center" className={classes.mainFont}>
+                          (246)439-9000
+                    </Typography>
+                  </Grid>
+                  <Grid item  xs={12} sm={4} className={classes.gridItemContent}>
+                    <LocationIcon style={{ fontSize: 40 }} color="primary"/>
+                    <Typography gutterBottom variant="h5" component="h2" align="center" className={classes.mainFont}>
+                          Hastings Main Road, Christ Church
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item  xs={12} sm={4} className={classes.gridItemContent}>
-                  <LocationIcon style={{ fontSize: 40 }} color="primary"/>
-                  <Typography gutterBottom variant="h5" component="h2" align="center" className={classes.mainFont}>
-                        Hastings Main Road, Christ Church
-                  </Typography>
-                </Grid>
-              </Grid>
+
+              </Container>
             </ThemeProvider>
 
         </div>

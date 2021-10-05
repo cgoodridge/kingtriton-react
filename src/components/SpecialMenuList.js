@@ -17,9 +17,9 @@ const SpecialMenuList = (props) => {
                     props.loading ?
                     <MenuLoadingSkeleton/>
                     :
-                    props.foods.filter(food => food.data.special === true).map((filteredFood) => {
+                    props.foods.filter(food => food.data.special === true).map((filteredFood, key) => {
                         return (
-                            <Product food={filteredFood.data} />
+                            <Product key={key} food={filteredFood.data} />
                         );
                     })
                 }

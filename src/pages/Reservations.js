@@ -9,6 +9,12 @@ import { createTheme } from '@material-ui/core/styles';
 import MenuItem from '@mui/material/MenuItem';
 import { db } from '../firebaseConfigFile';
 import { useStateValue } from '../StateProvider';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DateTimePicker from '@mui/lab/DateTimePicker'; 
+import AdapterMoment from '@mui/lab/AdapterMoment';
+import { selectUser } from '../slices/userSlice';
+import { useSelector } from 'react-redux';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 16,
     paddingLeft: 20,
     borderRadius: 20,
-    display: 'flex',
+    display: 'flex ',
     flexDirection: 'row wrap',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -50,23 +56,63 @@ const useStyles = makeStyles((theme) => ({
 
 const tables = [
   {
-    value: 'home',
-    label: 'Home',
+    value: 'couple1',
+    label: 'C1 - Couple Table 1',
   },
   {
-    value: 'school',
-    label: 'School',
+    value: 'couple2',
+    label: 'C2 - Couple Table 2',
   },
   {
-    value: 'work',
-    label: 'Work',
+    value: 'couple4',
+    label: 'C3 - Couple Table 3',
+  },
+  {
+    value: 'couple4',
+    label: 'C4 - Couple Table 4',
+  },
+  {
+    value: 'family1',
+    label: 'F1 - Family Table 1',
+  },
+  {
+    value: 'family2',
+    label: 'F2 - Family Table 2',
+  },
+  {
+    value: 'family3',
+    label: 'F3 - Family Table 3',
+  },
+  {
+    value: 'family4',
+    label: 'F4 - Family Table 4',
+  },
+  {
+    value: 'family5',
+    label: 'F5 - Family Table 5',
+  },
+  {
+    value: 'family6',
+    label: 'F6 - Family Table 6',
+  },
+  {
+    value: 'family3',
+    label: 'F7 - Family Table 7',
+  },
+  {
+    value: 'family4',
+    label: 'F8 - Family Table 8',
   },
 ];
 
 function Reservations() {
 
   const [selectedTable, setSelectedTable] = useState('');
-  const [{ user }, dispatch] = useStateValue();
+  const [occasion, setOccasion] = useState('');
+  const [partySize, setPartySize] = useState(1);
+  const [dateTimeValue, setDateTimeValue] = useState(new Date());
+  const user = useSelector(selectUser);
+
 
   const handleTableChange = (event) => {
     setSelectedTable(event.target.value);
@@ -77,18 +123,17 @@ function Reservations() {
     db
       .collection('users')
       .doc(user?.uid)
-      .collection('storedAddresses')
+      .collection('reservations')
       .doc()
       .set({
-        defaultAddress: 'addressState',
-        name: 'addressName',
-        addressLine1: 'addressLine1',
-        addressLine2: 'addressLine2',
-        parish: 'parish',
-        directions: 'directions'
+        partySize: partySize,
+        occasion: occasion,
+        dateTime: dateTimeValue,
+        table: selectedTable,
       })
       .catch(error => alert(error.message))
 
+      // TODO - Show confirmation dialog and clear form
   };
 
 
@@ -123,31 +168,42 @@ function Reservations() {
                 <form action="" style={{width: '100%'}}>
                   <Grid container direction="row" className={classes.gridContent}>
                         <Grid item xs={12} md={6} lg={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
-                          <TextField 
-                            id="standard-basic" 
+                        <LocalizationProvider dateAdapter={AdapterMoment}>
+                          <DateTimePicker
+                            renderInput={(props) => <TextField {...props} />}
+                            label="Date &amp; Time"
                             fullWidth
-                            type="date"
-                            placeholder="test"
-                            label="Date"                            
-                         
+                            value={dateTimeValue}
+                            margin="normal"
+                            onChange={(newValue) => {
+                              setDateTimeValue(newValue);
+                            }}
                           />
+                        </LocalizationProvider>
                         </Grid>
                         <Grid item xs={12} md={6} lg={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
                           <TextField 
-                            id="standard-basic" 
+                            id="occasion" 
                             fullWidth
-                            type="time"
-                            label="Time" 
+                            type="text"
+                            label="Occasion (Optional)" 
+                            value={occasion} 
+                            onChange={e => setOccasion(e.target.value)}
                             color="primary"
+                            margin="dense"
                             />
                         </Grid>
                         <Grid item xs={12} md={6} lg={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
                           <TextField 
-                            id="standard-basic" 
+                            id="partySize" 
                             fullWidth
                             label="People" 
+                            type="number"
+                            value={partySize} 
+                            onChange={e => setPartySize(e.target.value)}
                             color="primary"
-                            
+                            margin="dense"
+                            required
                           />
                         </Grid>
                         <Grid item xs={12} md={6} lg={3} style={{paddingRight: '20px', paddingBottom: '20px'}}>
@@ -159,7 +215,7 @@ function Reservations() {
                               value={selectedTable} 
                               onChange={e => setSelectedTable(e.target.value)}
                               label="Table"
-                              margin="normal"
+                              margin="dense"
                               variant="standard"
                           >
                           {tables.map((option) => (
@@ -172,7 +228,7 @@ function Reservations() {
                         </Grid>
                         {/* <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}> */}
                         <div>
-                          <Button variant="contained" color="primary" type="submit" style={{width: 100, marginBottom:"16px"}}>
+                          <Button variant="contained" color="primary" type="submit" onClick={handleResevation} style={{width: 100, marginBottom:"16px"}}>
                             Book
                           </Button>
                         </div>

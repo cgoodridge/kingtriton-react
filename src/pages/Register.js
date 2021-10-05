@@ -9,6 +9,8 @@ import { auth, db } from '../firebaseConfigFile';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { useDispatch } from 'react-redux';
+import { login } from '../slices/userSlice';
 
 const Register = () => {
 
@@ -20,6 +22,7 @@ const Register = () => {
     const [fName, setFirstName] = useState('');
     const [lName, setLastName] = useState('');
     const [fieldVal, setFieldVal] = useState('password');
+    const dispatch = useDispatch();
 
     const [showPassword, setPasswordVisibility] = useState(false);
 
@@ -48,13 +51,21 @@ const Register = () => {
         auth
         .createUserWithEmailAndPassword(email, password)
         .then((auth) => {
-            if (auth) {
-                console.log("User Created successfully");
-                console.log(auth);
-                console.log(auth.user.uid);
-                saveUserData(auth.user.uid);
-                history.push('/');
-            }
+            
+            auth.user.updateProfile({
+                displayName: fName + lName
+            })
+            .then(() => {
+                dispatch(
+                    login({
+                        email: auth.user.email,
+                        uid: auth.user.uid,
+                        displayName: fName + lName,
+                    }));
+            }).catch(error => alert(error.message))
+            saveUserData(auth.user.uid);
+            history.push('/');
+            
         })
         .catch(error => alert(error.message))
         
@@ -75,27 +86,30 @@ const Register = () => {
     }
 
     return (
-        <Card className="registerCard">
-            {/* Card Image */}
-            {/* cardContent classname coming from login.css */}
-            <CardContent className="cardContent">
-                <h4>Register</h4>
-                <form action="">
-                    <TextField fullWidth value={fName} onChange={e => setFirstName(e.target.value)} id="fName" label="First Name" variant="standard" />
-                    <TextField fullWidth value={lName} onChange={e => setLastName(e.target.value)} id="lName" label="Last Name" variant="standard" />
-                    <TextField fullWidth value={email} onChange={e => setEmail(e.target.value)} id="email" label="E-Mail" type="email" variant="standard" />
-                    <TextField fullWidth value={password} onChange={e => setPassword(e.target.value)} id="password" label="Password" type={fieldVal} variant="standard" />
-                    <TextField fullWidth value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} id="passwordConfirm" label="Confirm Password" type={fieldVal} variant="standard" />
-                    <FormGroup>
-                        <FormControlLabel control={<Checkbox checked={showPassword} onChange={handlePasswordVisibility} inputProps={{ 'aria-label': 'controlled' }}/>} label="Show Password" />
-                    </FormGroup>
-                    <div>
-                        <Button variant="contained" className="registerButton" type="submit" onClick={register}>Register</Button>
-                    </div>
-                    
-                </form>
-            </CardContent>
-        </Card>
+        <div className="registerCardContainer">
+            <Card className="registerCard">
+                {/* Card Image */}
+                {/* cardContent classname coming from login.css */}
+                <CardContent className="registerCardContent">
+                    <h2>Register</h2>
+                    <form action="">
+                        <TextField fullWidth value={fName} onChange={e => setFirstName(e.target.value)} id="fName" label="First Name" variant="standard" />
+                        <TextField fullWidth value={lName} onChange={e => setLastName(e.target.value)} id="lName" label="Last Name" variant="standard" />
+                        <TextField fullWidth value={email} onChange={e => setEmail(e.target.value)} id="email" label="E-Mail" type="email" variant="standard" />
+                        <TextField fullWidth value={password} onChange={e => setPassword(e.target.value)} id="password" label="Password" type={fieldVal} variant="standard" />
+                        <TextField fullWidth value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} id="passwordConfirm" label="Confirm Password" type={fieldVal} variant="standard" />
+                        <FormGroup>
+                            <FormControlLabel control={<Checkbox checked={showPassword} onChange={handlePasswordVisibility} inputProps={{ 'aria-label': 'controlled' }}/>} label="Show Password" />
+                        </FormGroup>
+                        <div>
+                            <Button variant="contained" className="registerButton" type="submit" onClick={register}>Register</Button>
+                        </div>
+                        
+                    </form>
+                </CardContent>
+            </Card>
+        </div>
+
     );
 }
 

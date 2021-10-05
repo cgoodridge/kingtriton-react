@@ -6,10 +6,14 @@ import { useStateValue } from '../StateProvider';
 import { getCartTotal } from './reducers/reducer';
 import { useHistory } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectItems, selectTotal } from '../slices/cartSlice';
 
 const Subtotal = () => {
     const history = useHistory();
-    const [{ cart, qty }, dispatch] = useStateValue();
+    const dispatch = useDispatch();
+    const cart = useSelector(selectItems);
+    const total = useSelector(selectTotal);
 
     return (
         <Card className='subtotalCardStyle'>
@@ -23,7 +27,7 @@ const Subtotal = () => {
                     </>
                     )}
                     decimalScale={2}
-                    value={getCartTotal(cart)} 
+                    value={total} 
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"$"}

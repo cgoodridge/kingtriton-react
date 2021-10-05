@@ -15,3 +15,8 @@
 .detailsButton{
     float: right;
 }
+
+.headerStyle {
+    font-family: 'Poiret One' !important;
+    margin-bottom: 64px !important;
+}

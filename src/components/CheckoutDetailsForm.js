@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@mui/material/TextField';
@@ -28,6 +28,9 @@ import moment from 'moment';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import CurrencyFormat from 'react-currency-format';
 import axios from '../axios';
+import { selectItems, selectTotal, emptyCart } from '../slices/cartSlice';
+import { selectUser } from '../slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
@@ -45,21 +48,6 @@ const cardProviders = [
       value: 'AmericanExpress',
       label: 'American Express',
     },
-];
-
-const savedAddresses = [
-  {
-    value: 'home',
-    label: 'Home',
-  },
-  {
-    value: 'school',
-    label: 'School',
-  },
-  {
-    value: 'work',
-    label: 'Work',
-  },
 ];
 
 
@@ -112,7 +100,19 @@ const parishes = [
 
 const CheckoutDetailsForm = () => {
 
-const [{ cart, user }, dispatch] = useStateValue();
+const _isMounted = useRef(true);
+
+// const [{ cart, user }, dispatch] = useStateValue();
+const user = useSelector(selectUser);
+const cart = useSelector(selectItems);
+const dispatch = useDispatch();
+const total = useSelector(selectTotal);
+
+
+
+const [succeeded, setSucceeded] = useState(false);
+const [processing, setProcessing] = useState(false);
+const [clientSecret, setClientSecret] = useState("");
 
 
 const handleClickOpen = () => {
@@ -126,6 +126,13 @@ const handleClose = () => {
 const handleCardSubmit = async (e) => {
 
   e.preventDefault();
+
+  if (savedAddresses <= 0)
+  {
+    alert('Please add an address');
+    return;
+  }
+
   setProcessing(true);
 
   const payload = await stripe.confirmCardPayment(clientSecret, {
@@ -134,16 +141,29 @@ const handleCardSubmit = async (e) => {
     }
   }).then(({ paymentIntent }) => {
 
+    db
+      .collection('users')
+      .doc(user?.uid)
+      .collection('orders')
+      .doc(paymentIntent.id)
+      .set({
+        cart: cart,
+        amount: paymentIntent.amount,
+        createdAt: paymentIntent.created,
+        deliveryAddress: addressNameSelection,
+        contactNumber: mobileNumber,
+        altNumber: altNumber
+
+        // test: 'Transaction was successful'
+      })
 
     setSucceeded(true);
     setError(null);
     setProcessing(false);
 
-    dispatch({
-      type: 'EMPTY_CART'
-    })
+    dispatch(emptyCart);
+    history.push('/orders');
 
-    history.replace('/orders')
   })
 
 }
@@ -165,6 +185,11 @@ const [cardProvider, setCardProvider] = useState('VISA');
 const [addressNameSelection, setAddressNameSelection] = useState('home');
 const [selectedValue, setSelectedValue] = useState('card');
 
+const [firstName, setFirstName] = useState('');
+const [lastName, setLastName] = useState('');
+const [mobileNumber, setMobileNumber] = useState('');
+const [altNumber, setAltNumber] = useState('');
+
 
 const [addressState, setAddressState] = useState(false);
 const [addressName, setAddressName] = useState('');
@@ -174,23 +199,24 @@ const [parish, setParish] = useState('');
 const [directions, setDirections] = useState('');
 
 
-const [succeeded, setSucceeded] = useState(false);
-const [processing, setProcessing] = useState(false);
-const [clientSecret, setClientSecret] = useState(true);
 
 useEffect(() => {
   const getClientSecret = async () => {
     const response = await axios({
       method: 'post',
-      url: `/checkout/create?total=${getCartTotal(cart) * 100}`
+      url: `/checkout/create?total=${total * 100}`
     });
     setClientSecret(response.data.clientSecret)
   }
 
   getClientSecret();
+
+  return () => { // ComponentWillUnmount 
+    _isMounted.current = false;
+  }
 }, [cart]);
 
-console.log('The client\'s secret is ', clientSecret);
+
 
 const [error, setError] = useState(null);
 const [disabled, setDisabled] = useState(null);
@@ -213,21 +239,6 @@ const [disabled, setDisabled] = useState(null);
   };
 
 
-
-  const handleOrder = () => {
-    db
-      .collection('users')
-      .doc(user?.uid)
-      .collection('orders')
-      .doc()
-      .set({
-        cart: cart,
-        amount: getCartTotal(cart),
-        createdAt: moment()
-      })
-    history.push('/orders');
-  };
-
   const handleAddress = (e) => {
     e.preventDefault();
     db
@@ -248,9 +259,32 @@ const [disabled, setDisabled] = useState(null);
     handleClose();
   };
 
+  const [savedAddresses, setSavedAddresses] = useState([]);
+
+
+      useEffect(() => {
+          
+          db
+          .collection('users')
+          .doc(user?.uid)
+          .collection('storedAddresses')
+          .onSnapshot(snapshot => (
+            setSavedAddresses(snapshot.docs.map(doc => ({
+              id: doc.id,
+              data: doc.data()
+            })))
+          ))
+        
+          return () => { // ComponentWillUnmount 
+            _isMounted.current = false;
+          }
+        
+      }, []);
+
+      // console.log('Total addresses stored is ', savedAddresses);
+
     return (
       <>
-
         <Dialog open={open} onClose={handleClose} className="modalCard" style={{ alignItems: "center", justifyContent: "center" }}>
           <form action="">
             <DialogTitle>New Delivery Address</DialogTitle>
@@ -318,7 +352,7 @@ const [disabled, setDisabled] = useState(null);
               value={directions} 
               onChange={e => setDirections(e.target.value)}
               label="Directions"
-              placeholder="Take a right by the white lion"
+              placeholder="Take a right by the white rabbit."
               multiline
               fullWidth
               variant="standard"
@@ -331,6 +365,8 @@ const [disabled, setDisabled] = useState(null);
           </form>
         </Dialog>
 
+        <form onSubmit={handleCardSubmit}>
+
         <div>
           {/* <form action=""> */}
             <Card className="checkoutCard">
@@ -339,16 +375,24 @@ const [disabled, setDisabled] = useState(null);
                   Contact Info
                 </Typography>
                 <div>
-                    <TextField fullWidth id="standard-basic" label="First Name" variant="standard" required/>
+                  {user ? 
+                    <TextField fullWidth id="firstName" value={user.displayName.split(" ")[0]} onChange={e => setFirstName(e.target.value)} label="First Name" variant="standard" required focused />
+                    :
+                    <TextField fullWidth id="firstName" value={firstName} onChange={e => setFirstName(e.target.value)} label="First Name" variant="standard" required />
+                  }
                 </div>
                 <div>
-                    <TextField fullWidth id="standard-basic" label="Last Name" variant="standard" required/>
+                  {user ? 
+                    <TextField fullWidth id="lastName" value={user.displayName.split(" ")[1]} onChange={e => setLastName(e.target.value)} label="Last Name" variant="standard" required focused />
+                    :
+                    <TextField fullWidth id="lastName" value={lastName} onChange={e => setLastName(e.target.value)} label="Last Name" variant="standard" required />
+                  }
                 </div>
                 <div>
-                    <TextField fullWidth id="standard-basic" label="Mobile Contact Number" variant="standard" required/>
+                    <TextField fullWidth id="mobileNumber" label="Mobile Contact Number" value={mobileNumber} onChange={e => setMobileNumber(e.target.value)} variant="standard" required/>
                 </div>
                 <div>
-                    <TextField fullWidth id="standard-basic" label="Alternate Contact Number" variant="standard"/>
+                    <TextField fullWidth id="altNumber" label="Alternate Contact Number" value={altNumber} onChange={e => setAltNumber(e.target.value)} variant="standard"/>
                 </div>
               </CardContent>
             </Card>
@@ -362,47 +406,65 @@ const [disabled, setDisabled] = useState(null);
                     <Grid item xs={6} className="buttonAlign">
                       <Button size='small' variant="outlined" onClick={handleClickOpen}>Add New Address</Button>
                     </Grid>
-                    <Grid item xs={6}>
-                      <TextField
-                            id="standard-select-address"
-                            select
-                            required
-                            fullWidth
-                            label="Select"
-                            value={addressNameSelection}
-                            onChange={handleAddressNameSelection}
-                            helperText="Choose delivery address"
-                            variant="standard"
-                        >
-                        {savedAddresses.map((option) => (
-                            <MenuItem key={option.value} value={option.value}>
-                              {option.label}
-                            </MenuItem>
-                        ))}
-                      </TextField>
-                    </Grid> 
+                    {savedAddresses  <= 0 ? 
+                      <div></div> 
+
+
+                      :
+                      <Grid item xs={6}>
+                        <TextField
+                              id="standard-select-address"
+                              select
+                              required
+                              fullWidth
+                              label="Select"
+                              placeholder="Choose Address"
+                              value={addressNameSelection}
+                              onChange={handleAddressNameSelection}
+                              helperText="Choose delivery address"
+                              variant="standard"
+                          >
+                          {savedAddresses.map((option) => (
+                              <MenuItem key={option.id} value={option.id}>
+                                {option.data.name}
+                              </MenuItem>
+                          ))}
+                        </TextField>
+                      </Grid> 
+
+                    }
+                    
                   </Grid>
                   
-                  <Grid container spacing={3} >
-                    <Grid item xs={6}>
-                      <Typography sx={{ fontSize: 18 }} gutterBottom>
-                        Keith Hunte Hall, UWI, Cave Hill
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Button variant="outlined" size="small" className="editButton" startIcon={<EditIcon />}>
-                        Edit
-                      </Button>
-                    </Grid> 
-                  </Grid>
+                  {savedAddresses  <= 0 ? 
+                      <div></div> 
 
-                  <Typography variant="h6" gutterBottom>
-                        Delivery Directions
-                  </Typography>
-                  <Typography variant="body1" gutterBottom mb={3} style={{overflow: 'truncate'}}>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-                    blanditiis tenetur unde suscipit.
-                  </Typography>
+
+                      :
+                  <>
+                    <Grid container spacing={3} >
+                      <Grid item xs={6}>
+                        <Typography sx={{ fontSize: 18 }} gutterBottom>
+                          Keith Hunte Hall, UWI, Cave Hill
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Button variant="outlined" size="small" className="editButton" startIcon={<EditIcon />}>
+                          Edit
+                        </Button>
+                      </Grid> 
+                    </Grid>
+                  
+                  
+                    <Typography variant="h6" gutterBottom>
+                          Delivery Directions
+                    </Typography>
+                    <Typography variant="body1" gutterBottom mb={3} style={{overflow: 'truncate'}}>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
+                      blanditiis tenetur unde suscipit.
+                    </Typography>
+                  </>
+                  }
               </CardContent>
             </Card>
 
@@ -420,7 +482,7 @@ const [disabled, setDisabled] = useState(null);
                     onChange={handleRadioChange}
                   >
                     <FormControlLabel value="card" control={<Radio />} label="By Card" />
-                    <FormControlLabel value="cash" control={<Radio />} label="By Cash" />
+                    <FormControlLabel value="cash" control={<Radio />} label="Cash on Delivery" />
                   </RadioGroup>
                 </FormControl>
             </div>
@@ -436,67 +498,43 @@ const [disabled, setDisabled] = useState(null);
                   Payment Info
                 </Typography>
 
-                <form onSubmit={handleCardSubmit}>
                   <CardElement onChange={handleCardChange}/>
-                </form>
 
-{/*                 
-                  <div>
-                      <TextField
-                          id="standard-select-card"
-                          select
-                          required
-                          fullWidth
-                          label="Select"
-                          value={cardProvider}
-                          onChange={handleChange}
-                          helperText="Please select your card provider"
-                          variant="standard"
-                      >
-                      {cardProviders.map((option) => (
-                          <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                          </MenuItem>
-                      ))}
-                      </TextField>
-                  </div>
-                  <div>
-                      <TextField fullWidth id="standard-basic" label="Name on Card" variant="standard" required="true"/>
-                  </div>
-                  <div>
-                      <TextField fullWidth id="standard-basic" label="Card Number" variant="standard" required/>
-                  </div>
-                  <Grid container spacing={3}>
-                    <Grid item xs={9}>
-                      <TextField fullWidth id="standard-basic" label="" type="date" variant="standard" margin="normal" required/>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <TextField fullWidth id="standard-basic" label="CVV" variant="standard" required/>
-                    </Grid>  
-                  </Grid> */}
               </CardContent>
             </Card> : 
             
             <div></div>}
 
             <div className="submitButton">
-                  <CurrencyFormat
+                  {selectedValue === 'cash' ? 
+                      <Button {...processing ? disabled : null} variant="contained" type="submit">Confirm</Button>
+                      :
+                      <CurrencyFormat
                     renderText={(value) => (
                     <>
-                      <Button {...processing ? disabled : null} variant="contained" type="submit" onClick={handleCardSubmit}>{processing ?  "Processing" : "Pay " + value}</Button>
+                      {cart.length <= 0 ? 
+                        <Button disabled variant="contained" type="submit">Cart Empty</Button>
+                        :
+                        <Button variant="contained" type="submit" onClick={handleCardSubmit}>{processing ?  "Processing" : "Pay " + value}</Button>
+
+                      }
                     </>
                     )}
                     decimalScale={2}
-                    value={getCartTotal(cart)} 
+                    value={total} 
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"$"}
                   />
+                  }
+                  
             </div>
+
             {/* Error Section */}
             {error && <div>{error}</div>}
           {/* </form> */}
         </div>
+        </form>
         
       </>
     );

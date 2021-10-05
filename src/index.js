@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import Content from './Content';
 import reducer, { initialState } from './components/reducers/reducer';
-import { createStore } from 'redux';
+// import { Provider } from 'redux';
+import { store } from './store';
 import { Provider } from 'react-redux';
 import { configureStore } from './store';
 import reportWebVitals from './reportWebVitals';
@@ -13,9 +14,9 @@ import { StateProvider } from './StateProvider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <StateProvider initialState={initialState} reducer={reducer}>
+    <Provider store={store}>
       <Content />
-    </StateProvider>
+    </Provider>
   </React.StrictMode>,
  
   document.getElementById('root')

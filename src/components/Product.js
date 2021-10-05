@@ -14,10 +14,15 @@ import Grid from '@material-ui/core/Grid';
 import '../css/product.css';
 import { useStateValue } from '../StateProvider';
 import Snackbar from '@mui/material/Snackbar';
+import { useDispatch } from 'react-redux';
+import { addToCart} from '../slices/cartSlice';
+
 
 
 
 const Product = ({food}) => {
+
+    const dispatch = useDispatch();
 
     const [state, setState] = useState({
         open: false,
@@ -29,7 +34,7 @@ const Product = ({food}) => {
 
     const handleClick = (newState) => () => {
         setState({ open: true, ...newState });
-        addToBasket();
+        addItemToCart();
     };
 
     const handleClose = () => {
@@ -64,22 +69,24 @@ const Product = ({food}) => {
 
     const classes = useStyles();
 
-    const [{ cart }, dispatch] = useStateValue();
+    // const [{ cart }, dispatch] = useStateValue();
 
-    const addToBasket = () => {
-        dispatch({
-            type: 'ADD_TO_CART',
-            item: {
-                id: food.id,
-                name: food.name,
-                price: food.price,
-                image: food.image,
-                course: food.course,
-                special: food.special,
-                qty: qtyValue
-            },  
-        })
+    
+    const addItemToCart = () => {
+
+        const product = {
+            id: food.id,
+            name: food.name,
+            price: food.price,
+            image: food.image,
+            course: food.course,
+            special: food.special,
+            qty: qtyValue
+        }
+        dispatch(addToCart(product));
     }
+    
+   
 
     return (
         <div className={classes.root} key={food.id}>
