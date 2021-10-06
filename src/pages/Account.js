@@ -18,6 +18,9 @@ import Accountdetails from './AccountDetails';
 import Privacypolicy from './PrivacyPolicy';
 import Help from './Help';
 import Reservationhistory from './ReservationHistory';
+import Badge from '@mui/material/Badge';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { styled } from '@mui/material/styles';
 
 
 const TabPanel = (props) => {
@@ -53,13 +56,22 @@ const a11yProps = (index) => {
     };
 }
 
+const Input = styled('input')({
+    display: 'none',
+  });
 
 const Account = () => {
 
     const [value, setValue] = useState(0);
+    const [selectedFile, setSelectedFile] = useState();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+    };
+
+    const handleFileUpload = (e) => {
+        setSelectedFile(e.target.files[0]);
+        console.log(selectedFile);
     };
 
 
@@ -71,7 +83,18 @@ const Account = () => {
                         Your Account
                     </Typography>
                     <Box sx={{ height: '30%', padding: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
-                        <Avatar sx={{ backgroundColor: 'purple', width: 200, height: 200, fontSize:'80px' }}>SR</Avatar>
+                    <Badge
+                        overlap="circular"
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                        badgeContent={
+                            <CloudUploadIcon fontSize="large" sx={{color: '#2196f3'}}/>
+                        }
+                    >
+                        <label htmlFor="icon-button-file">
+                            <Input accept="image/*" id="icon-button-file" type="file" onChange={handleFileUpload}/>
+                            <Avatar aria-label="upload picture" sx={{ backgroundColor: 'purple', width: 200, height: 200, fontSize:'80px', cursor:'pointer' }}>SR</Avatar>
+                        </label>
+                    </Badge>
                     </Box>
 
                     <Box

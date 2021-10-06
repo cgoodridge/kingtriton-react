@@ -34,6 +34,7 @@ const Product = ({food}) => {
 
     const handleClick = (newState) => () => {
         setState({ open: true, ...newState });
+        setQtyValue(1);
         addItemToCart();
     };
 
@@ -93,7 +94,7 @@ const Product = ({food}) => {
             <Snackbar
                 anchorOrigin={{ vertical, horizontal }}
                 open={open}
-                autoHideDuration={3000}
+                autoHideDuration={2000}
                 onClose={handleClose}
                 message= {food.name + ' added to Cart'} 
                 key={vertical + horizontal}
@@ -139,7 +140,7 @@ const Product = ({food}) => {
 
                     <CardActions className="controls">
                         <Box className="control-counters">
-                            <div class="counter">
+                            <div className="counter">
                                 <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtySub}>
                                     <RemoveIcon fontSize="inherit" />
                                 </IconButton> 

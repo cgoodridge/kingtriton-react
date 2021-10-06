@@ -160,7 +160,7 @@ const Checkout = () => {
                               renderText={(value) => (
                               <>
                                   <p>
-                                  Subtotal ({cart?.length} items): <strong>{value}</strong>
+                                  Subtotal ({cart?.length} {cart?.length === 1 ? 'item' : 'items'}): <strong>{value}</strong>
                                   </p>
                               </>
                               )}
