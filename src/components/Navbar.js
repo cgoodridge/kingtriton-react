@@ -159,17 +159,15 @@ const Navbar = (props) => {
                     Items in your cart
                 </Typography>
                 <Divider/>
-                {cart.map((food, index) => (
-                <>
-                    <div key={index} style={{padding:'8px 16px', marginTop: '16px'}}>
-                        <CartItem id={food.id} name={food.name} price={food.price} image={food.image}/>
-                    </div>
-                    {/* <Divider variant="inset" component="li" /> */}
-                    
-                </>
-
+                {cart.map((food, key) => (
+                    <>
+                        <div style={{padding:'8px 16px', marginTop: '16px'}}>
+                            <CartItem key={key} id={food.id} name={food.name} price={food.price} image={food.image} qty={food.qty}/>
+                        </div>
+                        {/* <Divider variant="inset" component="li" /> */}
+                        
+                    </>
                 ))} 
-                
                 <ListItem>
                     <Link to="/checkout">
                         <Button variant="contained" color="primary" style={{width: '100%'}}>
@@ -251,7 +249,7 @@ const Navbar = (props) => {
                         <nav className="nav-col">
                             {['left'].map((anchor) => (
                                 <React.Fragment key={anchor}>
-                                    <Box sx={{ display: { md: 'flex', lg: 'none' } }} >
+                                    <Box sx={{ display: {xs: 'flex', sm: 'flex', md: 'none', lg: 'none' } }} >
                                         <a href="#" data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></a>
                                         <Drawer anchor={anchor} open={menuState[anchor]} onClose={toggleMenuDrawer(anchor, false)}>
                                             {navList(anchor)}
@@ -263,7 +261,7 @@ const Navbar = (props) => {
                             <a href="#!" className="brand-logo">King Triton's</a>
                             {['right'].map((anchor) => (
                                 <React.Fragment key={anchor}>
-                                    <Box sx={{ display: { xs: 'flex', md: 'flex' } }} >
+                                    <Box sx={{ display: { xs: 'flex', sm:'flex', md: 'none', lg: 'none' } }} >
                                         <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" className="cartButton" aria-label="open shopping cart">
                                             <Badge badgeContent={cart?.length} color="secondary">
                                                 <ShoppingBasketIcon />
@@ -275,7 +273,7 @@ const Navbar = (props) => {
                                     </Box>
                                 </React.Fragment>
                             ))}
-                            <Box sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }} className="nav-wrapper">
+                            <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }} className="nav-wrapper">
                                 
                                 <ul className="right hide-on-med-and-down">
                                     <li><Link to="/">Home</Link></li>
@@ -283,11 +281,11 @@ const Navbar = (props) => {
                                     <li><Link to="/reservations">Reservations</Link></li>
                                     <li><Link to="/contact">Contact</Link></li>
                                     <li><Link to="/about">About</Link></li>
-                                    <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? user.displayName : 'Guest'} <KeyboardArrowDownIcon mt={2}/></li> 
+                                    <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? user.displayName : 'Guest'} <KeyboardArrowDownIcon sx={{paddingTop: '5px'}}/></li> 
                                     <li>
                                     {['right'].map((anchor) => (
                                         <React.Fragment key={anchor}>
-                                            <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
+                                            <IconButton disableFocusRipple={true} onClick={toggleCartDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
                                                 <Badge badgeContent={cart?.length} color="secondary">
                                                     <ShoppingBasketIcon />
                                                 </Badge>

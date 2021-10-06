@@ -9,7 +9,28 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         addToCart: (state, action) => {
-            state.items = [...state.items, action.payload];
+            const index = state.items.findIndex(
+                (cartItem) => cartItem.id === action.payload.id
+            );
+
+            if (index >= 0) {
+                console.log('item in cart already, updating quantity');
+                let newCart = [...state.items];
+
+                const dupItem = newCart[index];
+                console.log('cart value is', dupItem);
+
+                newCart[index].qty = dupItem.qty + action.payload.qty;
+                newCart[index].price = (parseFloat(action.payload.price) * parseFloat(action.payload.qty)) + parseFloat(newCart[index].price);
+                
+                state.items = newCart;
+
+            } else {
+                console.log('Add item as normal');
+                state.items = [...state.items, action.payload];
+            }
+
+
         },
         removeFromCart: (state, action) => {
             const index = state.items.findIndex(

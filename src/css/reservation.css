@@ -1,0 +1,74 @@
+.tableCode {
+    position: absolute !important;
+    top: 50%;
+    left: 50%;    
+    transform: translate(-50%, -50%);
+    z-index: 999999999 !important;
+
+}
+
+.tableContainer{
+    position: relative;
+}
+
+.tableContainer:hover {
+    /* color: white !important; */
+}
+
+.seating:hover{
+    filter: invert(56%) sepia(37%) saturate(4667%) hue-rotate(169deg) brightness(89%) contrast(103%);
+}
+
+.bookingArea{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.responsiveBooking{
+    position: relative;
+    width: 100%;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .bookingArea{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        margin-left: 250px !important;
+    }
+    .seating{
+        width: 80px;
+        padding: 8px !important;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .bookingArea{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        width: 100%;
+        margin-left: 100px !important;
+    }
+    .seating{
+        width: 120px;
+        padding: 8px !important;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {}

@@ -12,7 +12,7 @@ import { selectItems } from '../slices/cartSlice';
 
 
 
-const CartItem = ({id, name, image, price}) => {
+const CartItem = ({id, name, image, price, qty}) => {
 
     console.log(id);
     const dispatch = useDispatch();
@@ -33,8 +33,9 @@ const CartItem = ({id, name, image, price}) => {
             <Grid container direction="column" style={{marginLeft: '16px', width: '100%'}}>
                 <Grid item>
                     <Typography variant="subtitle2" gutterBottom component="div">
-                        {name}
+                        {name + ' x' + qty}
                     </Typography>
+                    
                     <CurrencyFormat
                         renderText={(value) => (
                         <>

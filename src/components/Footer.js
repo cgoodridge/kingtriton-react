@@ -11,7 +11,7 @@ const Footer = () => {
         <footer>
           <Grid container alignItems="center" justify="center" className="grid-content">
               <Grid item xs={12} md={6} lg={3}>
-                <img id="footer-logo" src="./img/Logo.png" alt="Site Logo"></img>
+                <img id="footer-logo" src="./img/temp-logo.png" alt="Site Logo"></img>
                 <Typography variant="h5" gutterBottom component="div" className="footerHeaders">
                   King Triton's Seafood Palace
                 </Typography>
