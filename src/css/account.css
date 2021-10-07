@@ -30,7 +30,12 @@
     justify-content: center;
     /* overflow-y: scroll; */
 }
-
+.tabPanelAlt{
+    /* height: 100vh; */
+    width: 100%;
+    display: flex;
+    
+}
 .tabContent{
     /* overflow: scroll; */
 }

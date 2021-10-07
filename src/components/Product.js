@@ -16,6 +16,8 @@ import { useStateValue } from '../StateProvider';
 import Snackbar from '@mui/material/Snackbar';
 import { useDispatch } from 'react-redux';
 import { addToCart} from '../slices/cartSlice';
+import { useSelector } from 'react-redux';
+import { selectItems } from '../slices/cartSlice';
 
 
 
@@ -31,10 +33,12 @@ const Product = ({food}) => {
     });
 
     const { vertical, horizontal, open } = state;
+    const cart = useSelector(selectItems);
 
     const handleClick = (newState) => () => {
         setState({ open: true, ...newState });
         setQtyValue(1);
+        checkCart();
         addItemToCart();
     };
 
@@ -43,6 +47,7 @@ const Product = ({food}) => {
     };
 
     const [qtyValue, setQtyValue] = useState(1);
+    const [cartDuplicate, setCartDuplicate] = useState(false);
 
     const handleQtyAdd = () => {
         setQtyValue(qtyValue + 1);
@@ -58,6 +63,19 @@ const Product = ({food}) => {
         setQtyValue(event.target.value);
     };
 
+    const checkCart = () => {
+        const index = cart.findIndex(
+            (cartItem) => cartItem.id === food.id
+        );
+
+        if (index >= 0) {
+            console.log('item in cart already, updating quantity');
+            setCartDuplicate(true);
+        } else {
+            setCartDuplicate(false);
+        }
+
+    };
 
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -91,14 +109,26 @@ const Product = ({food}) => {
 
     return (
         <div className={classes.root} key={food.id}>
-            <Snackbar
-                anchorOrigin={{ vertical, horizontal }}
-                open={open}
-                autoHideDuration={2000}
-                onClose={handleClose}
-                message= {food.name + ' added to Cart'} 
-                key={vertical + horizontal}
-            />
+            {cartDuplicate ? 
+                <Snackbar
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={open}
+                    autoHideDuration={2000}
+                    onClose={handleClose}
+                    message= {food.name + ' quantity updated'} 
+                    key={vertical + horizontal}
+                />
+                :
+                <Snackbar
+                    anchorOrigin={{ vertical, horizontal }}
+                    open={open}
+                    autoHideDuration={2000}
+                    onClose={handleClose}
+                    message= {food.name + ' added to Cart'} 
+                    key={vertical + horizontal}
+                />
+            }
+           
 
             {/* <Card component={Snackbar} 
                 anchorOrigin={{ vertical, horizontal }}

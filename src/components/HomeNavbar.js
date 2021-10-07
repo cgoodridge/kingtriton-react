@@ -30,6 +30,9 @@ import { selectUser } from '../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '../slices/cartSlice';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import Collapse from '@mui/material/Collapse';
 
 const HideOnScroll = (props) => {
     const { children, window } = props;
@@ -80,6 +83,11 @@ const HomeNavbar = (props) => {
     // const [{ cart, user }, dispatch] = useStateValue();
     // const [displayName, setDisplayName] = useState("");
 
+    const [expand, setExpansion] = useState(true);
+
+    const handleExpansionClick = () => {
+        setExpansion(!expand);
+    };
 
 
     
@@ -191,7 +199,12 @@ const HomeNavbar = (props) => {
             onClick={toggleMenuDrawer(anchor, false)}
             onKeyDown={toggleMenuDrawer(anchor, false)}
         >
-        
+            <div className="logoContainer">
+                <img className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img>
+                <h2>King Triton's Seafood Palace</h2>
+            </div>
+
+            <Divider />
             <List className="cart" style={{height: '500px', width: '100%'}}>
                 
                 <ListItem disablepadding = "true">
@@ -199,38 +212,74 @@ const HomeNavbar = (props) => {
                         <ListItemText primary="Home"  />
                     </ListItemButton>
                 </ListItem>
+            <Divider />
+
                 <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/menu">
                         <ListItemText primary="Menu"  />
                     </ListItemButton>
                 </ListItem>
+            <Divider />
+
                 <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/reservations">
                         <ListItemText primary="Reservations"  />
                     </ListItemButton>
                 </ListItem>
+            <Divider />
+
                 <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/contact">
                         <ListItemText primary="Contact"  />
                     </ListItemButton>
                 </ListItem>
+            <Divider />
+
                 <ListItem disablepadding = "true">
                     <ListItemButton component={Link} to="/about">
                         <ListItemText primary="About"  />
                     </ListItemButton>
+            <Divider />
                 </ListItem>
-                <ListItem disablepadding = "true">
+                
                     {user ? 
-                    <ListItemButton>
-                        <ListItemText primary={user.displayName} />
-                    </ListItemButton> 
+                    <>
+                        <ListItemButton sx={{ pl: 4 }} onClick={handleExpansionClick}>
+                            <ListItemText primary={'Hi ' + user.displayName} />
+                            {expand ? <ExpandLess /> : <ExpandMore />}
+                        </ListItemButton>
+                        <Collapse in={expand} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding = "true">
+                                <ListItemButton sx={{ pl: 8 }}>
+                                    <ListItemText primary="My Account" />
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 8 }}>
+                                    <ListItemText primary="Logout" />
+                                </ListItemButton>
+                            </List>
+                        </Collapse> 
+                    </>
+                    
                     : 
-                    <ListItemButton component={Link} to="/login">
-                        <ListItemText primary="Login"  />
-                    </ListItemButton>
+
+                    <>
+                        <ListItemButton sx={{ pl: 4 }} onClick={handleExpansionClick}>
+                            <ListItemText primary="Hey Guest"  />
+                        </ListItemButton>
+                        <Collapse in={expand} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding = "true">
+                                <ListItemButton sx={{ pl: 8 }}>
+                                    <ListItemText primary="Login" />
+                                </ListItemButton>
+                                <ListItemButton sx={{ pl: 8 }}>
+                                    <ListItemText primary="Register" />
+                                </ListItemButton>
+                            </List>
+                        </Collapse> 
+                    </>
                     }
                     
-                </ListItem>
+                
             
             </List>
             <Divider />
@@ -255,7 +304,7 @@ const HomeNavbar = (props) => {
                             <React.Fragment key={anchor}>
                                 <Box sx={{ display: {xs: 'flex', sm: 'flex', md: 'none', lg: 'none' } }} >
                                     <a href="#" data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></a>
-                                    <Drawer anchor={anchor} open={menuState[anchor]} onClose={toggleMenuDrawer(anchor, false)}>
+                                    <Drawer ModalProps={{keepMounted: true}} anchor={anchor} open={menuState[anchor]} onClose={toggleMenuDrawer(anchor, false)}>
                                         {navList(anchor)}
                                     </Drawer>
                                 </Box>

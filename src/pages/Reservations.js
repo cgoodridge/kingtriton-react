@@ -240,7 +240,7 @@ function Reservations() {
                     Book
                   </Button>
                   :
-                  <Button variant="contained" color="primary" component={Link} to="/login" onClick={handleReservation} style={{ width: 150, marginBottom:'16px' }}>
+                  <Button variant="contained" color="primary" component={Link} to="/login" style={{ width: 150, marginBottom:'16px' }}>
                     Sign In To Book
                   </Button>
                 
