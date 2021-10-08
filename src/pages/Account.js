@@ -21,6 +21,20 @@ import Reservationhistory from './ReservationHistory';
 import Badge from '@mui/material/Badge';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@material-ui/core/Button';
+import FileUploadIcon from '@mui/icons-material/FileUpload';
+import IconButton from '@mui/material/IconButton';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import EditIcon from '@mui/icons-material/Edit';
+import { selectUser } from '../slices/userSlice';
+import { useSelector } from 'react-redux';
+import { db, auth, storage } from '../firebaseConfigFile';
 
 
 const TabPanel = (props) => {
@@ -58,12 +72,27 @@ const a11yProps = (index) => {
 
 const Input = styled('input')({
     display: 'none',
-  });
+});
 
 const Account = () => {
 
+    const user = useSelector(selectUser);
     const [value, setValue] = useState(0);
     const [selectedFile, setSelectedFile] = useState();
+    const [isFilePicked, setIsFilePicked] = useState(false);
+    const [imageUploadDialog, setImageUploadDialog] = useState(false);
+
+    const handleClickOpen = () => {
+        setImageUploadDialog(true);
+    };
+
+    const handleClose = () => {
+        setImageUploadDialog(false);
+    };
+
+    const handleImageRemoval = () => {
+        setSelectedFile();
+    };
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -71,34 +100,106 @@ const Account = () => {
 
     const handleFileUpload = (e) => {
         setSelectedFile(e.target.files[0]);
-        console.log(selectedFile);
+
+        if (e.target.files[0] !== null) {
+            console.log('We have a file');
+        } else {
+            console.log('We do not have a file');
+        }
     };
 
+    const doUpload = () => {
+        storage
+            .ref(`users/${user.uid}/${selectedFile?.name}`)
+            .put(selectedFile)
+            .then(() => {
+                storage
+                    .ref(`users/${user.uid}/${selectedFile?.name}`)
+                    .getDownloadURL()
+                    .then((url) => {
+                        auth.currentUser.updateProfile({
+                            photoURL: url
+                        })
+                        console.log('Image URL is ', url);
+                    })
+            })
+            .catch(error => alert(error.message))
+        handleClose();
+    };
+
+    // console.log('User profile pic', auth.currentUser.photoURL);
+    console.log(user);
 
     return (
         <>
-            <div className="pageContainer">
+            {/* Desktop View */}
+            <Dialog open={imageUploadDialog} onClose={handleClose} sx={{ padding: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <DialogTitle sx={{ textAlign: 'center' }}>Upload Profile Picture</DialogTitle>
+                <DialogContent>
+                    <DialogContentText sx={{ padding: '0 16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        
+                        <Badge
+                            overlap="circular"
+                            anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                            badgeContent={
+                                <HighlightOffIcon onClick={handleImageRemoval} fontSize="large" sx={{ cursor: 'pointer' }} />
+                            }
+                        >
+                            <Avatar src={selectedFile ? URL.createObjectURL(selectedFile) : ""} aria-label="upload picture" sx={{ backgroundColor: 'purple', width: 200, height: 200, marginleft: '180px', fontSize: '80px' }}>SR</Avatar>
+                        </Badge>
+                    </DialogContentText>
+                    {selectedFile ? 
+                    <TextField
+                        autoFocus
+                        margin={selectedFile ? "normal" : "none"}
+                        id="name"
+                        label={selectedFile ? "" : "FileName"}
+                        aria-label="File name field"
+                        type="text"
+                        disabled
+                        value={selectedFile ? selectedFile.name : null}
+                        variant="standard"
+                    />
+                        :
+                        null
+                    }
+                    
+                    <label htmlFor="icon-button-file">
+                        <Input accept="image/*" id="icon-button-file" type="file" onChange={handleFileUpload} />
+                        <IconButton aria-label="upload picture" color="primary" component="span" style={{ marginTop: '16px' }}>
+                            {selectedFile ? <EditIcon /> : <FileUploadIcon /> }
+                        </IconButton>
+                    </label>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={doUpload}>Upload</Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* Make a box */}
+            <Box className="pageContainer" sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex', xl: 'flex' } }}>
                 <Card className="sidePanelCard">
                     <Typography className="panelText" variant="h4" gutterBottom component="h4">
                         Your Account
                     </Typography>
                     <Box sx={{ height: '30%', padding: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
-                    <Badge
-                        overlap="circular"
-                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                        badgeContent={
-                            <CloudUploadIcon fontSize="large" sx={{color: '#2196f3'}}/>
-                        }
-                    >
-                        <label htmlFor="icon-button-file">
-                            <Input accept="image/*" id="icon-button-file" type="file" onChange={handleFileUpload}/>
-                            <Avatar aria-label="upload picture" sx={{ backgroundColor: 'purple', width: 200, height: 200, fontSize:'80px', cursor:'pointer' }}>SR</Avatar>
-                        </label>
-                    </Badge>
+                        <Badge
+                            overlap="circular"
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                            badgeContent={
+                                <CloudUploadIcon fontSize="large" sx={{ color: '#2196f3' }} />
+                            }
+                        >
+
+                            <Avatar src={auth.currentUser.photoURL} aria-label="upload picture" onClick={handleClickOpen} sx={{ backgroundColor: 'purple', width: 200, height: 200, fontSize: '80px', cursor: 'pointer' }}>SR</Avatar>
+
+                        </Badge>
                     </Box>
 
                     <Box
                         sx={{ height: '100%' }}
+
                     >
                         <Tabs
                             orientation="vertical"
@@ -144,7 +245,72 @@ const Account = () => {
                         </Box>
                     </TabPanel>
                 </div>
-            </div>
+            </Box>
+
+            {/* Mobile View */}
+
+            <Box className="pageContainer" sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none', xl: 'none' } }}>
+
+                <div className="tabPanelContainer">
+                    <Typography className="panelText" variant="h4" gutterBottom component="h4">
+                        Your Account
+                    </Typography>
+                    <Box sx={{ padding: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+                        <Badge
+                            overlap="circular"
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                            badgeContent={
+                                <CloudUploadIcon fontSize="large" sx={{ color: '#2196f3' }} />
+                            }
+                        >
+                            <label htmlFor="icon-button-file">
+                                <Input accept="image/*" id="icon-button-file" type="file" onChange={handleFileUpload} />
+                                <Avatar aria-label="upload picture" sx={{ backgroundColor: 'purple', width: 150, height: 150, fontSize: '40px', cursor: 'pointer' }}>SR</Avatar>
+                            </label>
+                        </Badge>
+                    </Box>
+                    <Tabs
+                        orientation="horizontal"
+                        variant="scrollable"
+                        value={value}
+                        onChange={handleChange}
+                        aria-label="Horizontal tabs"
+                        sx={{ borderRight: 1, borderColor: 'divider' }}
+                    >
+                        <Tab label="Account Details" {...a11yProps(0)} />
+                        <Tab label="Order History" {...a11yProps(1)} />
+                        <Tab label="Reservation History" {...a11yProps(2)} />
+
+                    </Tabs>
+
+                    <TabPanel className="tabPanel" value={value} index={0}>
+                        <Box className="tabContent">
+                            <Accountdetails />
+                        </Box>
+                    </TabPanel>
+                    <TabPanel className="tabPanel" value={value} index={1}>
+                        <Box className="tabContent">
+                            <Orders />
+                        </Box>
+                    </TabPanel>
+                    <TabPanel className="tabPanel" value={value} index={2}>
+                        <Box className="tabContent">
+                            <Reservationhistory />
+                        </Box>
+                    </TabPanel>
+                    <TabPanel className="tabPanel" value={value} index={3}>
+                        <Box className="tabContent">
+                            <Privacypolicy />
+                        </Box>
+                    </TabPanel>
+                    <TabPanel className="tabPanel" value={value} index={4}>
+                        <Box className="tabContent">
+                            <Help />
+                        </Box>
+                    </TabPanel>
+                </div>
+            </Box>
+
         </>
 
     );

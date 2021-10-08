@@ -3,7 +3,10 @@
     top: 50%;
     left: 50%;    
     transform: translate(-50%, -50%);
-    z-index: 999999999 !important;
+    z-index: 1 !important;
+    /* font-family: 'Poiret One' !important; */
+    font-weight: light !important;
+    /* color: #1c1c1c !important; */
 
 }
 
@@ -12,11 +15,12 @@
 }
 
 .tableContainer:hover {
+    filter: invert(56%) sepia(37%) saturate(4667%) hue-rotate(169deg) brightness(89%) contrast(103%);
     /* color: white !important; */
 }
 
 .seating:hover{
-    filter: invert(56%) sepia(37%) saturate(4667%) hue-rotate(169deg) brightness(89%) contrast(103%);
+    /* color: white !important; */
 }
 
 .bookingArea{

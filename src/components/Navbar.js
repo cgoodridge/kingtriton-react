@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Badge from '@material-ui/core/Badge';
@@ -25,7 +25,7 @@ import '../css/navbar.css';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import CartItem from './CartItem';
-import { selectUser } from '../slices/userSlice';
+import { selectUser, logout } from '../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '../slices/cartSlice';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   
 const Navbar = (props) => {
     const _isMounted = useRef(true);
-
+    const location = useLocation();
 
     const classes = useStyles();
     const [expand, setExpansion] = useState(true);
@@ -89,12 +89,12 @@ const Navbar = (props) => {
 
     const dispatch = useDispatch();
 
-    const handleAuth = () => {
-        if (user) {
-            auth.signOut();
-        }
-        handleMenuClose();
-    }
+    const logoutOfApp = () => {
+        dispatch(logout);
+        auth.signOut();
+        handleLoggedInMenuClose();
+     }
+  
 
     const [cartState, setCartState] = useState({
         right: false,
@@ -250,10 +250,10 @@ const Navbar = (props) => {
                         </ListItemButton>
                         <Collapse in={expand} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding = "true">
-                                <ListItemButton sx={{ pl: 8 }}>
+                                <ListItemButton component={Link} to="/account" sx={{ pl: 8 }}>
                                     <ListItemText primary="My Account" />
                                 </ListItemButton>
-                                <ListItemButton sx={{ pl: 8 }}>
+                                <ListItemButton onClick={logoutOfApp} sx={{ pl: 8 }}>
                                     <ListItemText primary="Logout" />
                                 </ListItemButton>
                             </List>
@@ -268,10 +268,10 @@ const Navbar = (props) => {
                         </ListItemButton>
                         <Collapse in={expand} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding = "true">
-                                <ListItemButton sx={{ pl: 8 }}>
+                                <ListItemButton component={Link} to="/login" sx={{ pl: 8 }}>
                                     <ListItemText primary="Login" />
                                 </ListItemButton>
-                                <ListItemButton sx={{ pl: 8 }}>
+                                <ListItemButton  component={Link} to="/register" sx={{ pl: 8 }}>
                                     <ListItemText primary="Register" />
                                 </ListItemButton>
                             </List>
@@ -355,10 +355,8 @@ const Navbar = (props) => {
                                     }}
                                 >
                                     <MenuItem onClick={handleLoggedInMenuClose} component={Link} to="/account">My Account</MenuItem>
-                                    <MenuItem onClick={handleLoggedInMenuClose}>
-                                        <Button size='small' variant="contained" color="secondary" onClick={handleAuth}>
-                                            Logout
-                                        </Button> 
+                                    <MenuItem onClick={logoutOfApp}>
+                                        Logout
                                     </MenuItem>
                                 </Menu>
                                 <Menu
@@ -371,7 +369,7 @@ const Navbar = (props) => {
                                     }}
                                 >
                                     <MenuItem onClick={handleMenuClose}>
-                                    <Button size='small' variant="contained" color="secondary" component={Link} to="/login">
+                                        <Button size='small' variant="contained" color="secondary" component={Link} to={{pathname: '/login', state: { prevPath: location.pathname }}}>
                                             Login
                                         </Button> 
                                     </MenuItem>

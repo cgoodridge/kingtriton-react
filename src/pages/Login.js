@@ -4,7 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useHistory, Link, withRouter } from 'react-router-dom';
+import { useHistory, Link, withRouter, useLocation } from 'react-router-dom';
 import { auth } from '../firebaseConfigFile';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -13,11 +13,12 @@ import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { login } from '../slices/userSlice';
 
-const Login = () => {
+const Login = (props) => {
 
     const history = useHistory();
     const [email, setEmail] = useState('');
-
+    const location = useLocation();
+    // console.log(props.location.state.prevPath);
 
     const dispatch = useDispatch();
     const [password, setPassword] = useState('');
@@ -47,7 +48,8 @@ const Login = () => {
                 displayName: userAuth.user.displayName,
             }))
         })
-        .catch(error => alert(error.message))
+        .catch(error => alert(error.message));
+        history.push(props?.location.state.prevPath);
         
     }
 

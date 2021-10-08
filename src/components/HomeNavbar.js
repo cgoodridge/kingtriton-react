@@ -26,7 +26,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import '../css/homeHeader.css';
 import CartItem from './CartItem';
-import { selectUser } from '../slices/userSlice';
+import { selectUser, logout } from '../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '../slices/cartSlice';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -89,11 +89,10 @@ const HomeNavbar = (props) => {
         setExpansion(!expand);
     };
 
-
-    
-    const logout = () => {
-       dispatch(logout());
+    const logoutOfApp = () => {
+       dispatch(logout);
        auth.signOut();
+       handleLoggedInMenuClose();
     }
  
     const [cartState, setCartState] = useState({
@@ -139,6 +138,7 @@ const HomeNavbar = (props) => {
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
+
     const handleLoggedInMenuClose = () => {
         setLoggedInAnchor(null);
     };
@@ -250,10 +250,10 @@ const HomeNavbar = (props) => {
                         </ListItemButton>
                         <Collapse in={expand} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding = "true">
-                                <ListItemButton sx={{ pl: 8 }}>
+                                <ListItemButton component={Link} to="/account" sx={{ pl: 8 }}>
                                     <ListItemText primary="My Account" />
                                 </ListItemButton>
-                                <ListItemButton sx={{ pl: 8 }}>
+                                <ListItemButton onClick={logoutOfApp} sx={{ pl: 8 }}>
                                     <ListItemText primary="Logout" />
                                 </ListItemButton>
                             </List>
@@ -268,10 +268,10 @@ const HomeNavbar = (props) => {
                         </ListItemButton>
                         <Collapse in={expand} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding = "true">
-                                <ListItemButton sx={{ pl: 8 }}>
+                                <ListItemButton component={Link} to="/login" sx={{ pl: 8 }}>
                                     <ListItemText primary="Login" />
                                 </ListItemButton>
-                                <ListItemButton sx={{ pl: 8 }}>
+                                <ListItemButton component={Link} to="/register" sx={{ pl: 8 }}>
                                     <ListItemText primary="Register" />
                                 </ListItemButton>
                             </List>
@@ -359,10 +359,8 @@ const HomeNavbar = (props) => {
                                 }}
                             >
                                 <MenuItem onClick={handleLoggedInMenuClose} component={Link} to="/account">My Account</MenuItem>
-                                <MenuItem onClick={handleLoggedInMenuClose}>
-                                    <Button size='small' variant="contained" color="secondary"  onClick={logout}>
-                                        Logout
-                                    </Button> 
+                                <MenuItem onClick={logoutOfApp}>
+                                    Logout
                                 </MenuItem>
                             </Menu>
                             <Menu

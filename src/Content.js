@@ -20,6 +20,8 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useElements } from '@stripe/react-stripe-js'
 import ProtectedRoute from './components/ProtectedRoute';
 import { logout, login } from './slices/userSlice';
+import { SnackbarProvider } from 'notistack';
+import Slide from '@material-ui/core/Slide';
 
 
 import {
@@ -125,68 +127,76 @@ const Content = (props) => {
     <Router>
       <div className="App">
         <ThemeProvider theme={theme} >
-          <Switch>
-            <Route exact path="/">
-              <HomeNavbar />
-              <main>
-                <Home food={menu} loading={menu.length <= 0 ? true : false} />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/menu">
-              <Navbar cart={cartList} />
-              <main>
-                <Menu food={menu} loading={menu.length <= 0 ? true : false} />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/reservations" >
-              <Navbar cart={cartList} />
-              <main>
-                <Reservations />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/contact">
-              <Navbar cart={cartList} />
-              <main>
-                <Contact />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/about" >
-              <Navbar cart={cartList} />
-              <main>
-                <About />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/account" >
-              <Navbar />
-              <main>
-                <Account />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/checkout">
-              <Navbar cart={cartList} />
-              <main>
-                <Elements stripe={promise}>
-                  <Checkout />
-                </Elements>
-              </main>
-              <Footer />
-            </Route>
-            <ProtectedRoute exact path="/login" comp={Login} />
-            <ProtectedRoute exact path="/register" comp={Register} />
-            <Route component={PageNotFound}>
-              <main>
-                <PageNotFound />
-              </main>
-            </Route>
-          </Switch>
+          <SnackbarProvider 
+            maxSnack={3}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            TransitionComponent={Slide}
+            >
 
-
+            <Switch>
+              <Route exact path="/">
+                <HomeNavbar />
+                <main>
+                  <Home food={menu} loading={menu.length <= 0 ? true : false} />
+                </main>
+                <Footer />
+              </Route>
+              <Route exact path="/menu">
+                <Navbar cart={cartList} />
+                <main>
+                  <Menu food={menu} loading={menu.length <= 0 ? true : false} />
+                </main>
+                <Footer />
+              </Route>
+              <Route exact path="/reservations" >
+                <Navbar cart={cartList} />
+                <main>
+                  <Reservations />
+                </main>
+                <Footer />
+              </Route>
+              <Route exact path="/contact">
+                <Navbar cart={cartList} />
+                <main>
+                  <Contact />
+                </main>
+                <Footer />
+              </Route>
+              <Route exact path="/about" >
+                <Navbar cart={cartList} />
+                <main>
+                  <About />
+                </main>
+                <Footer />
+              </Route>
+              <Route exact path="/account" >
+                <Navbar />
+                <main>
+                  <Account />
+                </main>
+                <Footer />
+              </Route>
+              <Route exact path="/checkout">
+                <Navbar cart={cartList} />
+                <main>
+                  <Elements stripe={promise}>
+                    <Checkout />
+                  </Elements>
+                </main>
+                <Footer />
+              </Route>
+              <ProtectedRoute exact path="/login" comp={Login} />
+              <ProtectedRoute exact path="/register" comp={Register} />
+              <Route component={PageNotFound}>
+                <main>
+                  <PageNotFound />
+                </main>
+              </Route>
+            </Switch>
+          </SnackbarProvider>
         </ThemeProvider>
       </div>
 
