@@ -176,7 +176,7 @@ function Reservations() {
     {
       isTableSelected(false);
     }
-  });
+  }, [selectedTable]);
 
   const handleReservation = (e) => {
     e.preventDefault();
