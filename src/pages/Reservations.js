@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';  
 import Container from '@material-ui/core/Container';
@@ -61,58 +61,103 @@ const useStyles = makeStyles((theme) => ({
 
 const tables = [
   {
+    value: 'none',
+    label: 'None Selected',
+  },
+  {
     value: 'couple1',
-    label: 'C1 - Couple Table 1',
+    label: 'Table C1, Ocean Front',
   },
   {
     value: 'couple2',
-    label: 'C2 - Couple Table 2',
+    label: 'Table C2, Ocean Front',
+  },
+  {
+    value: 'couple3',
+    label: 'Table C3, Ocean Front',
   },
   {
     value: 'couple4',
-    label: 'C3 - Couple Table 3',
+    label: 'Table C4, Ocean Front',
   },
   {
-    value: 'couple4',
-    label: 'C4 - Couple Table 4',
+    value: 'sGroup1',
+    label: 'Table G1',
   },
   {
-    value: 'family1',
-    label: 'F1 - Family Table 1',
+    value: 'sGroup2',
+    label: 'Table G2',
   },
   {
-    value: 'family2',
-    label: 'F2 - Family Table 2',
+    value: 'sGroup3',
+    label: 'Table G3',
   },
   {
-    value: 'family3',
-    label: 'F3 - Family Table 3',
+    value: 'sGroup4',
+    label: 'Table G4',
   },
   {
-    value: 'family4',
-    label: 'F4 - Family Table 4',
+    value: 'sGroup5',
+    label: 'Table G5',
   },
   {
-    value: 'family5',
-    label: 'F5 - Family Table 5',
+    value: 'sGroup6',
+    label: 'Table G6',
   },
   {
-    value: 'family6',
-    label: 'F6 - Family Table 6',
+    value: 'sGroup7',
+    label: 'Table G7',
   },
   {
-    value: 'family3',
-    label: 'F7 - Family Table 7',
+    value: 'sGroup8',
+    label: 'Table G8',
   },
   {
-    value: 'family4',
-    label: 'F8 - Family Table 8',
+    value: 'party1',
+    label: 'Table P1',
+  },
+  {
+    value: 'party2',
+    label: 'Table P2',
+  },
+  {
+    value: 'party3',
+    label: 'Table P3',
+  },
+  {
+    value: 'party4',
+    label: 'Table P4',
+  },
+  {
+    value: 'party5',
+    label: 'Table P5, Ocean Front',
+  },
+  {
+    value: 'party6',
+    label: 'Table P6, Ocean Front',
+  },
+  {
+    value: 'booth4',
+    label: 'Booth 4',
+  },
+  {
+    value: 'booth3',
+    label: 'Booth 3',
+  },
+  {
+    value: 'booth2',
+    label: 'Booth 2',
+  },
+  {
+    value: 'booth1',
+    label: 'Booth 1',
   },
 ];
 
 function Reservations() {
 
   const [selectedTable, setSelectedTable] = useState('');
+  const [isSelected, isTableSelected] = useState(false);
   const [occasion, setOccasion] = useState('');
   const [reservationName, setReservationName] = useState('');
   const [reservationEmail, setReservationEmail] = useState('');
@@ -120,13 +165,26 @@ function Reservations() {
   const [dateTimeValue, setDateTimeValue] = useState(new Date());
   const user = useSelector(selectUser);
 
-
-  const handleTableChange = (event) => {
-    setSelectedTable(event.target.value);
+  const getTableId = (e) => {  
+    isTableSelected(true);
+    setSelectedTable(e.target.id);
   };
+
+ 
+  useEffect(() => {
+    if (selectedTable === 'none')
+    {
+      isTableSelected(false);
+    }
+  });
 
   const handleReservation = (e) => {
     e.preventDefault();
+    if (selectedTable === 'none')
+    {
+      alert("Please select a table");
+      return;
+    }
     db
       .collection('users')
       .doc(user?.uid)
@@ -135,8 +193,14 @@ function Reservations() {
       .set({
         partySize: partySize,
         occasion: occasion,
-        dateTime: dateTimeValue,
+        dateTime: dateTimeValue.toDate(),
         table: selectedTable,
+      })
+      .then(() => {
+        setPartySize(1);
+        setOccasion('');
+        setDateTimeValue('');
+        setSelectedTable('none');
       })
       .catch(error => alert(error.message))
 
@@ -260,194 +324,194 @@ function Reservations() {
             <Box container className={classes.resArea}>
               <Box className="bookingArea">
                 {/* <Reservationbooking /> */}
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'party6' ? "tableContainerSelected" : "tableContainer"} >
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         P6
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                    <img id="party6" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
 
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'party5' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         P5
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                    <img id="party5" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'couple4' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         C4
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
+                    <img id="couple4" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'couple3' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         C3
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
+                    <img id="couple3" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'couple2' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         C2
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
+                    <img id="couple2" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'couple1' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         C1
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
+                    <img id="couple1" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
                 </div>
               </Box>
               <Box className="bookingArea">
                 {/* <Reservationbooking /> */}
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'party4' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         P4
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                    <img id="party4" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
 
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'party3' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         P3
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                    <img id="party3" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'sGroup8' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        F8
+                        G8
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                    <img id="sGroup8" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'sGroup7' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        F7
+                        G7
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                    <img id="sGroup7" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'sGroup6' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        F6
+                        G6
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                    <img id="sGroup6" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'sGroup5' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        F5
+                        G5
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                    <img id="sGroup5" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
               </Box>
               <Box className="bookingArea">
                 {/* <Reservationbooking /> */}
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'party2' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         P2
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                    <img id="party2" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
 
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'party1' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         P1
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                    <img id="party1" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'sGroup4' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        F4
+                        G4
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                    <img id="sGroup4" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'sGroup3' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        F3
+                        G3
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                    <img id="sGroup3" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'sGroup2' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        F2
+                        G2
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                    <img id="sGroup2" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'sGroup1' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        F1
+                        G1
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                    <img id="sGroup1" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
               </Box>
               <Box className="bookingArea">
                 {/* <Reservationbooking /> */}
                 
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'booth4' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         B4
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
+                    <img id="booth4" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'booth3' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         B3
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
+                    <img id="booth3" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'booth2' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         B2
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
+                    <img id="booth2" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
                 </div>
-                <div className="tableContainer">
+                <div className={isSelected && selectedTable === 'booth1' ? "tableContainerSelected" : "tableContainer"}>
                     <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
                         B1
                     </Typography>
                     </div>
-                    <img src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
+                    <img id="booth1" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
                 </div>
               </Box>
             </Box>

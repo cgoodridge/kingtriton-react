@@ -32,9 +32,10 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import IconButton from '@mui/material/IconButton';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import EditIcon from '@mui/icons-material/Edit';
-import { selectUser } from '../slices/userSlice';
+import { selectUser, updateProfile } from '../slices/userSlice';
 import { useSelector } from 'react-redux';
 import { db, auth, storage } from '../firebaseConfigFile';
+import { useDispatch } from 'react-redux';
 
 
 const TabPanel = (props) => {
@@ -76,6 +77,7 @@ const Input = styled('input')({
 
 const Account = () => {
 
+    const dispatch = useDispatch();
     const user = useSelector(selectUser);
     const [value, setValue] = useState(0);
     const [selectedFile, setSelectedFile] = useState();
@@ -120,15 +122,20 @@ const Account = () => {
                         auth.currentUser.updateProfile({
                             photoURL: url
                         })
-                        console.log('Image URL is ', url);
+                        .then(() =>{
+                            dispatch(
+                                updateProfile({
+                                    photoURL: auth.currentUser.photoURL
+                                }));
+                        })
+                        
                     })
             })
             .catch(error => alert(error.message))
         handleClose();
     };
 
-    // console.log('User profile pic', auth.currentUser.photoURL);
-    console.log(user);
+    // console.log(user.photoURL);
 
     return (
         <>
@@ -145,7 +152,7 @@ const Account = () => {
                                 <HighlightOffIcon onClick={handleImageRemoval} fontSize="large" sx={{ cursor: 'pointer' }} />
                             }
                         >
-                            <Avatar src={selectedFile ? URL.createObjectURL(selectedFile) : ""} aria-label="upload picture" sx={{ backgroundColor: 'purple', width: 200, height: 200, marginleft: '180px', fontSize: '80px' }}>SR</Avatar>
+                            <Avatar src={selectedFile ? URL.createObjectURL(selectedFile) : ""} aria-label="upload picture" sx={{ backgroundColor: 'purple', width: 200, height: 200, marginleft: '180px', fontSize: '80px' }}>{user.displayName.charAt(0)}</Avatar>
                         </Badge>
                     </DialogContentText>
                     {selectedFile ? 
@@ -192,7 +199,7 @@ const Account = () => {
                             }
                         >
 
-                            <Avatar src={auth.currentUser.photoURL} aria-label="upload picture" onClick={handleClickOpen} sx={{ backgroundColor: 'purple', width: 200, height: 200, fontSize: '80px', cursor: 'pointer' }}>SR</Avatar>
+                            <Avatar src={auth.currentUser ? auth.currentUser.photoURL : ""} aria-label="upload picture" onClick={handleClickOpen} sx={{ backgroundColor: 'purple', width: 200, height: 200, fontSize: '80px', cursor: 'pointer' }}>{user.displayName.charAt(0)}</Avatar>
 
                         </Badge>
                     </Box>
@@ -212,8 +219,8 @@ const Account = () => {
                             <Tab label="Account Details" {...a11yProps(0)} />
                             <Tab label="Order History" {...a11yProps(1)} />
                             <Tab label="Reservation History" {...a11yProps(2)} />
-                            {/* <Tab label="Privacy Policy" {...a11yProps(3)} /> */}
-                            {/* <Tab label="Help" {...a11yProps(4)} /> */}
+                            <Tab label="Privacy Policy" {...a11yProps(3)} />
+                            <Tab label="Help" {...a11yProps(4)} />
                         </Tabs>
 
                     </Box>
@@ -263,10 +270,9 @@ const Account = () => {
                                 <CloudUploadIcon fontSize="large" sx={{ color: '#2196f3' }} />
                             }
                         >
-                            <label htmlFor="icon-button-file">
-                                <Input accept="image/*" id="icon-button-file" type="file" onChange={handleFileUpload} />
-                                <Avatar aria-label="upload picture" sx={{ backgroundColor: 'purple', width: 150, height: 150, fontSize: '40px', cursor: 'pointer' }}>SR</Avatar>
-                            </label>
+                            
+                            <Avatar src={auth.currentUser ? auth.currentUser.photoURL : ""} aria-label="upload picture" onClick={handleClickOpen} sx={{ backgroundColor: 'purple', width: 150, height: 150, fontSize: '40px', cursor: 'pointer' }}>SR</Avatar>
+                            
                         </Badge>
                     </Box>
                     <Tabs

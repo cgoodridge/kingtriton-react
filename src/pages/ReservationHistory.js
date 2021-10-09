@@ -9,6 +9,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import '../css/reservationHistory.css';
 import Reservationcard from '../components/ReservationCard';
+import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
 
 
 const Reservationhistory = () => {
@@ -16,7 +18,6 @@ const Reservationhistory = () => {
     const user = useSelector(selectUser);
 
     const [reservations, setReservations] = useState([]);
-    console.log(reservations);
 
     useEffect(() => {
 
@@ -44,16 +45,19 @@ const Reservationhistory = () => {
                 </Typography>
                 
                         {
-                        
-                        reservations ? 
+                        !reservations.length <=0 ? 
                             reservations.map(reservation => (
                                 <Reservationcard reservation={reservation} />
                             ))
                         :
-
-                        <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{textAlign: 'left', marginTop: '16px'}}>
-                            You haven't made any reservations yet. 
-                        </Typography>
+                            <>
+                                <Typography variant="h6" className="emptyReservationText" gutterBottom component="div" style={{textAlign: 'left', marginTop: '16px'}}>
+                                    You haven't made any reservations yet. 
+                                </Typography>
+                                <div>
+                                    <Button variant="contained"  component={Link} to="/reservations">Make A Reservation</Button>
+                                </div>
+                            </>
                         }
                     
                 

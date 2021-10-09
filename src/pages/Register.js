@@ -60,7 +60,8 @@ const Register = () => {
                     login({
                         email: auth.user.email,
                         uid: auth.user.uid,
-                        displayName: fName + lName,
+                        displayName: fName + " " + lName,
+                        photoURL: auth.user.photoURL ? auth.user.photoURL : "",
                     }));
             }).catch(error => alert(error.message))
             saveUserData(auth.user.uid);
@@ -104,12 +105,10 @@ const Register = () => {
                         <div>
                             <Button variant="contained" className="registerButton" type="submit" onClick={register}>Register</Button>
                         </div>
-                        
                     </form>
                 </CardContent>
             </Card>
         </div>
-
     );
 }
 

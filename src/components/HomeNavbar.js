@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Badge from '@material-ui/core/Badge';
@@ -74,7 +74,7 @@ const HomeNavbar = (props) => {
     const _isMounted = useRef(true);
     const user = useSelector(selectUser);
     const cart = useSelector(selectItems);
-
+    const history = useHistory();
     const dispatch = useDispatch();
     // const userInfo = useSelector(selectUser);
 
@@ -93,6 +93,7 @@ const HomeNavbar = (props) => {
        dispatch(logout);
        auth.signOut();
        handleLoggedInMenuClose();
+       history.push('/');
     }
  
     const [cartState, setCartState] = useState({
@@ -245,7 +246,7 @@ const HomeNavbar = (props) => {
                     {user ? 
                     <>
                         <ListItemButton sx={{ pl: 4 }} onClick={handleExpansionClick}>
-                            <ListItemText primary={'Hi ' + user.displayName} />
+                            <ListItemText primary={'Hi ' + user?.displayName.split(" ")[0]} />
                             {expand ? <ExpandLess /> : <ExpandMore />}
                         </ListItemButton>
                         <Collapse in={expand} timeout="auto" unmountOnExit>
@@ -333,7 +334,7 @@ const HomeNavbar = (props) => {
                                 <li><Link to="/reservations">Reservations</Link></li>
                                 <li><Link to="/contact">Contact</Link></li>
                                 <li><Link to="/about">About</Link></li>
-                                <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? user.displayName : 'Guest'} <KeyboardArrowDownIcon sx={{paddingTop: '5px'}} /></li>            
+                                <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hi, {user ? user.displayName.split(" ")[0] : 'Guest'} <KeyboardArrowDownIcon sx={{paddingTop: '5px'}} /></li>            
                                 <li>
                                 {['right'].map((anchor) => (
                                     <React.Fragment key={anchor}>

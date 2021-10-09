@@ -5,6 +5,11 @@
     height: auto;
 }
 
+.emptyReservationText{
+    font-family: 'Open Sans';
+    font-weight: 300;
+}
+
 .resText{
     font-family: 'Poiret One' !important;
 }

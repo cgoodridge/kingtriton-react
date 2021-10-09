@@ -4,11 +4,21 @@ import { createSlice } from '@reduxjs/toolkit';
 export const userSlice = createSlice({
     name: "user",
     initialState: {
-        user: null,
+        user: {
+            email: "",
+            uid: "",
+            displayName: "",
+            photoURL: ""
+        },
     },
     reducers: {
         login: (state, action) => {
             state.user = action.payload;
+        },
+        updateProfile:(state, action) => {
+            console.log("Payload is ", action.payload);
+            state.user.photoURL = action.payload.photoURL;
+            console.log("user after payload is ", state.user);
         },
         logout: (state) => {
             state.user = null;
@@ -16,7 +26,7 @@ export const userSlice = createSlice({
     }
 });
 
-export const { login, logout} = userSlice.actions;
+export const { login, logout, updateProfile } = userSlice.actions;
 
 export const selectUser = (state) => state.user.user;
 
