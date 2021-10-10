@@ -14,23 +14,35 @@ export const cartSlice = createSlice({
             );
 
             if (index >= 0) {
-                console.log('item in cart already, updating quantity');
                 let newCart = [...state.items];
 
                 const dupItem = newCart[index];
-                console.log('cart value is', dupItem);
 
                 newCart[index].qty = dupItem.qty + action.payload.qty;
                 newCart[index].price = (parseFloat(action.payload.price) * parseFloat(action.payload.qty)) + parseFloat(newCart[index].price);
-                
                 state.items = newCart;
 
             } else {
-                console.log('Add item as normal');
                 state.items = [...state.items, action.payload];
             }
+        },
+        updateCart: (state, action) => {
+            const index = state.items.findIndex(
+                (cartItem) => cartItem.id === action.payload.id
+            );
+            console.log('Cart function called ');
 
 
+            if (index >= 0) {
+                let newCart = [...state.items];
+                const foundItem = newCart[index];
+
+                newCart[index].qty = foundItem.qty + action.payload.qty;
+                newCart[index].price = (parseFloat(action.payload.price) * parseFloat(action.payload.qty)) + parseFloat(newCart[index].price);
+                state.items = newCart;
+                console.log('Cart quantities updated ');
+
+            }
         },
         removeFromCart: (state, action) => {
             const index = state.items.findIndex(
@@ -53,7 +65,7 @@ export const cartSlice = createSlice({
     },
 });
 
-export const { addToCart, removeFromCart, emptyCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, emptyCart, updateCart } = cartSlice.actions;
 
 export const selectItems = (state) => state.cart.items;
 

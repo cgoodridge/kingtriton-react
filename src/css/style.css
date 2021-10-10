@@ -168,7 +168,9 @@ ul {
 
 
 
-
+.MuiButton-containedSecondary {
+  color: #fff !important;
+}
 
 .hero-text{
   display: flex;

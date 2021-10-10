@@ -8,7 +8,6 @@ import TextField from '@material-ui/core/TextField';
 import { createTheme } from '@material-ui/core/styles';
 import MenuItem from '@mui/material/MenuItem';
 import { db } from '../firebaseConfigFile';
-import { useStateValue } from '../StateProvider';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import AdapterMoment from '@mui/lab/AdapterMoment';
@@ -16,8 +15,7 @@ import { selectUser } from '../slices/userSlice';
 import { useSelector } from 'react-redux';
 import Box from '@material-ui/core/Box';
 import '../css/reservation.css';
-import Reservationbooking from '../components/ReservationBooking';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 
 
@@ -164,6 +162,7 @@ function Reservations() {
   const [partySize, setPartySize] = useState(1);
   const [dateTimeValue, setDateTimeValue] = useState(new Date());
   const user = useSelector(selectUser);
+  const history = useHistory();
 
   const getTableId = (e) => {  
     isTableSelected(true);
@@ -201,6 +200,8 @@ function Reservations() {
         setOccasion('');
         setDateTimeValue('');
         setSelectedTable('none');
+
+        history.pushState('/account')
       })
       .catch(error => alert(error.message))
 

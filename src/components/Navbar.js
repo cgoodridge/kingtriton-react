@@ -76,7 +76,8 @@ const Navbar = (props) => {
     const classes = useStyles();
     const [expand, setExpansion] = useState(true);
 
-    const handleExpansionClick = () => {
+    const handleExpansionClick = (e) => {
+        e.stopPropagation();
         setExpansion(!expand);
     };
 
@@ -103,6 +104,7 @@ const Navbar = (props) => {
 
     
     const toggleCartDrawer = (anchor, open) => (event) => {
+
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
@@ -159,12 +161,13 @@ const Navbar = (props) => {
         
             <List className="cart" style={{height: '500px', width: '100%',}}>
                 <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.cartText}
+                    component="h5"
+                    variant="h5"
+                    align="center"
+                    className="cartText"
                     color="textPrimary"
                 >
-                    Items in your cart
+                    Your Cart
                 </Typography>
                 <Divider/>
                 {cart.map((food, key) => (
@@ -176,13 +179,13 @@ const Navbar = (props) => {
                         
                     </>
                 ))} 
-                <ListItem>
-                    <Link to="/checkout">
-                        <Button variant="contained" color="primary" style={{width: '100%'}}>
-                            Checkout
-                        </Button>
-                    </Link>
-                    
+               <ListItem className="cartOptions">
+                    <Button variant="contained" color="secondary" component={Link} to="/checkout" >
+                        Checkout
+                    </Button>
+                    <Button variant="contained" color="secondary" component={Link} to="/checkout" >
+                        Update Cart
+                    </Button>
                 </ListItem>
             </List>
             <Divider />
@@ -299,7 +302,7 @@ const Navbar = (props) => {
                                 <React.Fragment key={anchor}>
                                     <Box sx={{ display: {xs: 'flex', sm: 'flex', md: 'none', lg: 'none' } }} >
                                         <a href="#" data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></a>
-                                        <Drawer anchor={anchor} open={menuState[anchor]} onClose={toggleMenuDrawer(anchor, false)}>
+                                        <Drawer ModalProps={{ keepMounted: true, }} anchor={anchor} open={menuState[anchor]} onClose={toggleMenuDrawer(anchor, false)}>
                                             {navList(anchor)}
                                         </Drawer>
                                     </Box>

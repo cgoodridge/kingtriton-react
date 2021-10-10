@@ -53,3 +53,13 @@
     padding: 0; 
 }
 
+.cartOptions{
+    justify-content: space-between !important;
+}
+
+.cartText{
+    /* padding: 16px; */
+    font-weight: bold;
+    /* text-align: center; */
+    font-family: 'Poiret One' Arial, Helvetica, sans-serif;
+}
