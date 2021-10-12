@@ -39,10 +39,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import CloseIcon from '@mui/icons-material/Close';
 import Grid from '@mui/material/Grid';
 import CurrencyFormat from 'react-currency-format';
-import { removeFromCart, updateCart } from '../slices/cartSlice';
-
-
-
+import { removeFromCart, updateCart, addToCart } from '../slices/cartSlice';
 
 
 const HideOnScroll = (props) => {
@@ -88,6 +85,7 @@ const HomeNavbar = (props) => {
         right: false,
     });
     const [expand, setExpansion] = useState(true);
+    const [cartUpdateId, setCartUpdateId] = useState([]);
     const [menuState, setMenuState] = useState({
         right: false,
     });
@@ -100,7 +98,6 @@ const HomeNavbar = (props) => {
         setExpansion(!expand);
     };
 
-
     const logoutOfApp = () => {
         dispatch(logout);
         auth.signOut();
@@ -108,40 +105,6 @@ const HomeNavbar = (props) => {
         history.push('/');
     };
 
-
-    const handleQtyAdd = (e) => {
-        e.stopPropagation();
-        setQtyValue(qtyValue + 1);
-    };
-
-    const handleQtySub = (e) => {
-        e.stopPropagation();
-
-        if (qtyValue > 1) {
-
-            setQtyValue(qtyValue - 1);
-        }
-    };
-    
-    const removeItemFromCart = (e) => {
-        // const prodId = { id:props.id }
-        dispatch(removeFromCart({ id: e.currentTarget.id }));
-        e.stopPropagation();
-    };
-
-    const handleCartUpdate = (e) => {
-        dispatch(updateCart(qtyValue));
-        e.stopPropagation();
-    };
-
-    useEffect(() => {
-        if (qtyValue > 1) {
-            console.log('cart value changed');
-            setCartQtyChangeVal(true);
-        } else {
-            setCartQtyChangeVal(false);
-        }
-    }, [qtyValue])
 
     const toggleCartDrawer = (anchor, open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -158,8 +121,6 @@ const HomeNavbar = (props) => {
 
         setMenuState({ ...cartState, [anchor]: open });
     };
-
-
 
     const handleMenuClick = (event) => {
 
@@ -187,7 +148,6 @@ const HomeNavbar = (props) => {
             onClick={toggleCartDrawer(anchor, false)}
             onKeyDown={toggleCartDrawer(anchor, false)}
         >
-
             <List className="cart" style={{ height: '500px', width: '100%' }}>
                 <Typography
                     component="h5"
@@ -202,72 +162,14 @@ const HomeNavbar = (props) => {
                 {cart.map((food, index) => (
                     <>
                         <div key={food.id} id={food.id} style={{ padding: '8px 16px', marginTop: '16px' }}>
-                            {/* <CartItem id={food.id} name={food.name} price={food.price} image={food.image} qty={food.qty}/> */}
-                            <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                                <div>
-                                    <img src={food.image} alt={food.name} className="cartItemImage" />
-                                </div>
-                                <Grid container direction="column" style={{ marginLeft: '16px', width: '100%' }}>
-                                    <Grid item>
-                                        <Typography variant="subtitle2" gutterBottom component="div">
-                                            {food.name + ' x' + food.qty}
-                                        </Typography>
-
-                                        <CurrencyFormat
-                                            renderText={(value) => (
-                                                <>
-                                                    <Typography variant="subtitle2" gutterBottom component="div">
-                                                        {value}
-                                                    </Typography>
-                                                </>
-                                            )}
-                                            decimalScale={2}
-                                            value={food.price}
-                                            displayType={"text"}
-                                            thousandSeparator={true}
-                                            prefix={"$"}
-                                        />
-                                        <div className="cartItemCounter">
-                                            <IconButton color="secondary" size="small" style={{ backgroundColor: "#2196f3" }} onClick={handleQtySub}>
-                                                <RemoveIcon fontSize="inherit" />
-                                            </IconButton>
-
-                                            <input type="number" min="0" value={qtyValue} onChange={e => setQtyValue(parseInt(e.target.value))} className="qtyField"></input>
-
-                                            <IconButton color="secondary" size="small" style={{ backgroundColor: "#2196f3" }} onClick={handleQtyAdd}>
-                                                <AddIcon fontSize="inherit" />
-                                            </IconButton>
-                                        </div>
-                                    </Grid>
-
-                                </Grid>
-                                <div className="closeButton">
-                                    <IconButton id={food.id} aria-label="close" style={{ marinRight: '8px' }} onClick={removeItemFromCart}>
-                                        <CloseIcon />
-                                    </IconButton>
-                                </div>
-                            </div>
+                            <CartItem id={food.id} name={food.name} price={food.price} image={food.image} qty={food.qty}/>
                         </div>
                     </>
-
                 ))}
                 <ListItem className="cartOptions">
-                    <Button variant="contained" color="secondary" component={Link} to="/checkout" >
+                    <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
                         Checkout
                     </Button>
-
-                    {cartQtyChanged ?
-                        <Button variant="contained" onClick={handleCartUpdate} color="secondary">
-                            Update Cart
-                        </Button>
-
-                        :
-
-                        <Button variant="contained" disabled color="secondary">
-                            Update Cart
-                        </Button>
-                    }
-
                 </ListItem>
             </List>
             <Divider />

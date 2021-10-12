@@ -180,11 +180,8 @@ const Navbar = (props) => {
                     </>
                 ))} 
                <ListItem className="cartOptions">
-                    <Button variant="contained" color="secondary" component={Link} to="/checkout" >
+                    <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
                         Checkout
-                    </Button>
-                    <Button variant="contained" color="secondary" component={Link} to="/checkout" >
-                        Update Cart
                     </Button>
                 </ListItem>
             </List>

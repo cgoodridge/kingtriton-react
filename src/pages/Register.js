@@ -11,6 +11,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useDispatch } from 'react-redux';
 import { login } from '../slices/userSlice';
+import { Typography } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
 
@@ -92,7 +94,10 @@ const Register = () => {
                 {/* Card Image */}
                 {/* cardContent classname coming from login.css */}
                 <CardContent className="registerCardContent">
-                    <h2>Register</h2>
+                    {/* <h2>Register</h2> */}
+                    <Typography variant="h2" component={Link} to="/">
+                        Register
+                    </Typography>
                     <form action="">
                         <TextField fullWidth value={fName} onChange={e => setFirstName(e.target.value)} id="fName" label="First Name" variant="standard" />
                         <TextField fullWidth value={lName} onChange={e => setLastName(e.target.value)} id="lName" label="Last Name" variant="standard" />

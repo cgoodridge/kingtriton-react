@@ -12,6 +12,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { login } from '../slices/userSlice';
+import { Typography } from '@material-ui/core';
 
 const Login = (props) => {
 
@@ -59,7 +60,10 @@ const Login = (props) => {
             <Card className="loginCard">
                 {/* Card Image */}
                 <CardContent className="loginCardContent">
-                    <h2>Login</h2>
+                    <Typography variant="h2" component={Link} to="/">
+                        Login
+                    </Typography>
+                    {/* <h2>Login</h2> */}
                     <form action="">
                         <Box>
                         <TextField fullWidth value={email} onChange={e => setEmail(e.target.value)} id="email" label="E-Mail" variant="standard" margin="dense"/>

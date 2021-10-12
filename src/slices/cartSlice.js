@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     items: [],
+    initialQty: 1,
 };
 
 export const cartSlice = createSlice({
@@ -26,23 +27,52 @@ export const cartSlice = createSlice({
                 state.items = [...state.items, action.payload];
             }
         },
-        updateCart: (state, action) => {
+        updateCartIncrease: (state, action) => {
+            
             const index = state.items.findIndex(
                 (cartItem) => cartItem.id === action.payload.id
             );
-            console.log('Cart function called ');
 
+            
+            const baseItemPrice = state.items[index].price;
 
             if (index >= 0) {
                 let newCart = [...state.items];
                 const foundItem = newCart[index];
-
-                newCart[index].qty = foundItem.qty + action.payload.qty;
-                newCart[index].price = (parseFloat(action.payload.price) * parseFloat(action.payload.qty)) + parseFloat(newCart[index].price);
+                newCart[index].qty++;
+                newCart[index].price = (parseFloat(baseItemPrice) * parseFloat(newCart[index].qty)) / (parseFloat(newCart[index].qty) - 1);
                 state.items = newCart;
-                console.log('Cart quantities updated ');
-
+                console.log('Cart quantities updated ', state.items);
             }
+            
+        },
+        updateCartDecrease: (state, action) => {
+            
+            const index = state.items.findIndex(
+                (cartItem) => cartItem.id === action.payload.id
+            );
+            
+            const baseItemPrice = state.items[index].price;
+            console.log('Current price is ', baseItemPrice);
+            console.log('Current qty is ', baseItemPrice);
+
+            if (index >= 0) {
+                let newCart = [...state.items];
+                const foundItem = newCart[index];
+                if (newCart[index].qty >= 1)
+                {
+                    newCart[index].qty--;
+                } else {
+                    newCart[index].qty = 1;
+                }
+                newCart[index].price = (parseFloat(newCart[index].price) / (parseFloat(newCart[index].qty) + 1)) * (parseFloat(newCart[index].qty));
+                state.items = newCart;
+                console.log('After price is ', newCart[index].price);
+                console.log('After qty is ', newCart[index].qty);
+                
+                console.log('Cart quantities updated ', state.items);
+            }
+           
         },
         removeFromCart: (state, action) => {
             const index = state.items.findIndex(
@@ -65,7 +95,7 @@ export const cartSlice = createSlice({
     },
 });
 
-export const { addToCart, removeFromCart, emptyCart, updateCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, emptyCart, updateCartIncrease, updateCartDecrease } = cartSlice.actions;
 
 export const selectItems = (state) => state.cart.items;
 
