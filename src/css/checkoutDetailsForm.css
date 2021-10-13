@@ -55,7 +55,7 @@ button:focus {
 @media only screen and (max-width: 600px) {
     .checkoutCard{
         width: 100%;
-        height: 350px;
+        /* height: 350px; */
         margin: 20px auto;
     }
 

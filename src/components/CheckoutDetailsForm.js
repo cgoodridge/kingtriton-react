@@ -16,7 +16,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
-import { useHistory } from 'react-router-dom'; 
+import { useHistory } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -36,18 +36,18 @@ import { useDispatch, useSelector } from 'react-redux';
 
 
 const cardProviders = [
-    {
-      value: 'VISA',
-      label: 'VISA',
-    },
-    {
-      value: 'MasterCard',
-      label: 'MasterCard',
-    },
-    {
-      value: 'AmericanExpress',
-      label: 'American Express',
-    },
+  {
+    value: 'VISA',
+    label: 'VISA',
+  },
+  {
+    value: 'MasterCard',
+    label: 'MasterCard',
+  },
+  {
+    value: 'AmericanExpress',
+    label: 'American Express',
+  },
 ];
 
 
@@ -100,129 +100,191 @@ const parishes = [
 
 const CheckoutDetailsForm = () => {
 
-const _isMounted = useRef(true);
+  const _isMounted = useRef(true);
 
-// const [{ cart, user }, dispatch] = useStateValue();
-const user = useSelector(selectUser);
-const cart = useSelector(selectItems);
-const dispatch = useDispatch();
-const total = useSelector(selectTotal);
-
-
-
-const [succeeded, setSucceeded] = useState(false);
-const [processing, setProcessing] = useState(false);
-const [clientSecret, setClientSecret] = useState("");
+  // const [{ cart, user }, dispatch] = useStateValue();
+  const user = useSelector(selectUser);
+  const cart = useSelector(selectItems);
+  const dispatch = useDispatch();
+  const total = useSelector(selectTotal);
 
 
-const handleClickOpen = () => {
-  setOpenForm(true);
-};
 
-const handleClose = () => {
-  setOpenForm(false);
-};
+  const [succeeded, setSucceeded] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [clientSecret, setClientSecret] = useState("");
+  const stripe = useStripe();
+  const elements = useElements();
 
-const handleCardSubmit = async (e) => {
+  const history = useHistory();
 
-  e.preventDefault();
+  const [open, setOpenForm] = useState(false);
 
-  if (savedAddresses <= 0)
-  {
-    alert('Please add an address');
-    return;
-  }
+  const [cardProvider, setCardProvider] = useState('VISA');
+  const [addressNameSelection, setAddressNameSelection] = useState('Home');
+  const [selectedValue, setSelectedValue] = useState('card');
 
-  setProcessing(true);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [altNumber, setAltNumber] = useState('');
 
-  const payload = await stripe.confirmCardPayment(clientSecret, {
-    payment_method: {
-      card: elements.getElement(CardElement)
+
+  const [addressState, setAddressState] = useState(false);
+  const [addressName, setAddressName] = useState('');
+  const [addressLine1, setAddressLine1] = useState('');
+  const [addressLine2, setAddressLine2] = useState('');
+  const [parish, setParish] = useState('');
+  const [directions, setDirections] = useState('');
+
+  const [error, setError] = useState(null);
+  const [disabled, setDisabled] = useState(null);
+
+  const [openConfirmMessage, setOpenConfirmMessage] = useState(false);
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [addressIndex, setAddressIndex] = useState(0);
+
+
+  const handleClickOpen = () => {
+    setOpenForm(true);
+  };
+
+  const handleClose = () => {
+    setOpenForm(false);
+  };
+
+  const handleCardSubmit = async (e) => {
+
+    e.preventDefault();
+
+    if (savedAddresses <= 0) {
+      alert('Please add an address');
+      return;
     }
-  }).then(({ paymentIntent }) => {
+
+    setProcessing(true);
+
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement)
+      }
+    }).then(({ paymentIntent }) => {
+
+      db
+        .collection('users')
+        .doc(user?.uid)
+        .collection('orders')
+        .doc(paymentIntent.id)
+        .set({
+          cart: cart,
+          amount: paymentIntent.amount,
+          createdAt: paymentIntent.created,
+          deliveryAddress: addressNameSelection,
+          paymentMethod: 'card',
+          contactNumber: mobileNumber,
+          altNumber: altNumber
+
+          // test: 'Transaction was successful'
+        })
+        .then(() => {
+          setSucceeded(true);
+          setError(null);
+          setProcessing(false);
+
+          dispatch(emptyCart);
+          handleConfirmMessageOpen();
+
+        });
+
+
+
+
+    })
+
+  };
+
+  useEffect(() => {
+
+    const index = savedAddresses.indexOf("Home");
+    console.log('Selected address index', addressNameSelection);
+    console.log('Selected address index', index);
+    savedAddresses.forEach(element => {
+      console.log(element.data.name);
+    });
+
+
+  }, [addressNameSelection]);
+
+
+
+  const handleCashPayment = (e) => {
+
+    e.preventDefault();
+
+    if (savedAddresses <= 0) {
+      alert('Please add an address');
+      return;
+    }
+
+    setProcessing(true);
 
     db
       .collection('users')
       .doc(user?.uid)
       .collection('orders')
-      .doc(paymentIntent.id)
+      .doc()
       .set({
         cart: cart,
-        amount: paymentIntent.amount,
-        createdAt: paymentIntent.created,
+        amount: total,
+        createdAt: moment.utc().toDate(),
         deliveryAddress: addressNameSelection,
+        paymentMethod: 'cash',
         contactNumber: mobileNumber,
         altNumber: altNumber
-
-        // test: 'Transaction was successful'
       })
+      .then(() => {
+        dispatch(emptyCart);
+        setSucceeded(true);
+        setError(null);
+        setProcessing(false);
+        handleConfirmMessageOpen();
 
-    setSucceeded(true);
-    setError(null);
-    setProcessing(false);
+      });
 
-    dispatch(emptyCart);
-    history.push('/orders');
+  };
 
-  })
-
-}
-
-const handleCardChange = (e) => {
-  setDisabled(e.empty);
-  setError(e.error ? e.error.message : "");
-}
-
-
-const stripe = useStripe();
-const elements = useElements();
-
-const history = useHistory();
-
-const [open, setOpenForm] = useState(false);
-
-const [cardProvider, setCardProvider] = useState('VISA');
-const [addressNameSelection, setAddressNameSelection] = useState('home');
-const [selectedValue, setSelectedValue] = useState('card');
-
-const [firstName, setFirstName] = useState('');
-const [lastName, setLastName] = useState('');
-const [mobileNumber, setMobileNumber] = useState('');
-const [altNumber, setAltNumber] = useState('');
-
-
-const [addressState, setAddressState] = useState(false);
-const [addressName, setAddressName] = useState('');
-const [addressLine1, setAddressLine1] = useState('');
-const [addressLine2, setAddressLine2] = useState('');
-const [parish, setParish] = useState('');
-const [directions, setDirections] = useState('');
-
-
-
-useEffect(() => {
-  const getClientSecret = async () => {
-    const response = await axios({
-      method: 'post',
-      url: `/checkout/create?total=${total * 100}`
-    });
-    setClientSecret(response.data.clientSecret)
+  const handleCardChange = (e) => {
+    setDisabled(e.empty);
+    setError(e.error ? e.error.message : "");
   }
 
-  getClientSecret();
+  useEffect(() => {
+    const getClientSecret = async () => {
+      const response = await axios({
+        method: 'post',
+        url: `/checkout/create?total=${total * 100}`
+      });
+      setClientSecret(response.data.clientSecret)
+    }
 
-  return () => { // ComponentWillUnmount 
-    _isMounted.current = false;
-  }
-}, [cart]);
+    getClientSecret();
 
-
-
-const [error, setError] = useState(null);
-const [disabled, setDisabled] = useState(null);
-
+    return () => { // ComponentWillUnmount 
+      _isMounted.current = false;
+    }
+  }, [cart]);
 
   /// TODO: Create object models to handle data
+
+  const handleConfirmMessageOpen = () => {
+    setOpenConfirmMessage(true);
+  };
+
+  const handleConfirmMessageClose = () => {
+    setOpenConfirmMessage(false);
+    history.push('/account');
+  };
+
 
   const handleChange = (event) => {
     setCardProvider(event.target.value);
@@ -257,99 +319,117 @@ const [disabled, setDisabled] = useState(null);
       .catch(error => alert(error.message))
 
     handleClose();
+
   };
 
-  const [savedAddresses, setSavedAddresses] = useState([]);
 
+  useEffect(() => {
 
-      useEffect(() => {
-          
-          db
-          .collection('users')
-          .doc(user?.uid)
-          .collection('storedAddresses')
-          .onSnapshot(snapshot => (
-            setSavedAddresses(snapshot.docs.map(doc => ({
-              id: doc.id,
-              data: doc.data()
-            })))
-          ))
-        
-          return () => { // ComponentWillUnmount 
-            _isMounted.current = false;
-          }
-        
-      }, []);
+    db
+      .collection('users')
+      .doc(user?.uid)
+      .collection('storedAddresses')
+      .onSnapshot(snapshot => (
+        setSavedAddresses(snapshot.docs.map(doc => ({
+          id: doc.id,
+          data: doc.data()
+        })))
+      ))
 
-      // console.log('Total addresses stored is ', savedAddresses);
+    return () => { // ComponentWillUnmount 
+      _isMounted.current = false;
+    }
 
-    return (
-      <>
-        <Dialog open={open} onClose={handleClose} className="modalCard" style={{ alignItems: "center", justifyContent: "center" }}>
-          <form action="">
-            <DialogTitle>New Delivery Address</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Save an address for faster checkout next time.
-              </DialogContentText>
-              <FormGroup>
-                <FormControlLabel control={<Checkbox checked={addressState} onChange={handleCheckboxChange}/>} label="Default Delivery Address" />
-              </FormGroup>
-              <TextField
-                autoFocus
-                margin="dense"
-                id="name"
-                value={addressName} 
-                onChange={e => setAddressName(e.target.value)}
-                label="Address Name"
-                type="text"
-                fullWidth
-                required
-                variant="standard"
-              />
-              <TextField
-                autoFocus
-                margin="dense"
-                id="addressLine1"
-                value={addressLine1} 
-                onChange={e => setAddressLine1(e.target.value)}
-                label="Address Line 1"
-                type="text"
-                fullWidth
-                required
-                variant="standard"
-              />
-              <TextField
-                autoFocus
-                margin="dense"
-                id="addressLine2"
-                value={addressLine2} 
-                onChange={e => setAddressLine2(e.target.value)}
-                label="Address Line 2"
-                type="text"
-                fullWidth
-                variant="standard"
-              />
-              <TextField
-                  id="standard-select-parish"
-                  select
-                  required
-                  fullWidth
-                  value={parish} 
-                  onChange={e => setParish(e.target.value)}
-                  label="Select"
-                  helperText="Select your parish"
-                  variant="standard"
-              >
+  }, []);
+
+  console.log(savedAddresses);
+  // console.log('Total addresses stored is ', savedAddresses);
+
+  return (
+    <>
+      <Dialog
+        open={openConfirmMessage}
+        onClose={handleConfirmMessageClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Order Placed! We'll get right on it!
+        </DialogTitle>
+        <DialogContent className="resConfirmed">
+          <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_tia15mzy.json" background="transparent" speed="1" style={{ width: '300px', height: '300px' }} loop autoplay></lottie-player>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirmMessageClose} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={open} onClose={handleClose} className="modalCard" style={{ alignItems: "center", justifyContent: "center" }}>
+        <form action="">
+          <DialogTitle>New Delivery Address</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Save an address for faster checkout next time.
+            </DialogContentText>
+            <FormGroup>
+              <FormControlLabel control={<Checkbox checked={addressState} onChange={handleCheckboxChange} />} label="Default Delivery Address" />
+            </FormGroup>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              value={addressName}
+              onChange={e => setAddressName(e.target.value)}
+              label="Address Name"
+              type="text"
+              fullWidth
+              required
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="addressLine1"
+              value={addressLine1}
+              onChange={e => setAddressLine1(e.target.value)}
+              label="Address Line 1"
+              type="text"
+              fullWidth
+              required
+              variant="standard"
+            />
+            <TextField
+              autoFocus
+              margin="dense"
+              id="addressLine2"
+              value={addressLine2}
+              onChange={e => setAddressLine2(e.target.value)}
+              label="Address Line 2"
+              type="text"
+              fullWidth
+              variant="standard"
+            />
+            <TextField
+              id="standard-select-parish"
+              select
+              required
+              fullWidth
+              value={parish}
+              onChange={e => setParish(e.target.value)}
+              label="Select"
+              helperText="Select your parish"
+              variant="standard"
+            >
               {parishes.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
               ))}
             </TextField>
             <TextField
               id="standard-textarea"
-              value={directions} 
+              value={directions}
               onChange={e => setDirections(e.target.value)}
               label="Directions"
               placeholder="Take a right by the white rabbit."
@@ -357,187 +437,188 @@ const [disabled, setDisabled] = useState(null);
               fullWidth
               variant="standard"
             />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleClose}>Cancel</Button>
-              <Button onClick={handleAddress} type="submit">Save</Button>
-            </DialogActions>
-          </form>
-        </Dialog>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button onClick={handleAddress} type="submit">Save</Button>
+          </DialogActions>
+        </form>
+      </Dialog>
 
-        <form onSubmit={handleCardSubmit}>
+      <form onSubmit={handleCardSubmit}>
 
         <div>
           {/* <form action=""> */}
-            <Card className="checkoutCard">
-              <CardContent>
-                <Typography variant="h6" sx={{ fontSize: 22 }} gutterBottom>
-                  Contact Info
-                </Typography>
-                <div>
-                  {user ? 
-                    <TextField fullWidth id="firstName" value={user.displayName.split(" ")[0]} onChange={e => setFirstName(e.target.value)} label="First Name" variant="standard" required focused />
-                    :
-                    <TextField fullWidth id="firstName" value={firstName} onChange={e => setFirstName(e.target.value)} label="First Name" variant="standard" required />
-                  }
-                </div>
-                <div>
-                  {user ? 
-                    <TextField fullWidth id="lastName" value={user.displayName.split(" ")[1]} onChange={e => setLastName(e.target.value)} label="Last Name" variant="standard" required focused />
-                    :
-                    <TextField fullWidth id="lastName" value={lastName} onChange={e => setLastName(e.target.value)} label="Last Name" variant="standard" required />
-                  }
-                </div>
-                <div>
-                    <TextField fullWidth id="mobileNumber" label="Mobile Contact Number" value={mobileNumber} onChange={e => setMobileNumber(e.target.value)} variant="standard" required/>
-                </div>
-                <div>
-                    <TextField fullWidth id="altNumber" label="Alternate Contact Number" value={altNumber} onChange={e => setAltNumber(e.target.value)} variant="standard"/>
-                </div>
-              </CardContent>
-            </Card>
-              
-            <Card className="checkoutCard">
-              <CardContent>
-                <Typography variant="h6" sx={{ fontSize: 18 }} gutterBottom>
-                  Delivery Address
-                </Typography>
-                  <Grid container spacing={3}>
-                    <Grid item xs={6} className="buttonAlign">
-                      <Button size='small' variant="outlined" onClick={handleClickOpen}>Add New Address</Button>
-                    </Grid>
-                    {savedAddresses  <= 0 ? 
-                      <div></div> 
+          <Card className="checkoutCard">
+            <CardContent>
+              <Typography variant="h6" sx={{ fontSize: 22 }} gutterBottom>
+                Contact Info
+              </Typography>
+              <div>
+                {user ?
+                  <TextField fullWidth id="firstName" value={user.displayName.split(" ")[0]} onChange={e => setFirstName(e.target.value)} label="First Name" variant="standard" margin="dense" required focused />
+                  :
+                  <TextField fullWidth id="firstName" value={firstName} onChange={e => setFirstName(e.target.value)} label="First Name" variant="standard" margin="dense" required />
+                }
+              </div>
+              <div>
+                {user ?
+                  <TextField fullWidth id="lastName" value={user.displayName.split(" ")[1]} onChange={e => setLastName(e.target.value)} label="Last Name" variant="standard" margin="dense" required focused />
+                  :
+                  <TextField fullWidth id="lastName" value={lastName} onChange={e => setLastName(e.target.value)} label="Last Name" variant="standard" margin="dense" required />
+                }
+              </div>
+              <div>
+                <TextField fullWidth id="mobileNumber" label="Mobile Contact Number" value={mobileNumber} onChange={e => setMobileNumber(e.target.value)} variant="standard" margin="dense" required />
+              </div>
+              <div>
+                <TextField fullWidth id="altNumber" label="Alternate Contact Number" value={altNumber} onChange={e => setAltNumber(e.target.value)} margin="dense" variant="standard" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="checkoutCard">
+            <CardContent>
+              <Typography variant="h6" sx={{ fontSize: 18 }} gutterBottom>
+                Delivery Address
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={6} className="buttonAlign">
+                  <Button size='small' variant="outlined" onClick={handleClickOpen}>Add New Address</Button>
+                </Grid>
+                {savedAddresses <= 0 ?
+                  <div></div>
 
 
-                      :
-                      <Grid item xs={6}>
-                        <TextField
-                              id="standard-select-address"
-                              select
-                              required
-                              fullWidth
-                              label="Select"
-                              placeholder="Choose Address"
-                              value={addressNameSelection}
-                              onChange={handleAddressNameSelection}
-                              helperText="Choose delivery address"
-                              variant="standard"
-                          >
-                          {savedAddresses.map((option) => (
-                              <MenuItem key={option.id} value={option.id}>
-                                {option.data.name}
-                              </MenuItem>
-                          ))}
-                        </TextField>
-                      </Grid> 
+                  :
+                  <Grid item xs={6}>
+                    <TextField
+                      id="standard-select-address"
+                      select
+                      required
+                      fullWidth
+                      label="Select"
+                      placeholder="Choose Address"
+                      value={addressNameSelection}
+                      onChange={handleAddressNameSelection}
+                      helperText="Choose delivery address"
+                      variant="standard"
+                    >
+                      {savedAddresses.map((option) => (
+                        console.log(savedAddresses.indexOf(option.data.name)),
 
-                    }
-                    
+                        <MenuItem key={option.id} value={option.id}>
+                          {option.data.name}
+                        </MenuItem>
+                      ))}
+                    </TextField>
                   </Grid>
-                  
-                  {savedAddresses  <= 0 ? 
-                      <div></div> 
+
+                }
+
+              </Grid>
+
+              {savedAddresses <= 0 ?
+                <div></div>
 
 
-                      :
-                  <>
-                    <Grid container spacing={3} >
-                      <Grid item xs={6}>
-                        <Typography sx={{ fontSize: 18 }} gutterBottom>
-                          Keith Hunte Hall, UWI, Cave Hill
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Button variant="outlined" size="small" className="editButton" startIcon={<EditIcon />}>
-                          Edit
-                        </Button>
-                      </Grid> 
+                :
+                <>
+                  <Grid container spacing={3} >
+                    <Grid item xs={6}>
+                      <Typography sx={{ fontSize: 18 }} gutterBottom>
+                        {savedAddresses[0].data.addressLine1}
+                      </Typography>
                     </Grid>
-                  
-                  
-                    <Typography variant="h6" gutterBottom>
-                          Delivery Directions
-                    </Typography>
-                    <Typography variant="body1" gutterBottom mb={3} style={{overflow: 'truncate'}}>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-                      blanditiis tenetur unde suscipit.
-                    </Typography>
-                  </>
-                  }
-              </CardContent>
-            </Card>
+                    <Grid item xs={6}>
+                      <Button variant="outlined" size="small" className="editButton" startIcon={<EditIcon />}>
+                        Edit
+                      </Button>
+                    </Grid>
+                  </Grid>
 
-            
 
-            <div className="radioFieldContainer">
-                <FormControl component="fieldset" >
-                  <FormLabel component="legend">Payment Option</FormLabel>
-                  <RadioGroup
-                    className="radioFields"
-                    row
-                    aria-label="payment option"
-                    name="controlled-radio-buttons-group"
-                    value={selectedValue}
-                    onChange={handleRadioChange}
-                  >
-                    <FormControlLabel value="card" control={<Radio />} label="By Card" />
-                    <FormControlLabel value="cash" control={<Radio />} label="Cash on Delivery" />
-                  </RadioGroup>
-                </FormControl>
-            </div>
-          
-          
+                  <Typography variant="h6" gutterBottom>
+                    Delivery Directions
+                  </Typography>
+                  <Typography variant="body1" gutterBottom mb={3} style={{ overflow: 'truncate' }}>
+                    {savedAddresses[0].data.directions}
+                  </Typography>
+                </>
+              }
+            </CardContent>
+          </Card>
 
-            {selectedValue === 'card' ? 
-            
-            
+
+
+          <div className="radioFieldContainer">
+            <FormControl component="fieldset" >
+              <FormLabel component="legend">Payment Option</FormLabel>
+              <RadioGroup
+                className="radioFields"
+                row
+                aria-label="payment option"
+                name="controlled-radio-buttons-group"
+                value={selectedValue}
+                onChange={handleRadioChange}
+              >
+                <FormControlLabel value="card" control={<Radio />} label="By Card" />
+                <FormControlLabel value="cash" control={<Radio />} label="Cash on Delivery" />
+              </RadioGroup>
+            </FormControl>
+          </div>
+
+
+
+          {selectedValue === 'card' ?
+
+
             <Card className="checkoutCard">
               <CardContent>
                 <Typography variant="h6" sx={{ fontSize: 18 }} gutterBottom>
                   Payment Info
                 </Typography>
 
-                  <CardElement onChange={handleCardChange}/>
+                <CardElement onChange={handleCardChange} />
 
               </CardContent>
-            </Card> : 
-            
+            </Card> :
+
             <div></div>}
 
-            <div className="submitButton">
-                  {selectedValue === 'cash' ? 
-                      <Button {...processing ? disabled : null} variant="contained" type="submit">Confirm</Button>
+          <div className="submitButton">
+            {selectedValue === 'cash' ?
+              <Button disabled={processing} variant="contained" type="submit" onClick={handleCashPayment}>Confirm</Button>
+              :
+              <CurrencyFormat
+                renderText={(value) => (
+                  <>
+                    {cart.length <= 0 ?
+                      <Button disabled variant="contained" type="submit">Cart Empty</Button>
                       :
-                      <CurrencyFormat
-                    renderText={(value) => (
-                    <>
-                      {cart.length <= 0 ? 
-                        <Button disabled variant="contained" type="submit">Cart Empty</Button>
-                        :
-                        <Button variant="contained" type="submit" onClick={handleCardSubmit}>{processing ?  "Processing" : "Pay " + value}</Button>
+                      <Button variant="contained" type="submit" onClick={handleCardSubmit}>{processing ? "Processing" : "Pay " + value}</Button>
 
-                      }
-                    </>
-                    )}
-                    decimalScale={2}
-                    value={total} 
-                    displayType={"text"}
-                    thousandSeparator={true}
-                    prefix={"$"}
-                  />
-                  }
-                  
-            </div>
+                    }
+                  </>
+                )}
+                decimalScale={2}
+                value={total}
+                displayType={"text"}
+                thousandSeparator={true}
+                prefix={"$"}
+              />
+            }
 
-            {/* Error Section */}
-            {error && <div>{error}</div>}
+          </div>
+
+          {/* Error Section */}
+          {error && <div>{error}</div>}
           {/* </form> */}
         </div>
-        </form>
-        
-      </>
-    );
+      </form>
+
+    </>
+  );
 }
 
 export default CheckoutDetailsForm;

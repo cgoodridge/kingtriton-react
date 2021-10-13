@@ -30,6 +30,15 @@
     cursor: pointer;
 }
 
+.resConfirmed{
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+}
+
 .seating:hover{
     /* color: white !important; */
 }

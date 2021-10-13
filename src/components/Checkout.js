@@ -165,7 +165,7 @@ const Checkout = () => {
                               </>
                               )}
                               decimalScale={2}
-                              value={total} 
+                              value={parseFloat(total)} 
                               displayType={"text"}
                               thousandSeparator={true}
                               prefix={"$"}

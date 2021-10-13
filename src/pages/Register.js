@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../slices/userSlice';
 import { Box, Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
 const Register = (props) => {
 
@@ -24,6 +25,8 @@ const Register = (props) => {
     const [fName, setFirstName] = useState('');
     const [lName, setLastName] = useState('');
     const [fieldVal, setFieldVal] = useState('password');
+    const [loading, setLoading] = useState(false);
+
     const dispatch = useDispatch();
 
     const [showPassword, setPasswordVisibility] = useState(false);
@@ -47,13 +50,15 @@ const Register = (props) => {
             alert('Both passwords must be the same');
             return;
         }
+        setLoading(true);
+
 
         auth
             .createUserWithEmailAndPassword(email, password)
             .then((auth) => {
 
                 auth.user.updateProfile({
-                    displayName: fName + lName
+                    displayName: fName + " " + lName
                 })
                     .then(() => {
                         dispatch(
@@ -63,10 +68,21 @@ const Register = (props) => {
                                 displayName: fName + " " + lName,
                                 photoURL: auth.user.photoURL ? auth.user.photoURL : "",
                             }));
-                    }).catch(error => alert(error.message))
-                saveUserData(auth.user.uid);
-                history.push('/');
+                    })
+                    .catch(error => alert(error.message))
 
+                // history.push('/');
+
+            })
+            .then(() => {
+                db
+                    .collection('users')
+                    .doc(auth?.user.uid)
+                    .set({
+                        firstName: fName,
+                        lastName: lName,
+                    })
+                    .catch(error => alert(error.message))
             })
             .catch(error => alert(error.message))
         if (props.location.state) {
@@ -76,20 +92,6 @@ const Register = (props) => {
 
             history.push(props.location.state?.prevPath);
         }
-
-    }
-
-    const saveUserData = (newID) => {
-        console.log('New user id is ', newID);
-
-        db
-            .collection('users')
-            .doc(newID)
-            .set({
-                firstName: fName,
-                lastName: lName,
-            })
-            .catch(error => alert(error.message))
 
     }
 
@@ -115,9 +117,24 @@ const Register = (props) => {
                         <FormGroup>
                             <FormControlLabel control={<Checkbox checked={showPassword} onChange={handlePasswordVisibility} inputProps={{ 'aria-label': 'controlled' }} />} label="Show Password" />
                         </FormGroup>
-                        <div>
-                            <Button variant="contained" className="registerButton" type="submit" onClick={register}>Register</Button>
-                        </div>
+                        <Box sx={{ m: 1, position: 'relative' }}>
+                            <Button variant="contained" disabled={loading} className="registerButton" type="submit" onClick={register}>Register</Button>
+                            {loading && (
+                                <CircularProgress
+                                    size={24}
+                                    sx={{
+                                        color: "#2196f3",
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        marginTop: '-12px',
+                                        marginLeft: '-12px',
+                                    }}
+                                />
+
+                            )}
+                        </Box>
+                        
                     </form>
                 </CardContent>
             </Card>

@@ -12,7 +12,8 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { login } from '../slices/userSlice';
-import { Avatar, CircularProgress, Typography } from '@material-ui/core';
+import { Avatar, Typography } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 
 const Login = (props) => {
 
@@ -100,7 +101,7 @@ const Login = (props) => {
                                 <CircularProgress
                                     size={24}
                                     sx={{
-                                        color: "#fff",
+                                        color: "#2196f3",
                                         position: 'absolute',
                                         top: '50%',
                                         left: '50%',

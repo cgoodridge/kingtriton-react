@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';  
+import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -16,6 +16,12 @@ import { useSelector } from 'react-redux';
 import Box from '@material-ui/core/Box';
 import '../css/reservation.css';
 import { Link, useHistory } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
 
@@ -163,24 +169,34 @@ function Reservations() {
   const [dateTimeValue, setDateTimeValue] = useState(new Date());
   const user = useSelector(selectUser);
   const history = useHistory();
+  const [loading, setLoading] = useState(false);
+  const [openConfirmMessage, setOpenConfirmMessage] = useState(false);
 
-  const getTableId = (e) => {  
+  const handleClickOpen = () => {
+    setOpenConfirmMessage(true);
+  };
+
+  const handleClose = () => {
+    setOpenConfirmMessage(false);
+    history.push('/account');
+  };
+
+  const getTableId = (e) => {
     isTableSelected(true);
     setSelectedTable(e.target.id);
   };
 
- 
+
   useEffect(() => {
-    if (selectedTable === 'none')
-    {
+    if (selectedTable === 'none') {
       isTableSelected(false);
     }
   }, [selectedTable]);
 
   const handleReservation = (e) => {
     e.preventDefault();
-    if (selectedTable === 'none')
-    {
+    setLoading(true);
+    if (selectedTable === 'none') {
       alert("Please select a table");
       return;
     }
@@ -200,10 +216,13 @@ function Reservations() {
         setOccasion('');
         setDateTimeValue('');
         setSelectedTable('none');
-
-        history.pushState('/account')
+        setLoading(false);
+        handleClickOpen();
       })
-      .catch(error => alert(error.message))
+      .catch(error => alert(error.message));
+      // setTimeout(() => history.push('/account'), 3000);
+      
+
 
     // TODO - Show confirmation dialog and clear form
   };
@@ -228,6 +247,24 @@ function Reservations() {
 
   return (
     <div className="App" theme={theme} style={{ padding: '25px' }}>
+      <Dialog
+        open={openConfirmMessage}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Reservation Made!
+        </DialogTitle>
+        <DialogContent className="resConfirmed">
+          <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_tia15mzy.json" background="transparent" speed="1" style={{width: '300px', height: '300px'}} loop autoplay></lottie-player>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
       <ThemeProvider theme={theme}>
         <Container maxWidth="lg">
           <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont}>
@@ -237,7 +274,7 @@ function Reservations() {
           <ThemeProvider theme={theme}>
             <form action="" style={{ width: '100%' }}>
               <Grid container direction="row" className={classes.gridContent}>
-                <Grid item xs={12} md={6} lg={3} style={{ paddingRight: '20px',paddingTop: '5px', paddingBottom: '20px' }}>
+                <Grid item xs={12} md={6} lg={3} style={{ paddingRight: '20px', paddingTop: '5px', paddingBottom: '20px' }}>
                   <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DateTimePicker
                       renderInput={(props) => <TextField {...props} />}
@@ -295,22 +332,42 @@ function Reservations() {
                     ))}
                   </TextField>
                 </Grid>
-                
-                
+
+
                 {/* <Grid item xs={3} style={{paddingRight: '20px', paddingBottom: '20px'}}> */}
                 <div>
-                  {user ? 
+                  {user ?
+                    <Box sx={{ mt: 1, mb: 1, position: 'relative' }}>
+                      <Button variant="contained" disabled={loading} color="primary" type="submit" onClick={handleReservation} style={{ width: 100, marginBottom: '16px' }}>
+                        Book
+                      </Button>
+                      {loading && (
+                        <CircularProgress
+                          size={24}
+                          sx={{
+                            color: "#2196f3",
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            marginTop: '-12px',
+                            marginLeft: '-12px',
+                          }}
+                        />
 
-                  <Button variant="contained" color="primary" type="submit" onClick={handleReservation} style={{ width: 100, marginBottom:'16px' }}>
-                    Book
-                  </Button>
-                  :
-                  <Button variant="contained" color="primary" component={Link} to="/login" style={{ width: 150, marginBottom:'16px' }}>
-                    Sign In To Book
-                  </Button>
-                
+                      )}
+
+                    </Box>
+
+                    :
+                    <Box>
+                      <Button variant="contained" color="primary" component={Link} to="/login" style={{ width: 150, marginBottom: '16px' }}>
+                        Sign In To Book
+                      </Button>
+                    </Box>
+
+
                   }
-                  
+
                 </div>
                 {/* </Grid> */}
               </Grid>
@@ -326,198 +383,198 @@ function Reservations() {
               <Box className="bookingArea">
                 {/* <Reservationbooking /> */}
                 <div className={isSelected && selectedTable === 'party6' ? "tableContainerSelected" : "tableContainer"} >
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        P6
+                      P6
                     </Typography>
-                    </div>
-                    <img id="party6" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="party6" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
 
                 <div className={isSelected && selectedTable === 'party5' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        P5
+                      P5
                     </Typography>
-                    </div>
-                    <img id="party5" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="party5" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'couple4' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        C4
+                      C4
                     </Typography>
-                    </div>
-                    <img id="couple4" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="couple4" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'couple3' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        C3
+                      C3
                     </Typography>
-                    </div>
-                    <img id="couple3" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="couple3" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'couple2' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        C2
+                      C2
                     </Typography>
-                    </div>
-                    <img id="couple2" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="couple2" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'couple1' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        C1
+                      C1
                     </Typography>
-                    </div>
-                    <img id="couple1" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="couple1" onClick={getTableId} src="img/seating/Seating Area 8.png" alt="seating graphic" className="seating"></img>
                 </div>
               </Box>
               <Box className="bookingArea">
                 {/* <Reservationbooking /> */}
                 <div className={isSelected && selectedTable === 'party4' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        P4
+                      P4
                     </Typography>
-                    </div>
-                    <img id="party4" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="party4" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
 
                 <div className={isSelected && selectedTable === 'party3' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        P3
+                      P3
                     </Typography>
-                    </div>
-                    <img id="party3" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="party3" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'sGroup8' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        G8
+                      G8
                     </Typography>
-                    </div>
-                    <img id="sGroup8" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="sGroup8" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'sGroup7' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        G7
+                      G7
                     </Typography>
-                    </div>
-                    <img id="sGroup7" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="sGroup7" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'sGroup6' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        G6
+                      G6
                     </Typography>
-                    </div>
-                    <img id="sGroup6" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="sGroup6" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'sGroup5' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        G5
+                      G5
                     </Typography>
-                    </div>
-                    <img id="sGroup5" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="sGroup5" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
               </Box>
               <Box className="bookingArea">
                 {/* <Reservationbooking /> */}
                 <div className={isSelected && selectedTable === 'party2' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        P2
+                      P2
                     </Typography>
-                    </div>
-                    <img id="party2" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="party2" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
 
                 <div className={isSelected && selectedTable === 'party1' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        P1
+                      P1
                     </Typography>
-                    </div>
-                    <img id="party1" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="party1" onClick={getTableId} src="img/seating/Seating Area 20.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'sGroup4' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        G4
+                      G4
                     </Typography>
-                    </div>
-                    <img id="sGroup4" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="sGroup4" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'sGroup3' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        G3
+                      G3
                     </Typography>
-                    </div>
-                    <img id="sGroup3" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="sGroup3" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'sGroup2' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        G2
+                      G2
                     </Typography>
-                    </div>
-                    <img id="sGroup2" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="sGroup2" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'sGroup1' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        G1
+                      G1
                     </Typography>
-                    </div>
-                    <img id="sGroup1" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="sGroup1" onClick={getTableId} src="img/seating/Seating Area 1.png" alt="seating graphic" className="seating"></img>
                 </div>
               </Box>
               <Box className="bookingArea">
                 {/* <Reservationbooking /> */}
-                
+
                 <div className={isSelected && selectedTable === 'booth4' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        B4
+                      B4
                     </Typography>
-                    </div>
-                    <img id="booth4" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="booth4" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'booth3' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        B3
+                      B3
                     </Typography>
-                    </div>
-                    <img id="booth3" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="booth3" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'booth2' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        B2
+                      B2
                     </Typography>
-                    </div>
-                    <img id="booth2" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="booth2" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
                 </div>
                 <div className={isSelected && selectedTable === 'booth1' ? "tableContainerSelected" : "tableContainer"}>
-                    <div className="tableCode">
+                  <div className="tableCode">
                     <Typography gutterBottom variant="h6" component="h2" className="tableCode">
-                        B1
+                      B1
                     </Typography>
-                    </div>
-                    <img id="booth1" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
+                  </div>
+                  <img id="booth1" onClick={getTableId} src="img/seating/Seating Area 16.png" alt="seating graphic" className="seating"></img>
                 </div>
               </Box>
             </Box>
           </div>
-            
+
         </Container>
       </ThemeProvider>
     </div>
