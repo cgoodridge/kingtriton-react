@@ -14,9 +14,6 @@ const Reservationcard = (props) => {
 
     const user = useSelector(selectUser);
 
-
-
-    console.log('Props are ', props.reservation.data);
     return (
         // {props.reservation.data.map((item, key) => (
         <Card className="resCard">

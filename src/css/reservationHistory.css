@@ -3,6 +3,7 @@
     min-width: 300px;
     width: 50vw;
     height: auto;
+    margin-bottom: 16px;
 }
 
 .emptyReservationText{
@@ -15,7 +16,7 @@
 }
 .reservationContent{
     display:flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 
 .cardContainer{

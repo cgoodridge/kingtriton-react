@@ -39,7 +39,7 @@ const Reservationhistory = () => {
 
     return (
         <>
-            <Container maxWidth="lg" className="cardContainer">
+            <Container sx={{height: '90vh', overflowY: 'scroll'}} maxWidth="lg" className="cardContainer">
                 <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{textAlign: 'left', marginTop: '16px'}}>
                     Past Reservations
                 </Typography>
