@@ -19,7 +19,7 @@
     font-family: 'Poiret One';
 }
 .headerLogo{
-    height: 100px;
+    height: 40px;
     justify-content: center;
     align-items: center;
     margin: 16px auto;
@@ -62,4 +62,7 @@
     font-weight: bold;
     /* text-align: center; */
     font-family: 'Poiret One' Arial, Helvetica, sans-serif;
+}
+.cartButton{
+    padding: 0 !important;
 }

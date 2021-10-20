@@ -1,5 +1,9 @@
 .App {
+  min-height: 100% !important;
+  padding-bottom:60px;
   text-align: center;
+  height: 100vh !important;
+  /* background-color: khaki !important; */
 }
 
 .App-logo {

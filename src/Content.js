@@ -5,7 +5,6 @@ import Menu from './pages/Menu';
 import Reservations from './pages/Reservations';
 import Contact from './pages/Contact';
 import About from './pages/About';
-import Orders from './pages/Orders';
 import Account from './pages/Account';
 import Login from './pages/Login';
 import PageNotFound from './pages/404Page';
@@ -22,18 +21,14 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { logout, login } from './slices/userSlice';
 import { SnackbarProvider } from 'notistack';
 import Slide from '@material-ui/core/Slide';
-
-
 import {
   BrowserRouter as Router,
-
   Switch,
   Route,
-  Redirect
 } from "react-router-dom";
 import { auth, db } from './firebaseConfigFile';
-import { useStateValue } from './StateProvider';
 import { useDispatch } from 'react-redux';
+import { getMenu } from './slices/menuSlice';
 
 
 const promise = loadStripe('pk_test_51JelBJESzl8Ss9eHeAVZ8WozJuU1eiPQ1pOXak0vXrnqM8N6uoX659QmFv8DZ15JxEmMYeAyEmw6l6RCxBVg42uj006vt0mzoA');
@@ -87,26 +82,13 @@ const Content = (props) => {
     //   _isMounted.current = false;
     // }
   }, []);
-  /*
-    useEffect(() => {
   
-      if (user) {
-        console.log('User is logged in');
-        setIsAuth(true);
-      }
-      else {
-        console.log('User is logged out');
-  
-        setIsAuth(false);
-      }
-  
-    }, [user])
-  */
   const [menu, setMenuItems] = useState([]);
 
 
   useEffect(() => {
 
+    // dispatch(getMenu());
     db
       .collection('menu')
       .onSnapshot(snapshot => (
@@ -146,10 +128,10 @@ const Content = (props) => {
               </Route>
               <Route exact path="/menu">
                 <Navbar cart={cartList} />
-                <main>
+                <main id="mainTag">
                   <Menu food={menu} loading={menu.length <= 0 ? true : false} />
                 </main>
-                <Footer />
+                <Footer className="footerMenu"/>
               </Route>
               <Route exact path="/reservations" >
                 <Navbar cart={cartList} />
@@ -167,7 +149,7 @@ const Content = (props) => {
               </Route>
               <Route exact path="/about" >
                 <Navbar cart={cartList} />
-                <main>
+                <main >
                   <About />
                 </main>
                 <Footer />

@@ -17,6 +17,9 @@
     align-items: center !important;
     justify-content: center !important;
   }
+  .cartItemCounter button {
+    color: white;
+  }
   
   .cartItemCounter .qtyField {
     width: 35px !important;

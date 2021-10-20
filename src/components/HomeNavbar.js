@@ -162,7 +162,7 @@ const HomeNavbar = (props) => {
                 {cart.map((food, index) => (
                     <>
                         <div key={food.id} id={food.id} style={{ padding: '8px 16px', marginTop: '16px' }}>
-                            <CartItem id={food.id} name={food.name} price={food.price} image={food.image} qty={food.qty}/>
+                            <CartItem id={food.id} name={food.name} price={food.price} image={food.image} qty={food.qty} />
                         </div>
                     </>
                 ))}
@@ -285,7 +285,9 @@ const HomeNavbar = (props) => {
                     <AppBar position="absolute" color="transparent" elevation={0}>
                         <Toolbar>
 
-                            {/* <img sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }} className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img> */}
+                            <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }}>
+                                <img className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img>
+                            </Box>
 
                             <nav className="nav-col">
                                 {['left'].map((anchor) => (
@@ -298,7 +300,12 @@ const HomeNavbar = (props) => {
                                         </Box>
                                     </React.Fragment>
                                 ))}
-                                <a href="#!" className="brand-logo">King Triton's</a>
+                                <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex', xl: 'flex' } }}>
+                                    <a href="#!" className="brand-logo">King Triton's</a>
+                                </Box>
+                                <Box sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none', xl: 'none' } }}>
+                                    <img className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img>
+                                </Box>
                                 {['right'].map((anchor) => (
                                     <React.Fragment key={anchor}>
                                         <Box sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none', xl: 'none' } }}>
