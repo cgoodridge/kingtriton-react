@@ -29,6 +29,7 @@ import {
 import { auth, db } from './firebaseConfigFile';
 import { useDispatch } from 'react-redux';
 import { getMenu } from './slices/menuSlice';
+import AuthRoute from './components/AuthRoute';
 
 
 const promise = loadStripe('pk_test_51JelBJESzl8Ss9eHeAVZ8WozJuU1eiPQ1pOXak0vXrnqM8N6uoX659QmFv8DZ15JxEmMYeAyEmw6l6RCxBVg42uj006vt0mzoA');
@@ -154,13 +155,13 @@ const Content = (props) => {
                 </main>
                 <Footer />
               </Route>
-              <Route exact path="/account" >
+              <AuthRoute exact path="/account" >
                 <Navbar />
                 <main>
                   <Account />
                 </main>
                 <Footer />
-              </Route>
+              </AuthRoute>
               <Route exact path="/checkout">
                 <Navbar cart={cartList} />
                 <main>

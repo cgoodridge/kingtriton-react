@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { db } from '../firebaseConfigFile';
+// import { db } from '../firebaseConfigFile';
 
 export const getMenu = createAsyncThunk(
     'menu',

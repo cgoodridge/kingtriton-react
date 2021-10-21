@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Subtotal from "./Subtotal";
 import Grid from '@material-ui/core/Grid';
 import { createTheme } from '@material-ui/core/styles';
-import { useStateValue } from '../StateProvider';
 import CheckoutItem from './CheckoutItem';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -20,15 +18,18 @@ import { selectItems, selectTotal } from '../slices/cartSlice';
 import { selectUser } from '../slices/userSlice';
 import CurrencyFormat from 'react-currency-format';
 import Card from '@material-ui/core/Card';
+import { CardContent } from '@mui/material';
+import { Delivery32 } from '@carbon/icons-react';
 
 
 const useStyles = makeStyles((theme) => ({
-  gridContent:{
+  gridContent: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: '32px'
   },
 
-  contentPadding:{
+  contentPadding: {
     paddingTop: '16px',
     paddingBottom: '16px',
   },
@@ -102,7 +103,7 @@ const Checkout = () => {
   const [cartContainsItems, setCartState] = useState(false);
   // const [{ cart }, dispatch] = useStateValue();
 
-  
+
   const classes = useStyles();
   const theme = createTheme({
     palette: {
@@ -121,75 +122,101 @@ const Checkout = () => {
     },
   });
 
-   
 
-    
-    return (
-        // <div className="App" theme={theme}>
-          <Container maxWidth="lg">
-            <Box sx={{ width: '100%', marginTop: '16px' }}>
-              <Box>
-                <Tabs value={value} onChange={handleChange} aria-label="checkout page tabs" centered>
-                  <Tab label="Review Items" {...a11yProps(0)} />
-                  {user ? 
-                  
-                  <Tab label="Enter Details" {...a11yProps(1)}/>
-                  :
-                  <Tab label="Enter Details" {...a11yProps(1)} disabled/>
-                  }
-                </Tabs>
-              </Box>
-              <TabPanel value={value} index={0}>
-                <Grid container direction="row"  className={classes.contentPadding}>
-                  <Grid container direction="column" item xs={12} md={6} sm={6} className={classes.gridContent}>
-                    <h4 alignItems="flex-start">Items in Cart</h4>
-                    
-                    {
-                      !cart.length <= 0 ? 
-                      cart.map(item => (
-                        
-                        <CheckoutItem id={item.id} name={item.name} image={item.image} price={item.price} qty={item.qty}/>
-                      ))
-                      : <EmptyCart/>
+
+
+  return (
+    // <div className="App" theme={theme}>
+    <Container maxWidth="lg">
+      <Box sx={{ width: '100%', marginTop: '16px' }}>
+        <Box>
+          <Tabs value={value} onChange={handleChange} aria-label="checkout page tabs" centered>
+            <Tab label="Review Items" {...a11yProps(0)} />
+            {user ?
+
+              <Tab label="Enter Details" {...a11yProps(1)} />
+              :
+              <Tab label="Enter Details" {...a11yProps(1)} disabled />
+            }
+          </Tabs>
+        </Box>
+        <TabPanel value={value} index={0}>
+          <Grid container direction="row" className={classes.contentPadding}>
+            <Grid container direction="column" item xs={12} md={6} sm={6} className={classes.gridContent}>
+              <h4 alignItems="flex-start">Items in Cart</h4>
+              {
+                !cart.length <= 0 ?
+                  cart.map(item => (
+
+                    <CheckoutItem id={item.id} name={item.name} image={item.image} price={item.price} qty={item.qty} />
+                  ))
+                  : <EmptyCart />
+              }
+              <Card className="deliveryCard">
+                <CardContent>
+                  <Box sx={{ display: 'flex', }}>
+                    <Delivery32 sx={{ margin: '8px' }} />
+                    <Typography sx={{ fontSize: 14, margin: '8px' }} gutterBottom>
+                      Free delivery on orders over $70
+                    </Typography>
+                  </Box>
+                  <Typography sx={{ fontSize: 14, margin: '8px' }} color="text.secondary" gutterBottom>
+                    All other orders have a fixed delivery charge of $10
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6} sm={6} alignItems="flex-start" className={classes.gridContent}>
+              <Card className='subtotalCardStyle'>
+                <CardContent>
+                  <div className="subtotal">
+                    <CurrencyFormat
+                      renderText={(value) => (
+                        <>
+                          <p>
+                            Subtotal ({cart?.length} {cart?.length === 1 ? 'item' : 'items'}): <strong>{value}</strong>
+                          </p>
+                        </>
+                      )}
+                      decimalScale={2}
+                      value={parseFloat(total)}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"$"}
+                    />
+                    <CurrencyFormat
+                      renderText={(value) => (
+                        <>
+                          <p>
+                            Delivery: <strong>{total > 70 ? 'Free' : '$'+10}</strong>
+                          </p>
+                        </>
+                      )}
+                      decimalScale={2}
+                      value={parseFloat(total)}
+                      displayType={"text"}
+                      thousandSeparator={true}
+                      prefix={"$"}
+                    />
+                    {user ?
+                      <Button variant="contained" className="loginButton" onClick={handleProceedButton}>Checkout{total > 70 ? '' : '$(' + parseFloat(total+10)+')'}</Button>
+                      :
+                      <Button variant="contained" className="loginButton" component={Link} to="/login">Sign In To Continue</Button>
                     }
-                  </Grid>
-                  <Grid item xs={12} md={6} sm={6} alignItems="flex-start" className={classes.gridContent}>
-                    <Card className='subtotalCardStyle'>
-                      <div className="subtotal">
-                          <CurrencyFormat
-                              renderText={(value) => (
-                              <>
-                                  <p>
-                                  Subtotal ({cart?.length} {cart?.length === 1 ? 'item' : 'items'}): <strong>{value}</strong>
-                                  </p>
-                              </>
-                              )}
-                              decimalScale={2}
-                              value={parseFloat(total)} 
-                              displayType={"text"}
-                              thousandSeparator={true}
-                              prefix={"$"}
-                          />
-              {  console.log('The total is ', total)}
+                  </div>
+                </CardContent>
 
-                      {user ? 
-                      
-                        <Button variant="contained" className="loginButton" onClick={handleProceedButton}>Proceed to Checkout</Button>
-                        :
-                        <Button variant="contained" className="loginButton" component={Link} to="/login">Sign In To Continue</Button>
-                      }
-                      </div>
-                    </Card>
-                  </Grid>
-                </Grid>
-              </TabPanel>
-              <TabPanel value={value} index={1}>
-                <CheckoutDetailsForm/>
-              </TabPanel>
-            </Box>
-          </Container>
-        // </div>
-    );
+              </Card>
+            </Grid>
+          </Grid>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <CheckoutDetailsForm />
+        </TabPanel>
+      </Box>
+    </Container>
+    // </div>
+  );
 }
 
 export default Checkout;

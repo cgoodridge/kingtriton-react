@@ -28,19 +28,12 @@ import '../css/homeHeader.css';
 import CartItem from './CartItem';
 import { selectUser, logout } from '../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectItems } from '../slices/cartSlice';
+import { selectItems, selectTotal } from '../slices/cartSlice';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import Collapse from '@mui/material/Collapse';
 import '../css/cartItem.css';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
-import CloseIcon from '@mui/icons-material/Close';
-import Grid from '@mui/material/Grid';
-import CurrencyFormat from 'react-currency-format';
-import { removeFromCart, updateCart, addToCart } from '../slices/cartSlice';
-
 
 const HideOnScroll = (props) => {
     const { children, window } = props;
@@ -77,6 +70,7 @@ const HomeNavbar = (props) => {
     const classes = useStyles();
     const user = useSelector(selectUser);
     const cart = useSelector(selectItems);
+    const total = useSelector(selectTotal);
     const history = useHistory();
     const dispatch = useDispatch();
     const [qtyValue, setQtyValue] = useState(1);
@@ -166,9 +160,34 @@ const HomeNavbar = (props) => {
                         </div>
                     </>
                 ))}
+                <Typography
+                    component="h6"
+                    variant="h6"
+                    align="left"
+                    className="deliveryText"
+                    color="textPrimary"
+                >
+                    Delivery Charge: {total > 70 ? 'Free' : '$' + 10}
+                </Typography>
                 <ListItem className="cartOptions">
+
+                    {/* <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
+
+                        {'Checkout' + '($' + parseFloat(total) + ')'}
+
+                    </Button> */}
                     <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
-                        Checkout
+                        {cart.length <= 0 ? 'Checkout' : ''}
+
+                        {(total > 0 && total < 70) ?
+                            'Checkout' + ('($' + parseFloat(total + 10) + ')')
+                            :
+                            ''
+                        }
+                        {(total >= 70) ?
+                            'Checkout' + '($' + parseFloat(total) + ')'
+                            :
+                            ''}
                     </Button>
                 </ListItem>
             </List>

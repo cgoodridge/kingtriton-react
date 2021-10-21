@@ -17,7 +17,6 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import { useStateValue } from '../StateProvider';
 import { auth, db } from '../firebaseConfigFile';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -27,7 +26,7 @@ import MenuItem from '@mui/material/MenuItem';
 import CartItem from './CartItem';
 import { selectUser, logout } from '../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectItems } from '../slices/cartSlice';
+import { selectItems, selectTotal } from '../slices/cartSlice';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore'
@@ -74,6 +73,7 @@ const Navbar = (props) => {
     const location = useLocation();
     const history = useHistory();
     const classes = useStyles();
+    const total = useSelector(selectTotal);
     const [expand, setExpansion] = useState(true);
 
     const handleExpansionClick = (e) => {
@@ -181,7 +181,16 @@ const Navbar = (props) => {
                 ))}
                 <ListItem className="cartOptions">
                     <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
-                        Checkout
+                        {cart.length <= 0 ? 'Checkout' : ''}
+                        {(total > 0 && total < 70) ?
+                            'Checkout' + ('($' + parseFloat(total + 10) + ')')
+                            :
+                            ''
+                        }
+                        {(total >= 70) ?
+                            'Checkout' + '($' + parseFloat(total) + ')'
+                            :
+                            ''}
                     </Button>
                 </ListItem>
             </List>

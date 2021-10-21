@@ -11,5 +11,10 @@
     }
 }
 
+.deliveryCard{
+    width: 70%;
+    min-width: 220px !important;
+}
+
 
 

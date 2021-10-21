@@ -182,7 +182,8 @@ const CheckoutDetailsForm = () => {
           deliveryAddress: addressNameSelection,
           paymentMethod: 'card',
           contactNumber: mobileNumber,
-          altNumber: altNumber
+          altNumber: altNumber,
+          orderStatus: 'Pending'
 
           // test: 'Transaction was successful'
         })
@@ -235,12 +236,13 @@ const CheckoutDetailsForm = () => {
       .doc()
       .set({
         cart: cart,
-        amount: total,
-        createdAt: moment.utc().toDate(),
+        amount: (total > 70 ? total : parseFloat(total+10)),
+        createdAt: Date.now(),
         deliveryAddress: addressNameSelection,
         paymentMethod: 'cash',
         contactNumber: mobileNumber,
-        altNumber: altNumber
+        altNumber: altNumber,
+        orderStatus: 'Pending'
       })
       .then(() => {
         dispatch(emptyCart);
@@ -262,7 +264,7 @@ const CheckoutDetailsForm = () => {
     const getClientSecret = async () => {
       const response = await axios({
         method: 'post',
-        url: `/checkout/create?total=${total * 100}`
+        url: `/checkout/create?total=${(total > 70 ? total : parseFloat(total+10)) * 100}`
       });
       setClientSecret(response.data.clientSecret)
     }
@@ -341,9 +343,6 @@ const CheckoutDetailsForm = () => {
     }
 
   }, []);
-
-  console.log(savedAddresses);
-  // console.log('Total addresses stored is ', savedAddresses);
 
   return (
     <>
@@ -602,7 +601,7 @@ const CheckoutDetailsForm = () => {
                   </>
                 )}
                 decimalScale={2}
-                value={total}
+                value={total > 70 ? total : parseFloat(total+10)}
                 displayType={"text"}
                 thousandSeparator={true}
                 prefix={"$"}

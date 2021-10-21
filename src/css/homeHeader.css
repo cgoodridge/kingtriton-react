@@ -61,7 +61,13 @@
     /* padding: 16px; */
     font-weight: bold;
     /* text-align: center; */
-    font-family: 'Poiret One' Arial, Helvetica, sans-serif;
+    font-family: 'Poiret One', Arial, Helvetica, sans-serif;
+}
+.deliveryText{
+    padding: 16px;
+    font-weight: bold;
+    /* text-align: center; */
+    font-family: 'Poiret One', Arial, Helvetica, sans-serif;
 }
 .cartButton{
     padding: 0 !important;

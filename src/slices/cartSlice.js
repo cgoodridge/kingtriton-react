@@ -40,7 +40,6 @@ export const cartSlice = createSlice({
 
             if (index >= 0) {
                 let newCart = [...state.items];
-                const foundItem = newCart[index];
                 newCart[index].qty++;
                 // The stored price is updated on each click so this is done to make sure the price is calculated correctly
                 // Multiply the current price by the quantity and then divide it by the quantity minus one
@@ -60,7 +59,6 @@ export const cartSlice = createSlice({
 
             if (index >= 0) {
                 let newCart = [...state.items];
-                const foundItem = newCart[index];
                 if (newCart[index].qty >= 1) {
                     newCart[index].qty--;
                 } else {

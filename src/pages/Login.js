@@ -64,11 +64,10 @@ const Login = (props) => {
             })
             .catch(error => alert(error.message));
 
-        if (props.location.state) {
+        if (!props.location.state) {
             history.push('/');
         }
         else {
-
             history.push(props.location.state?.prevPath);
         }
 
