@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles, useTheme, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
@@ -20,7 +20,6 @@ import { CircularProgress } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 
@@ -163,8 +162,8 @@ function Reservations() {
   const [selectedTable, setSelectedTable] = useState('');
   const [isSelected, isTableSelected] = useState(false);
   const [occasion, setOccasion] = useState('');
-  const [reservationName, setReservationName] = useState('');
-  const [reservationEmail, setReservationEmail] = useState('');
+  // const [reservationName, setReservationName] = useState('');
+  // const [reservationEmail, setReservationEmail] = useState('');
   const [partySize, setPartySize] = useState(1);
   const [dateTimeValue, setDateTimeValue] = useState(new Date());
   const user = useSelector(selectUser);
@@ -212,6 +211,15 @@ function Reservations() {
         table: selectedTable,
       })
       .then(() => {
+        db
+          .collection('reservations')
+          .doc()
+          .set({
+            dateTime: dateTimeValue.toDate(),
+            table: selectedTable,
+          })
+      })
+      .then(() => {
         setPartySize(1);
         setOccasion('');
         setDateTimeValue('');
@@ -220,11 +228,7 @@ function Reservations() {
         handleClickOpen();
       })
       .catch(error => alert(error.message));
-      // setTimeout(() => history.push('/account'), 3000);
-      
-
-
-    // TODO - Show confirmation dialog and clear form
+    // setTimeout(() => history.push('/account'), 3000);
   };
 
   const classes = useStyles();
@@ -257,7 +261,7 @@ function Reservations() {
           Reservation Made!
         </DialogTitle>
         <DialogContent className="resConfirmed">
-          <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_tia15mzy.json" background="transparent" speed="1" style={{width: '300px', height: '300px'}} loop autoplay></lottie-player>
+          <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_tia15mzy.json" background="transparent" speed="1" style={{ width: '300px', height: '300px' }} loop autoplay></lottie-player>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} autoFocus>

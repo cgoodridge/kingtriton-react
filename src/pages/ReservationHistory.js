@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Container from '@mui/material/Container';
-import Box from '@material-ui/core/Box';
 import { db } from '../firebaseConfigFile';
 import { selectUser } from '../slices/userSlice';
 import { useSelector } from 'react-redux';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
 import '../css/reservationHistory.css';
 import Reservationcard from '../components/ReservationCard';
 import { Link } from 'react-router-dom';
