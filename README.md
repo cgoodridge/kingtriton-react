@@ -38,12 +38,10 @@ With this being a full stack project, I employed technologies including:
 ![Menu Page](https://github.com/cgoodridge/kingtriton-react/blob/main/public/doc-images/menu.png)
 * Form based reservation booking\
 ![Reservations Page](https://github.com/cgoodridge/kingtriton-react/blob/main/public/doc-images/reserve.png)
-
-## In Progress Features
-
 * Graphical reservation booking\
 ![Reservations Graphic](https://github.com/cgoodridge/kingtriton-react/blob/main/public/doc-images/reserve-graphic.png)
 * Profile image uploading
+
 
 
 # Resources 

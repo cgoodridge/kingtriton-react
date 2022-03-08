@@ -6,8 +6,23 @@
     width: 100%;
 }
 
+.logoContainer{
+    /* background-color: yellow !important; */
+    /* height: 150px !important; */
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.logoContainer h2{
+    font-family: 'Poiret One';
+}
 .headerLogo{
     height: 40px;
+    justify-content: center;
+    align-items: center;
+    margin: 16px auto;
 }
 .nav-col{
     width: 100%;
@@ -38,3 +53,22 @@
     padding: 0; 
 }
 
+.cartOptions{
+    justify-content: space-between !important;
+}
+
+.cartText{
+    /* padding: 16px; */
+    font-weight: bold;
+    /* text-align: center; */
+    font-family: 'Poiret One', Arial, Helvetica, sans-serif;
+}
+.deliveryText{
+    padding: 16px;
+    font-weight: bold;
+    /* text-align: center; */
+    font-family: 'Poiret One', Arial, Helvetica, sans-serif;
+}
+.cartButton{
+    padding: 0 !important;
+}

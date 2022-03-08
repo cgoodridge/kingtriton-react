@@ -19,8 +19,9 @@
     padding: 16px 32px !important;
 }
 
-.loginCardContent h2{
+.loginCardContent h5{
     font-family: 'Poiret One';
+    font-weight: bold;
 }
 
 input:focus,

@@ -8,8 +8,9 @@
 
 }
 
-.registerCardContent h2{
+.registerCardContent h5{
     font-family: 'Poiret One';
+    font-weight: bold;
 }
 
 .registerCard{

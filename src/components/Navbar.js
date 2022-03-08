@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Badge from '@material-ui/core/Badge';
@@ -17,7 +17,6 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import { useStateValue } from '../StateProvider';
 import { auth, db } from '../firebaseConfigFile';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -25,11 +24,13 @@ import '../css/navbar.css';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import CartItem from './CartItem';
-import { selectUser } from '../slices/userSlice';
+import { selectUser, logout } from '../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectItems } from '../slices/cartSlice';
+import { selectItems, selectTotal } from '../slices/cartSlice';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import Collapse from '@mui/material/Collapse';
 
 const HideOnScroll = (props) => {
     const { children, window } = props;
@@ -37,23 +38,23 @@ const HideOnScroll = (props) => {
     // will default to window.
     // This is only being set here because the demo is in an iframe.
     const trigger = useScrollTrigger({ target: window ? window() : undefined });
-  
+
     return (
-      <Slide appear={false} direction="down" in={!trigger}>
-        {children}
-      </Slide>
+        <Slide appear={false} direction="down" in={!trigger}>
+            {children}
+        </Slide>
     );
-  }
+}
 
 
 const useStyles = makeStyles((theme) => ({
     list: {
-      width: 300,
-      
+        width: 300,
+
     },
     fullList: {
-      width: 'auto',
-      
+        width: 'auto',
+
     },
     inline: {
         display: 'inline',
@@ -66,12 +67,19 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-  
+
 const Navbar = (props) => {
     const _isMounted = useRef(true);
-
-
+    const location = useLocation();
+    const history = useHistory();
     const classes = useStyles();
+    const total = useSelector(selectTotal);
+    const [expand, setExpansion] = useState(true);
+
+    const handleExpansionClick = (e) => {
+        e.stopPropagation();
+        setExpansion(!expand);
+    };
 
     // const [{ cart, user }, dispatch] = useStateValue();
     const [displayName, setDisplayName] = useState("");
@@ -82,19 +90,21 @@ const Navbar = (props) => {
 
     const dispatch = useDispatch();
 
-    const handleAuth = () => {
-        if (user) {
-            auth.signOut();
-        }
-        handleMenuClose();
+    const logoutOfApp = () => {
+        dispatch(logout);
+        auth.signOut();
+        handleLoggedInMenuClose();
+        history.push('/');
     }
+
 
     const [cartState, setCartState] = useState({
         right: false,
     });
 
-    
+
     const toggleCartDrawer = (anchor, open) => (event) => {
+
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
@@ -104,8 +114,8 @@ const Navbar = (props) => {
 
     const [menuState, setMenuState] = useState({
         right: false,
-      });
-    
+    });
+
     const toggleMenuDrawer = (anchor, open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
@@ -136,105 +146,152 @@ const Navbar = (props) => {
         setLoggedInAnchor(null);
     };
 
-    
-    
+
+
 
     const cartList = (anchor) => (
         <div
             className={clsx(classes.list, {
-            [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+                [classes.fullList]: anchor === 'top' || anchor === 'bottom',
             })}
             role="presentation"
             onClick={toggleCartDrawer(anchor, false)}
             onKeyDown={toggleCartDrawer(anchor, false)}
         >
-        
-            <List className="cart" style={{height: '500px', width: '100%',}}>
+
+            <List className="cart" style={{ height: '500px', width: '100%', }}>
                 <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.cartText}
+                    component="h5"
+                    variant="h5"
+                    align="center"
+                    className="cartText"
                     color="textPrimary"
                 >
-                    Items in your cart
+                    Your Cart
                 </Typography>
-                <Divider/>
+                <Divider />
                 {cart.map((food, key) => (
                     <>
-                        <div style={{padding:'8px 16px', marginTop: '16px'}}>
-                            <CartItem key={key} id={food.id} name={food.name} price={food.price} image={food.image} qty={food.qty}/>
+                        <div style={{ padding: '8px 16px', marginTop: '16px' }}>
+                            <CartItem key={key} id={food.id} name={food.name} price={food.price} image={food.image} qty={food.qty} />
                         </div>
                         {/* <Divider variant="inset" component="li" /> */}
-                        
+
                     </>
-                ))} 
-                <ListItem>
-                    <Link to="/checkout">
-                        <Button variant="contained" color="primary" style={{width: '100%'}}>
-                            Checkout
-                        </Button>
-                    </Link>
-                    
+                ))}
+                <ListItem className="cartOptions">
+                    <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
+                        {cart.length <= 0 ? 'Checkout' : ''}
+                        {(total > 0 && total < 70) ?
+                            'Checkout' + ('($' + parseFloat(total + 10) + ')')
+                            :
+                            ''
+                        }
+                        {(total >= 70) ?
+                            'Checkout' + '($' + parseFloat(total) + ')'
+                            :
+                            ''}
+                    </Button>
                 </ListItem>
             </List>
             <Divider />
-        
+
         </div>
     );
 
     const navList = (anchor) => (
         <div
             className={clsx(classes.list, {
-            [classes.fullList]: anchor === 'top' || anchor === 'bottom',
+                [classes.fullList]: anchor === 'top' || anchor === 'bottom',
             })}
             role="presentation"
             onClick={toggleMenuDrawer(anchor, false)}
             onKeyDown={toggleMenuDrawer(anchor, false)}
         >
-        
-            <List className="cart" style={{height: '500px', width: '100%'}}>
-                
-                <ListItem disablepadding = "true">
+            <div className="logoContainer">
+                <img className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img>
+                <h2>King Triton's Seafood Palace</h2>
+            </div>
+            <Divider />
+
+
+            <List className="cart" style={{ height: '500px', width: '100%' }}>
+
+                <ListItem disablepadding="true">
                     <ListItemButton component={Link} to="/">
-                        <ListItemText primary="Home"  />
+                        <ListItemText primary="Home" />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablepadding = "true">
+                <Divider />
+
+                <ListItem disablepadding="true">
                     <ListItemButton component={Link} to="/menu">
-                        <ListItemText primary="Menu"  />
+                        <ListItemText primary="Menu" />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablepadding = "true">
+                <Divider />
+
+                <ListItem disablepadding="true">
                     <ListItemButton component={Link} to="/reservations">
-                        <ListItemText primary="Reservations"  />
+                        <ListItemText primary="Reservations" />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablepadding = "true">
+                <Divider />
+
+                <ListItem disablepadding="true">
                     <ListItemButton component={Link} to="/contact">
-                        <ListItemText primary="Contact"  />
+                        <ListItemText primary="Contact" />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablepadding = "true">
+                <Divider />
+
+                <ListItem disablepadding="true">
                     <ListItemButton component={Link} to="/about">
-                        <ListItemText primary="About"  />
+                        <ListItemText primary="About" />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablepadding = "true">
-                    {user ? 
-                    <ListItemButton>
-                        <ListItemText primary={user.displayName} />
-                    </ListItemButton> 
-                    : 
-                    <ListItemButton component={Link} to="/login">
-                        <ListItemText primary="Login"  />
-                    </ListItemButton>
-                    }
-                    
-                </ListItem>
-            
+                <Divider />
+
+                {user ?
+                    <>
+                        <ListItemButton sx={{ pl: 4 }} onClick={handleExpansionClick}>
+                            <ListItemText primary={'Hi ' + user.displayName.split(" ")[0]} />
+                            {expand ? <ExpandLess /> : <ExpandMore />}
+                        </ListItemButton>
+                        <Collapse in={expand} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding="true">
+                                <ListItemButton component={Link} to="/account" sx={{ pl: 8 }}>
+                                    <ListItemText primary="My Account" />
+                                </ListItemButton>
+                                <ListItemButton onClick={logoutOfApp} sx={{ pl: 8 }}>
+                                    <ListItemText primary="Logout" />
+                                </ListItemButton>
+                            </List>
+                        </Collapse>
+                    </>
+
+                    :
+
+                    <>
+                        <ListItemButton sx={{ pl: 4 }} onClick={handleExpansionClick}>
+                            <ListItemText primary="Hey Guest" />
+                        </ListItemButton>
+                        <Collapse in={expand} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding="true">
+                                <ListItemButton component={Link} to="/login" sx={{ pl: 8 }}>
+                                    <ListItemText primary="Login" />
+                                </ListItemButton>
+                                <ListItemButton component={Link} to="/register" sx={{ pl: 8 }}>
+                                    <ListItemText primary="Register" />
+                                </ListItemButton>
+                            </List>
+                        </Collapse>
+                    </>
+                }
+
             </List>
             <Divider />
-        
+
         </div>
     );
 
@@ -246,109 +303,116 @@ const Navbar = (props) => {
                 <Box flexGrow={1}>
                     <AppBar position="absolute">
                         <Toolbar>
-                        <nav className="nav-col">
-                            {['left'].map((anchor) => (
-                                <React.Fragment key={anchor}>
-                                    <Box sx={{ display: {xs: 'flex', sm: 'flex', md: 'none', lg: 'none' } }} >
-                                        <a href="#" data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></a>
-                                        <Drawer anchor={anchor} open={menuState[anchor]} onClose={toggleMenuDrawer(anchor, false)}>
-                                            {navList(anchor)}
-                                        </Drawer>
-                                    </Box>
 
-                                </React.Fragment>
-                            ))}
-                            <a href="#!" className="brand-logo">King Triton's</a>
-                            {['right'].map((anchor) => (
-                                <React.Fragment key={anchor}>
-                                    <Box sx={{ display: { xs: 'flex', sm:'flex', md: 'none', lg: 'none' } }} >
-                                        <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" className="cartButton" aria-label="open shopping cart">
-                                            <Badge badgeContent={cart?.length} color="secondary">
-                                                <ShoppingBasketIcon />
-                                            </Badge>
-                                        </IconButton>
-                                        <Drawer anchor={anchor} ModalProps={{ keepMounted: true,}} open={cartState[anchor]} onClose={toggleCartDrawer(anchor, false)}>
-                                            {cartList(anchor)}
-                                        </Drawer>
-                                    </Box>
-                                </React.Fragment>
-                            ))}
-                            <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }} className="nav-wrapper">
-                                
-                                <ul className="right hide-on-med-and-down">
-                                    <li><Link to="/">Home</Link></li>
-                                    <li><Link to="/menu">Menu</Link></li>
-                                    <li><Link to="/reservations">Reservations</Link></li>
-                                    <li><Link to="/contact">Contact</Link></li>
-                                    <li><Link to="/about">About</Link></li>
-                                    <li style={{marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white'}} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hey, {user ? user.displayName : 'Guest'} <KeyboardArrowDownIcon sx={{paddingTop: '5px'}}/></li> 
-                                    <li>
-                                    {['right'].map((anchor) => (
-                                        <React.Fragment key={anchor}>
-                                            <IconButton disableFocusRipple={true} onClick={toggleCartDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
+                            <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }}>
+                                <img className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img>
+                            </Box>
+                            <nav className="nav-col">
+                                {['left'].map((anchor) => (
+                                    <React.Fragment key={anchor}>
+                                        <Box sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none' } }} >
+                                            <a href="#" data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></a>
+                                            <Drawer ModalProps={{ keepMounted: true, }} anchor={anchor} open={menuState[anchor]} onClose={toggleMenuDrawer(anchor, false)}>
+                                                {navList(anchor)}
+                                            </Drawer>
+                                        </Box>
+
+                                    </React.Fragment>
+                                ))}
+                                <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex', xl: 'flex' } }}>
+                                    <a href="#!" className="brand-logo">King Triton's</a>
+                                </Box>
+                                <Box sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none', xl: 'none' } }}>
+                                    <img className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img>
+                                </Box>
+                                {['right'].map((anchor) => (
+                                    <React.Fragment key={anchor}>
+                                        <Box sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none' } }} >
+                                            <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" className="cartButton" aria-label="open shopping cart">
                                                 <Badge badgeContent={cart?.length} color="secondary">
                                                     <ShoppingBasketIcon />
                                                 </Badge>
                                             </IconButton>
-                                            <Drawer anchor={anchor} open={cartState[anchor]} onClose={toggleCartDrawer(anchor, false)}>
+                                            <Drawer anchor={anchor} ModalProps={{ keepMounted: true, }} open={cartState[anchor]} onClose={toggleCartDrawer(anchor, false)}>
                                                 {cartList(anchor)}
                                             </Drawer>
-                                        </React.Fragment>
-                                    ))}
-                                    </li>
+                                        </Box>
+                                    </React.Fragment>
+                                ))}
+                                <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }} className="nav-wrapper">
 
-                                </ul>
-                                <Menu
-                                    id="loggedInMenu"
-                                    anchorEl={loggedInAnchor}
-                                    open={loggedInOpen}
-                                    onClose={handleLoggedInMenuClose}
-                                    MenuListProps={{
-                                    'aria-labelledby': 'basic-button',
-                                    }}
-                                >
-                                    <MenuItem onClick={handleLoggedInMenuClose} component={Link} to="/account">My Account</MenuItem>
-                                    <MenuItem onClick={handleLoggedInMenuClose}>
-                                        <Button size='small' variant="contained" color="secondary" onClick={handleAuth}>
+                                    <ul className="right hide-on-med-and-down">
+                                        <li><Link to="/">Home</Link></li>
+                                        <li><Link to="/menu">Menu</Link></li>
+                                        <li><Link to="/reservations">Reservations</Link></li>
+                                        <li><Link to="/contact">Contact</Link></li>
+                                        <li><Link to="/about">About</Link></li>
+                                        <li style={{ marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white' }} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hi, {user ? user.displayName.split(" ")[0] : 'Guest'} <KeyboardArrowDownIcon sx={{ paddingTop: '5px' }} /></li>
+                                        <li>
+                                            {['right'].map((anchor) => (
+                                                <React.Fragment key={anchor}>
+                                                    <IconButton disableFocusRipple={true} onClick={toggleCartDrawer(anchor, true)} color="secondary" aria-label="open shopping cart">
+                                                        <Badge badgeContent={cart?.length} color="secondary">
+                                                            <ShoppingBasketIcon />
+                                                        </Badge>
+                                                    </IconButton>
+                                                    <Drawer anchor={anchor} open={cartState[anchor]} onClose={toggleCartDrawer(anchor, false)}>
+                                                        {cartList(anchor)}
+                                                    </Drawer>
+                                                </React.Fragment>
+                                            ))}
+                                        </li>
+
+                                    </ul>
+                                    <Menu
+                                        id="loggedInMenu"
+                                        anchorEl={loggedInAnchor}
+                                        open={loggedInOpen}
+                                        onClose={handleLoggedInMenuClose}
+                                        MenuListProps={{
+                                            'aria-labelledby': 'basic-button',
+                                        }}
+                                    >
+                                        <MenuItem onClick={handleLoggedInMenuClose} component={Link} to="/account">My Account</MenuItem>
+                                        <MenuItem onClick={logoutOfApp}>
                                             Logout
-                                        </Button> 
-                                    </MenuItem>
-                                </Menu>
-                                <Menu
-                                    id="loggedOutMenu"
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleMenuClose}
-                                    MenuListProps={{
-                                    'aria-labelledby': 'basic-button',
-                                    }}
-                                >
-                                    <MenuItem onClick={handleMenuClose}>
-                                    <Button size='small' variant="contained" color="secondary" component={Link} to="/login">
-                                            Login
-                                        </Button> 
-                                    </MenuItem>
-                                    <MenuItem onClick={handleMenuClose}>
-                                        <Button size='small' variant="outlined" color="secondary" component={Link} to="/register">
-                                            Create an Account
-                                        </Button> 
-                                    </MenuItem>
-                                </Menu>
-                                
-                                
-                            </Box>
-                        </nav>
+                                        </MenuItem>
+                                    </Menu>
+                                    <Menu
+                                        id="loggedOutMenu"
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleMenuClose}
+                                        MenuListProps={{
+                                            'aria-labelledby': 'basic-button',
+                                        }}
+                                    >
+                                        <MenuItem onClick={handleMenuClose}>
+                                            <Button size='small' variant="contained" color="secondary" component={Link} to={{ pathname: '/login', state: { prevPath: location.pathname } }}>
+                                                Login
+                                            </Button>
+                                        </MenuItem>
+                                        <MenuItem onClick={handleMenuClose}>
+                                            <Button size='small' variant="outlined" color="secondary" component={Link} to="/register">
+                                                Create an Account
+                                            </Button>
+                                        </MenuItem>
+                                    </Menu>
+
+
+                                </Box>
+                            </nav>
                         </Toolbar>
                     </AppBar>
                 </Box>
             </HideOnScroll>
-            <Toolbar />    
+            <Toolbar />
         </header>
     )
 
 }
 
-  
+
 
 
 export default Navbar;

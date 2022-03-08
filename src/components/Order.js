@@ -24,8 +24,8 @@ const Order = (props) => {
     return (
         <>
             <Container>
-                <Typography className="headerStyle" variant="h4" component="div">
-                    {moment.unix(props.order.data.createdAt).format("MMM Do YYYY, h:mma")}
+                <Typography className="headerStyle" variant="h5" component="div">
+                    <strong>{moment.unix(props.order.data.createdAt).format("MMM Do, h:mma")}</strong>
                 </Typography>
                 {props.order.data.cart?.map((item, key) => (
                     // <CheckoutItem key={key} id={item.id} name={item.name} price={item.price} image={item.image}/>

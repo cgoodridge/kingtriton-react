@@ -5,7 +5,6 @@ import Menu from './pages/Menu';
 import Reservations from './pages/Reservations';
 import Contact from './pages/Contact';
 import About from './pages/About';
-import Orders from './pages/Orders';
 import Account from './pages/Account';
 import Login from './pages/Login';
 import PageNotFound from './pages/404Page';
@@ -20,18 +19,17 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useElements } from '@stripe/react-stripe-js'
 import ProtectedRoute from './components/ProtectedRoute';
 import { logout, login } from './slices/userSlice';
-
-
+import { SnackbarProvider } from 'notistack';
+import Slide from '@material-ui/core/Slide';
 import {
   BrowserRouter as Router,
-
   Switch,
   Route,
-  Redirect
 } from "react-router-dom";
 import { auth, db } from './firebaseConfigFile';
-import { useStateValue } from './StateProvider';
 import { useDispatch } from 'react-redux';
+import { getMenu } from './slices/menuSlice';
+import AuthRoute from './components/AuthRoute';
 
 
 const promise = loadStripe('pk_test_51JelBJESzl8Ss9eHeAVZ8WozJuU1eiPQ1pOXak0vXrnqM8N6uoX659QmFv8DZ15JxEmMYeAyEmw6l6RCxBVg42uj006vt0mzoA');
@@ -85,26 +83,13 @@ const Content = (props) => {
     //   _isMounted.current = false;
     // }
   }, []);
-  /*
-    useEffect(() => {
   
-      if (user) {
-        console.log('User is logged in');
-        setIsAuth(true);
-      }
-      else {
-        console.log('User is logged out');
-  
-        setIsAuth(false);
-      }
-  
-    }, [user])
-  */
   const [menu, setMenuItems] = useState([]);
 
 
   useEffect(() => {
 
+    // dispatch(getMenu());
     db
       .collection('menu')
       .onSnapshot(snapshot => (
@@ -125,68 +110,76 @@ const Content = (props) => {
     <Router>
       <div className="App">
         <ThemeProvider theme={theme} >
-          <Switch>
-            <Route exact path="/">
-              <HomeNavbar />
-              <main>
-                <Home food={menu} loading={menu.length <= 0 ? true : false} />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/menu">
-              <Navbar cart={cartList} />
-              <main>
-                <Menu food={menu} loading={menu.length <= 0 ? true : false} />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/reservations" >
-              <Navbar cart={cartList} />
-              <main>
-                <Reservations />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/contact">
-              <Navbar cart={cartList} />
-              <main>
-                <Contact />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/about" >
-              <Navbar cart={cartList} />
-              <main>
-                <About />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/account" >
-              <Navbar />
-              <main>
-                <Account />
-              </main>
-              <Footer />
-            </Route>
-            <Route exact path="/checkout">
-              <Navbar cart={cartList} />
-              <main>
-                <Elements stripe={promise}>
-                  <Checkout />
-                </Elements>
-              </main>
-              <Footer />
-            </Route>
-            <ProtectedRoute exact path="/login" comp={Login} />
-            <ProtectedRoute exact path="/register" comp={Register} />
-            <Route component={PageNotFound}>
-              <main>
-                <PageNotFound />
-              </main>
-            </Route>
-          </Switch>
+          <SnackbarProvider 
+            maxSnack={3}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            TransitionComponent={Slide}
+            >
 
-
+            <Switch>
+              <Route exact path="/">
+                <HomeNavbar />
+                <main>
+                  <Home food={menu} loading={menu.length <= 0 ? true : false} />
+                </main>
+                <Footer />
+              </Route>
+              <Route exact path="/menu">
+                <Navbar cart={cartList} />
+                <main id="mainTag">
+                  <Menu food={menu} loading={menu.length <= 0 ? true : false} />
+                </main>
+                <Footer className="footerMenu"/>
+              </Route>
+              <Route exact path="/reservations" >
+                <Navbar cart={cartList} />
+                <main>
+                  <Reservations />
+                </main>
+                <Footer />
+              </Route>
+              <Route exact path="/contact">
+                <Navbar cart={cartList} />
+                <main>
+                  <Contact />
+                </main>
+                <Footer />
+              </Route>
+              <Route exact path="/about" >
+                <Navbar cart={cartList} />
+                <main >
+                  <About />
+                </main>
+                <Footer />
+              </Route>
+              <AuthRoute exact path="/account" >
+                <Navbar />
+                <main>
+                  <Account />
+                </main>
+                <Footer />
+              </AuthRoute>
+              <Route exact path="/checkout">
+                <Navbar cart={cartList} />
+                <main>
+                  <Elements stripe={promise}>
+                    <Checkout />
+                  </Elements>
+                </main>
+                <Footer />
+              </Route>
+              <ProtectedRoute exact path="/login" comp={Login} />
+              <ProtectedRoute exact path="/register" comp={Register} />
+              <Route component={PageNotFound}>
+                <main>
+                  <PageNotFound />
+                </main>
+              </Route>
+            </Switch>
+          </SnackbarProvider>
         </ThemeProvider>
       </div>
 
