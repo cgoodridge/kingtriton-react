@@ -320,7 +320,7 @@ const Navbar = (props) => {
                                     </React.Fragment>
                                 ))}
                                 <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex', xl: 'flex' } }}>
-                                    <a href="#!" className="brand-logo">King Triton's</a>
+                                    <a href="/" className="brand-logo">King Triton's</a>
                                 </Box>
                                 <Box sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none', xl: 'none' } }}>
                                     <img className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img>

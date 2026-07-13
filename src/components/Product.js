@@ -5,6 +5,7 @@ import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
+import ListItemText from '@mui/material/ListItemText';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
@@ -21,8 +22,6 @@ import { selectItems } from '../slices/cartSlice';
 import { useSnackbar } from 'notistack';
 import Slide from '@material-ui/core/Slide';
 
-
-
 const Product = ({food}) => {
 
     const dispatch = useDispatch();
@@ -38,7 +37,6 @@ const Product = ({food}) => {
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     const handleClick = (newState) => () => {
-        // setState({ open: true, ...newState });
         setQtyValue(1);
         checkCart();
         addItemToCart();
@@ -72,13 +70,10 @@ const Product = ({food}) => {
 
         if (index >= 0) {
             console.log('item in cart already, updating quantity');
-            // setCartDuplicate(true);
             enqueueSnackbar(food.name + ' quantity updated', {autoHideDuration: 1000, TransitionComponent: Slide,});
 
         } else {
-            // setCartDuplicate(false);
             enqueueSnackbar(food.name + ' added to cart', {autoHideDuration: 1500, TransitionComponent: Slide,});
-
         }
 
     };
@@ -94,9 +89,6 @@ const Product = ({food}) => {
 
     const classes = useStyles();
 
-    // const [{ cart }, dispatch] = useStateValue();
-
-    
     const addItemToCart = () => {
 
         const product = {
@@ -110,18 +102,16 @@ const Product = ({food}) => {
         }
         dispatch(addToCart(product));
     }
-    
-   
 
     return (
             <div className={classes.root} key={food.id}>
-                {cartDuplicate ? 
+                {cartDuplicate ?
                     <Snackbar
                         anchorOrigin={{ vertical, horizontal }}
                         open={open}
                         autoHideDuration={2000}
                         onClose={handleClose}
-                        message= {food.name + ' quantity updated'} 
+                        message= {food.name + ' quantity updated'}
                         key={vertical + horizontal}
                     />
                     :
@@ -130,26 +120,13 @@ const Product = ({food}) => {
                         open={open}
                         autoHideDuration={2000}
                         onClose={handleClose}
-                        message= {food.name + ' added to Cart'} 
+                        message= {food.name + ' added to Cart'}
                         key={vertical + horizontal}
                     />
                 }
-            
-
-                {/* <Card component={Snackbar} 
-                    anchorOrigin={{ vertical, horizontal }}
-                    open={open}
-                    autoHideDuration={3000}
-                    onClose={handleClose}
-                    key={vertical + horizontal}
-                    sx={{ display: 'flex' }}>
-                    <CardContent>
-                        <p>{food.name + ' added to Cart'} </p>
-                    </CardContent>
-                </Card> */}
 
                 <Grid item xs={12} sm={3} className={classes.card}>
-                    <Card className="card small" style={{borderRadius: "20px"}} >
+                    <Card className="card small" style={{borderRadius: "5px"}}>
                         <CardMedia
                         component="img"
                         alt={food.name}
@@ -163,36 +140,53 @@ const Product = ({food}) => {
                             <Grid container style={{marginBottom: '10px'}}>
                                 <Grid item xs={10}>
                                     <Typography gutterBottom variant="h6" component="h2" align="left">
-                                        {food.name} 
+                                        {food?.name}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={2}>
                                     <Typography gutterBottom variant="h6" component="h2" align="left">
-                                        ${food.price} 
+                                        ${food?.price}
                                     </Typography>
                                 </Grid>
                             </Grid>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                                {food?.description}
+                            </Typography>
                         </CardContent>
+                        {/* <ListItemText
+                            secondary={
+                                <React.Fragment>
+                                    <Typography
+                                        sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.primary"
+                                    >
 
-                        <CardActions className="controls">
+                                    </Typography>
+                                    {food?.description}
+                                </React.Fragment>
+                            }
+                        /> */}
+
+                        {/* <CardActions className="controls">
                             <Box className="control-counters">
                                 <div className="counter">
                                     <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtySub}>
                                         <RemoveIcon fontSize="inherit" />
-                                    </IconButton> 
+                                    </IconButton>
 
                                     <input type="number" min="0" value={qtyValue} onChange={e => setQtyValue(parseInt(e.target.value))} className="qtyField"></input>
-                                    {/* <span>{food.quantity}</span> */}
 
                                     <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtyAdd}>
-                                        <AddIcon fontSize="inherit"/> 
-                                    </IconButton> 
+                                        <AddIcon fontSize="inherit"/>
+                                    </IconButton>
                                 </div>
                             </Box>
                             <Fab color="secondary" aria-label="add" onClick={handleClick ({ vertical: 'top', horizontal: 'right', })}>
                                 <img src="img/mdi_basket-plus.png"></img>
                             </Fab>
-                        </CardActions>
+                        </CardActions> */}
                     </Card>
                 </Grid>
             </div>

@@ -18,22 +18,22 @@ const Footer = () => {
                 <p>(246)439-9000</p>
                 <p>info@triton.com</p>
               </Grid>
-  
+
               <Grid item xs={12} md={6} lg={3}>
                 <Typography variant="h5" gutterBottom component="div" className="footerHeaders">
                   Opening Hours
                 </Typography>
-                <p>Mon - Sat: 11AM - 4PM</p>
+                <p>Mon - Sat: 11AM - 10PM</p>
                 <p>Sunday: Closed</p>
               </Grid>
-  
+
               <Grid item xs={12} md={6} lg={3}>
                 <Typography variant="h5" gutterBottom component="div" className="footerHeaders">
                   Location
                 </Typography>
                 <p>Hastings Main Road Ch Ch</p>
               </Grid>
-  
+
               <Grid item xs={12} md={6} lg={3}>
                 <Typography variant="h5" gutterBottom component="div" className="footerHeaders">
                   Follow Us
@@ -47,12 +47,12 @@ const Footer = () => {
                   </IconButton>
                 </div>
               </Grid>
-  
+
           </Grid>
-  
+
           <Typography variant="subtitle1" gutterBottom component="div" className="footer-copyright">
-            © 2021 King Triton's Seafood Palace
-          </Typography>      
+            © 2026 King Triton's Seafood Palace
+          </Typography>
         </footer>
     );
 }

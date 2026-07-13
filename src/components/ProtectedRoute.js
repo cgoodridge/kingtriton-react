@@ -6,13 +6,11 @@ import { useSelector } from 'react-redux';
 
 const ProtectedRoute = ({ comp: Component }, ...rest  ) => {
     const user = useSelector(selectUser);
-  
-//   const [{ user }] = useStateValue();
 
     return (
-        <Route 
-        {...rest} 
-            render={(props) => !user ? <Component {...props}/>  :  <Redirect to={{ pathname: '/', state: {from: props.location} }}/> 
+        <Route
+        {...rest}
+            render={(props) => !user ? <Component {...props}/>  :  <Redirect to={{ pathname: '/', state: {from: props.location} }}/>
         }/>
     );
 }

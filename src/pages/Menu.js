@@ -14,9 +14,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Dineinmenu from '../components/DineInMenu';
 
-
-// import { Button, Card, Row, Col } from 'react-materialize';
-
 const chipValues = [
   {
     title: "All",
@@ -72,10 +69,7 @@ function a11yProps(index) {
   };
 }
 
-
 const Menu = ({ food, loading }) => {
-
-
 
   const [value, setTabValue] = useState(0);
   const [filterProvider, setFilterParam] = useState('All');
@@ -157,9 +151,7 @@ const Menu = ({ food, loading }) => {
             </Grid>
           </TabPanel>
         </Box>
-
       </Container>
-
     </div>
   )
 

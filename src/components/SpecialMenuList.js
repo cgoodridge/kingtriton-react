@@ -4,14 +4,10 @@ import MenuLoadingSkeleton from './MenuLoadingSkeleton';
 
 
 const SpecialMenuList = (props) => {
-    
-    // console.log('Food props are ', props.foods);
-    
-    
 
     return(
         // TODO: Alter code so it's possible to display all food items on the main menu page, without excluding the special items
-        
+
             <>
                 {
                     props.loading ?
@@ -23,10 +19,10 @@ const SpecialMenuList = (props) => {
                         );
                     })
                 }
-                    
+
             </>
         );
 }
-      
-  
+
+
 export default SpecialMenuList;

@@ -6,8 +6,8 @@ footer{
     clear: both;
     /* bottom: auto; */
     /* height: 300px; */
-    margin-top: 35vh; /* To control placement of footer*/
-    
+    margin-top: 25vh; /* To control placement of footer*/
+
     width: 100%;
     background-color: #141414 !important;
     padding-top: 16px;
@@ -36,8 +36,8 @@ footer{
 .grid-content{
   text-align: center;
   color: white;
-} 
+}
 
 .grid-content p{
     font-size: 18px;
-} 
+}
