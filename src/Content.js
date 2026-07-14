@@ -34,21 +34,22 @@ import AuthRoute from './components/AuthRoute';
 
 const promise = loadStripe('pk_test_51JelBJESzl8Ss9eHeAVZ8WozJuU1eiPQ1pOXak0vXrnqM8N6uoX659QmFv8DZ15JxEmMYeAyEmw6l6RCxBVg42uj006vt0mzoA');
 
-
-
 const theme = createTheme({
   palette: {
     primary: {
-      light: '#757ce8',
-      main: '#141414',
-      dark: '#002884',
-      contrastText: '#fff',
+        light: '#757ce8',
+        main: '#141414',
+        dark: '#002884',
+        contrastText: '#fff',
     },
     secondary: {
-      light: '#ff7961',
-      main: '#2196f3',
-      dark: '#006596',
-      contrastText: '#000',
+        light: '#ff7961',
+        main: '#2196f3',
+        dark: '#006596',
+        contrastText: '#000',
+    },
+    text: {
+        secondary: '#9e9e9e',
     },
   },
 });
@@ -79,11 +80,11 @@ const Content = (props) => {
       }
     });
 
-    // return () => { // ComponentWillUnmount 
+    // return () => { // ComponentWillUnmount
     //   _isMounted.current = false;
     // }
   }, []);
-  
+
   const [menu, setMenuItems] = useState([]);
 
 
@@ -99,7 +100,7 @@ const Content = (props) => {
         })))
       ))
 
-    return () => { // ComponentWillUnmount 
+    return () => { // ComponentWillUnmount
       _isMounted.current = false;
     }
 
@@ -110,7 +111,7 @@ const Content = (props) => {
     <Router>
       <div className="App">
         <ThemeProvider theme={theme} >
-          <SnackbarProvider 
+          <SnackbarProvider
             maxSnack={3}
             anchorOrigin={{
               vertical: 'bottom',
@@ -182,9 +183,6 @@ const Content = (props) => {
           </SnackbarProvider>
         </ThemeProvider>
       </div>
-
-
-
     </Router>
   );
 }

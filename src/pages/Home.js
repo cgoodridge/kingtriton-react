@@ -23,8 +23,8 @@ const Home = ({food, loading}) => {
       </LazyHero>
 
       <Container maxWidth="lg">
-          <Typography gutterBottom variant="h3" component="h2" align="center" className="main-font">
-                  Specials
+          <Typography gutterBottom variant="h3" component="h3" align="center" className="main-font">
+                Take-away Specials
           </Typography>
       </Container>
         <Container maxWidth="lg">

@@ -347,7 +347,7 @@ const HomeNavbar = (props) => {
                                         <li><Link to="/reservations">Reservations</Link></li>
                                         <li><Link to="/contact">Contact</Link></li>
                                         <li><Link to="/about">About</Link></li>
-                                        <li style={{ marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white' }} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hi, {user ? user.displayName.split(" ")[0] : 'Guest'} <KeyboardArrowDownIcon sx={{ paddingTop: '5px' }} /></li>
+                                        <li style={{ marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white' }} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hi, {user ? user.displayName?.split(" ")[0] : 'Guest'} <KeyboardArrowDownIcon sx={{ paddingTop: '5px' }} /></li>
                                         <li>
                                             {['right'].map((anchor) => (
                                                 <React.Fragment key={anchor}>

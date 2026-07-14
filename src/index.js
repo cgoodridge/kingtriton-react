@@ -14,8 +14,6 @@ import { StateProvider } from './StateProvider';
 
 const persistor = persistStore(store);
 
-
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

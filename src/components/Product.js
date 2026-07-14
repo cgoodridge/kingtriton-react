@@ -5,6 +5,16 @@ import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import ListItemText from '@mui/material/ListItemText';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -31,6 +41,20 @@ const Product = ({food}) => {
         vertical: 'top',
         horizontal: 'center',
     });
+    const [selectedOptions, setSelectedOptions] = useState({});
+
+    console.log("Selected Options ", selectedOptions);
+
+    const handleCheckboxChange = (optionName, isChecked) => {
+        setSelectedOptions((prevState) => ({
+          ...prevState,
+          [optionName]: isChecked, // Update the state for the specific checkbox
+        }));
+    };
+
+    const handleClickOpen = () => {
+        setState({open: true});
+    };
 
     const { vertical, horizontal, open } = state;
     const cart = useSelector(selectItems);
@@ -91,21 +115,26 @@ const Product = ({food}) => {
 
     const addItemToCart = () => {
 
+        const selectedCustomizations = Object.keys(selectedOptions).filter(
+            (option) => selectedOptions[option]
+        );
+
         const product = {
-            id: food.id,
-            name: food.name,
-            price: food.price,
-            image: food.image,
-            course: food.course,
-            special: food.special,
-            qty: qtyValue
+            id: food?.id,
+            name: food?.name,
+            price: food?.price,
+            image: food?.image,
+            course: food?.course,
+            special: food?.special,
+            qty: qtyValue,
+            customization_options: selectedCustomizations
         }
         dispatch(addToCart(product));
     }
 
     return (
             <div className={classes.root} key={food.id}>
-                {cartDuplicate ?
+                {/* {cartDuplicate ?
                     <Snackbar
                         anchorOrigin={{ vertical, horizontal }}
                         open={open}
@@ -123,10 +152,74 @@ const Product = ({food}) => {
                         message= {food.name + ' added to Cart'}
                         key={vertical + horizontal}
                     />
-                }
+                } */}
+                <Dialog open={open} onClose={handleClose} disableScrollLock>
+                    <DialogTitle>{food?.name}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            {food?.description}
+                        </DialogContentText>
+                        <FormGroup>
+                            {console.log("Custom options ", food?.customization_options)}
+                            {food?.customization_options?.length ? (
+                                food.customization_options.map((custom_option, key) => (
+                                    <FormControlLabel
+                                        key={key}
+                                        control={
+                                            <Checkbox
+                                                checked={!!selectedOptions[custom_option?.name]}
+                                                onChange={(e) =>
+                                                    handleCheckboxChange(custom_option?.name, e.target.checked)
+                                                }
+                                            />
+                                        }
+                                        label={custom_option?.name + ' +$' + custom_option?.price}
+                                    />
+                                ))
+                            ) : (
+                                'No customization options available for this item.'
+                            )}
+                        </FormGroup>
+                    </DialogContent>
+                    <DialogActions>
+                        <Box className="control-counters">
+                            <div className="counter">
+                                <IconButton
+                                    disabled={qtyValue <= 1}
+                                    color="secondary"
+                                    className="square-button"
+                                    size="small"
+                                    style={{backgroundColor: "#2196f3"}}
+                                    onClick={handleQtySub}
+                                >
+                                    <RemoveIcon fontSize="inherit" />
+                                </IconButton>
+                                <input
+                                    type="number"
+                                    inputprops={{style: { color: "#5f5f5f" }  }}
+                                    min="0"
+                                    value={qtyValue}
+                                    onChange={e => setQtyValue(parseInt(e.target.value))}
+                                    className="qtyField"
+                                ></input>
 
+                                <IconButton color="secondary" className="square-button" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtyAdd}>
+                                    <AddIcon fontSize="inherit"/>
+                                </IconButton>
+                            </div>
+                        </Box>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            onClick={handleClick ({ vertical: 'top', horizontal: 'right', })}
+                            disableElevation
+                        >
+                            Add to Cart
+                        </Button>
+                    </DialogActions>
+                </Dialog>
                 <Grid item xs={12} sm={3} className={classes.card}>
-                    <Card className="card small" style={{borderRadius: "5px"}}>
+                    <Card className="card small" style={{borderRadius: "5px"}} onClick={handleClickOpen}>
                         <CardMedia
                         component="img"
                         alt={food.name}
@@ -135,7 +228,6 @@ const Product = ({food}) => {
                         title={food.name}
                         className="card-image"
                         />
-
                         <CardContent>
                             <Grid container style={{marginBottom: '10px'}}>
                                 <Grid item xs={10}>
@@ -149,7 +241,7 @@ const Product = ({food}) => {
                                     </Typography>
                                 </Grid>
                             </Grid>
-                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }} align="left">
                                 {food?.description}
                             </Typography>
                         </CardContent>
