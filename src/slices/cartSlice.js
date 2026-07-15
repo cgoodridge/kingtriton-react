@@ -13,6 +13,7 @@ export const cartSlice = createSlice({
             const index = state.items.findIndex(
                 (cartItem) => cartItem.id === action.payload.id
             );
+            console.log('addToCart called with payload: ', action.payload);
 
             if (index >= 0) {
                 let newCart = [...state.items];

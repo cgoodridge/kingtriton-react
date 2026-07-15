@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -17,8 +17,7 @@ import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import { useStateValue } from '../StateProvider';
-import { auth, db } from '../firebaseConfigFile';
+import { auth } from '../firebaseConfigFile';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import '../css/navbar.css';
@@ -52,8 +51,7 @@ const HideOnScroll = (props) => {
 
 const useStyles = makeStyles((theme) => ({
     list: {
-        width: 300,
-
+        width: 580,
     },
     fullList: {
         width: 'auto',
@@ -99,12 +97,10 @@ const HomeNavbar = (props) => {
         history.push('/');
     };
 
-
     const toggleCartDrawer = (anchor, open) => (event) => {
         if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
             return;
         }
-
         setCartState({ ...cartState, [anchor]: open });
     };
 
@@ -144,8 +140,8 @@ const HomeNavbar = (props) => {
         >
             <List className="cart" style={{ height: '500px', width: '100%' }}>
                 <Typography
-                    component="h5"
-                    variant="h5"
+                    component="h6"
+                    variant="h6"
                     align="center"
                     className="cartText"
                     color="textPrimary"
@@ -160,39 +156,46 @@ const HomeNavbar = (props) => {
                         </div>
                     </>
                 ))}
-                <Typography
-                    component="h6"
-                    variant="h6"
-                    align="left"
-                    className="deliveryText"
-                    color="textPrimary"
-                >
-                    Delivery Charge: {total > 70 ? 'Free' : '$' + 10}
-                </Typography>
+                {
+                    (cart.length <= 0) ?
+                    <Typography
+                        component="caption"
+                        variant="caption"
+                        align="center"
+                        color="textPrimary"
+                    >
+                        Nothing in your cart yet. Add some items to checkout!
+                    </Typography>
+                    :
+                    <Typography
+                        component="h6"
+                        variant="h6"
+                        align="left"
+                        className="deliveryText"
+                        color="textPrimary"
+                    >
+                        Delivery Charge: {total > 70 ? 'Free' : '$' + 10}
+                    </Typography>
+                }
                 <ListItem className="cartOptions">
+                    {
+                        (cart.length <= 0) ?
+                        <Button variant="contained" color="secondary" fullWidth onClick={toggleCartDrawer(anchor, false)} >
+                            Close
+                        </Button>
+                        :
+                        <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
+                            {(total > 0 && total < 70) ?
+                                'Checkout' + ('($' + parseFloat(total + 10) + ')') : ''
+                            }
+                            {(total >= 70) ?
+                                'Checkout' + '($' + parseFloat(total) + ')' : ''}
+                        </Button>
+                    }
 
-                    {/* <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
-
-                        {'Checkout' + '($' + parseFloat(total) + ')'}
-
-                    </Button> */}
-                    <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
-                        {cart.length <= 0 ? 'Checkout' : ''}
-
-                        {(total > 0 && total < 70) ?
-                            'Checkout' + ('($' + parseFloat(total + 10) + ')')
-                            :
-                            ''
-                        }
-                        {(total >= 70) ?
-                            'Checkout' + '($' + parseFloat(total) + ')'
-                            :
-                            ''}
-                    </Button>
                 </ListItem>
             </List>
-            <Divider />
-
+            <Divider/>
         </div>
     );
 
@@ -284,30 +287,21 @@ const HomeNavbar = (props) => {
                         </Collapse>
                     </>
                 }
-
-
-
             </List>
-            <Divider />
-
+            <Divider/>
         </div>
     );
 
     return (
-
-
         <header className="homeHeader">
             <CssBaseline />
             <HideOnScroll {...props}>
-
                 <Box flexGrow={1}>
                     <AppBar position="absolute" color="transparent" elevation={0}>
                         <Toolbar>
-
                             <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }}>
                                 <img className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img>
                             </Box>
-
                             <nav className="nav-col">
                                 {['left'].map((anchor) => (
                                     <React.Fragment key={anchor}>
@@ -339,7 +333,6 @@ const HomeNavbar = (props) => {
                                         </Box>
                                     </React.Fragment>
                                 ))}
-                                {/* <p>Test</p> */}
                                 <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }} className="nav-wrapper">
                                     <ul className="right">
                                         <li><Link to="/">Home</Link></li>

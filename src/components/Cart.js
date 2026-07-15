@@ -1,11 +1,7 @@
-//  import logo from './logo.svg';
-
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Card from '@material-ui/core/Card';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CardActions from '@material-ui/core/CardActions';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import IconButton from '@material-ui/core/IconButton';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
@@ -37,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'flex-end',
     justifyContent: 'space-around',
-    
+
     paddingLeft: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
@@ -45,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
-    
+
 
   },
   playIcon: {
@@ -58,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 0,
     paddingBottom: 0,
     textAlign: 'center'
-  
+
   },
   cardRadius:{
     borderRadius: 10,
@@ -100,39 +96,37 @@ function Cart() {
 
     const renderCard = (card, index) => {
         return(
-        
             <Grid item xs={12} sm={3}>
-            <Card className="card small" style={{borderRadius: "20px"}} key={index}>
-                <CardMedia
-                component="img"
-                alt="Contemplative Reptile"
-                height="200"
-                image={card.image}
-                title="Contemplative Reptile"
-                className="card-image"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2" align="left">
-                        {card.name} 
-                    </Typography>
-                </CardContent>
-                <CardActions className={classes.controls}>
-                    <Box className={classes.controlCounters}>
-                        <IconButton size="small" color="primary">
-                        <RemoveIcon />
-                        </IconButton>
-                        <TextField id="filled-basic" className={classes.formSize} textAlign={'center'} defaultValue="1" size="small" />
-                        <IconButton size="small" color="primary">
-                        <AddIcon />
-                        </IconButton>
-                    </Box>
-                    <Fab color="primary" aria-label="add">
-                        <img src="img/mdi_basket-plus.png"></img>
-                    </Fab>
-                </CardActions>
-            </Card>
+                <Card className="card small" style={{borderRadius: "20px"}} key={index}>
+                    <CardMedia
+                    component="img"
+                    alt={card.name}
+                    height="200"
+                    image={card.image}
+                    title={card.name}
+                    className="card-image"
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="h2" align="left">
+                            {card.name}
+                        </Typography>
+                    </CardContent>
+                    <CardActions className={classes.controls}>
+                        <Box className={classes.controlCounters}>
+                            <IconButton size="small" color="primary">
+                            <RemoveIcon />
+                            </IconButton>
+                            <TextField id="filled-basic" className={classes.formSize} textAlign={'center'} defaultValue="1" size="small" />
+                            <IconButton size="small" color="primary">
+                            <AddIcon />
+                            </IconButton>
+                        </Box>
+                        <Fab color="primary" aria-label="add">
+                            <img src="img/mdi_basket-plus.png"></img>
+                        </Fab>
+                    </CardActions>
+                </Card>
             </Grid>
-
         )
     };
 
@@ -143,11 +137,9 @@ function Cart() {
                     Menu
             </Typography>
         </Container>
-
             <Grid container direction="row" className={classes.gridContent}>
             {cardInfo.map(renderCard)}
             </Grid>
-
         </div>
     );
 }

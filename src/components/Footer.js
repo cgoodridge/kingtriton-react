@@ -1,8 +1,6 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
 import '../css/footer.css';
-import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
@@ -47,9 +45,7 @@ const Footer = () => {
                   </IconButton>
                 </div>
               </Grid>
-
           </Grid>
-
           <Typography variant="subtitle1" gutterBottom component="div" className="footer-copyright">
             © 2026 King Triton's Seafood Palace
           </Typography>

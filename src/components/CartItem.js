@@ -21,25 +21,19 @@ const CartItem = ({ id, name, image, price, qty }) => {
     const [qtyValue, setQtyValue] = useState(qty);
 
     const handleQtyAdd = (e) => {
-        // console.log('ID of product qty being decreased ', e.currentTarget.id);
-        // setCartUpdateId(arr => [...arr, e.currentTarget.id]);
-        // setCartUpdateId(e.currentTarget.id);
         e.stopPropagation();
 
         const product = {
             id: id,
             qty: qtyValue
         }
-        
+
         setQtyValue(qtyValue + 1);
 
         dispatch(updateCartIncrease(product));
     };
 
     const handleQtySub = (e) => {
-        console.log('ID of product qty being increased ', e.currentTarget.id);
-        // setCartUpdateId(e.currentTarget.id);
-
         e.stopPropagation();
         const product = {
             id: id,
@@ -55,7 +49,6 @@ const CartItem = ({ id, name, image, price, qty }) => {
     };
 
     const removeItemFromCart = (e) => {
-        // const prodId = { id:props.id }
         e.stopPropagation();
 
         dispatch(removeFromCart({ id: id }));
@@ -71,7 +64,6 @@ const CartItem = ({ id, name, image, price, qty }) => {
                     <Typography variant="subtitle2" gutterBottom component="div">
                         {name + ' x' + qty}
                     </Typography>
-
                     <CurrencyFormat
                         renderText={(value) => (
                             <>

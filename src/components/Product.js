@@ -43,8 +43,6 @@ const Product = ({food}) => {
     });
     const [selectedOptions, setSelectedOptions] = useState({});
 
-    console.log("Selected Options ", selectedOptions);
-
     const handleCheckboxChange = (optionName, isChecked) => {
         setSelectedOptions((prevState) => ({
           ...prevState,
@@ -93,7 +91,6 @@ const Product = ({food}) => {
         );
 
         if (index >= 0) {
-            console.log('item in cart already, updating quantity');
             enqueueSnackbar(food.name + ' quantity updated', {autoHideDuration: 1000, TransitionComponent: Slide,});
 
         } else {
@@ -115,14 +112,21 @@ const Product = ({food}) => {
 
     const addItemToCart = () => {
 
-        const selectedCustomizations = Object.keys(selectedOptions).filter(
-            (option) => selectedOptions[option]
-        );
+        const selectedCustomizations = food?.customization_options
+        ?.filter((option) => selectedOptions[option.name]) // Only include selected options
+        .map((option) => ({
+            name: option.name,
+            price: option.price,
+        }));
+        console.log("Selected customizations: ", selectedCustomizations);
+
+        const customizationsTotalPrice = selectedCustomizations?.reduce((total, option) => total + option.price, 0);
+
 
         const product = {
             id: food?.id,
             name: food?.name,
-            price: food?.price,
+            price: food?.price + customizationsTotalPrice,
             image: food?.image,
             course: food?.course,
             special: food?.special,
@@ -154,6 +158,13 @@ const Product = ({food}) => {
                     />
                 } */}
                 <Dialog open={open} onClose={handleClose} disableScrollLock>
+                    <img
+                        className="dialog-image"
+                        srcSet={`${food.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                        src={`${food.image}?w=248&fit=crop&auto=format`}
+                        alt={food.name}
+                        loading="lazy"
+                    />
                     <DialogTitle>{food?.name}</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
@@ -231,12 +242,12 @@ const Product = ({food}) => {
                         <CardContent>
                             <Grid container style={{marginBottom: '10px'}}>
                                 <Grid item xs={10}>
-                                    <Typography gutterBottom variant="h6" component="h2" align="left">
+                                    <Typography gutterBottom variant="h6" component="h6" align="left">
                                         {food?.name}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={2}>
-                                    <Typography gutterBottom variant="h6" component="h2" align="left">
+                                    <Typography gutterBottom variant="h6" component="h6" align="left">
                                         ${food?.price}
                                     </Typography>
                                 </Grid>
