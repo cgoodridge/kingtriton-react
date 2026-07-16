@@ -8,89 +8,79 @@ import '../css/cartItem.css';
 import { removeFromCart, updateCartIncrease, updateCartDecrease } from '../slices/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectItems } from '../slices/cartSlice';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
+import QuantityControl from "./QuantityControl";
 
-
-
-const CartItem = ({ id, name, image, price, qty }) => {
+const CartItem = ({ food }) => {
 
     const dispatch = useDispatch();
     const cart = useSelector(selectItems);
 
-    const [qtyValue, setQtyValue] = useState(qty);
+    const [qtyValue, setQtyValue] = useState(food?.qty);
 
     const handleQtyAdd = (e) => {
         e.stopPropagation();
 
         const product = {
-            id: id,
-            qty: qtyValue
+            id: food?.id,
+            qty: food?.qtyValue
         }
-
-        setQtyValue(qtyValue + 1);
-
+        setQtyValue((qtyValue) => qtyValue + 1);
         dispatch(updateCartIncrease(product));
     };
 
     const handleQtySub = (e) => {
         e.stopPropagation();
         const product = {
-            id: id,
-            qty: qtyValue
+            id: food.id,
+            qty: food.qtyValue
         }
-
+        setQtyValue((qtyValue) => (qtyValue > 1 ? qtyValue - 1 : 1));
         dispatch(updateCartDecrease(product));
-
-        if (qtyValue > 1) {
-
-            setQtyValue(qtyValue - 1);
-        }
     };
 
     const removeItemFromCart = (e) => {
         e.stopPropagation();
 
-        dispatch(removeFromCart({ id: id }));
+        dispatch(removeFromCart({ id: food.id }));
     }
 
     return (
         <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
             <div>
-                <img src={image} alt={name} className="cartItemImage" />
+                <img src={food?.image} alt={food?.name} className="cartItemImage" />
             </div>
             <Grid container direction="column" style={{ marginLeft: '16px', width: '100%' }}>
                 <Grid item>
                     <Typography variant="subtitle2" gutterBottom component="div">
-                        {name + ' x' + qty}
+                        {food?.name + ' x' + food?.qty}
                     </Typography>
+
                     <CurrencyFormat
                         renderText={(value) => (
                             <>
-                                <Typography variant="subtitle2" gutterBottom component="div">
+                                <Typography variant="subtitle2" gutterBottom component="h6">
                                     {value}
                                 </Typography>
                             </>
                         )}
                         decimalScale={2}
-                        value={price}
+                        value={food?.price}
                         displayType={"text"}
                         thousandSeparator={true}
                         prefix={"$"}
                     />
-                    <div className="cartItemCounter">
-                        <IconButton color="secondary" size="small" style={{ backgroundColor: "#2196f3" }} onClick={qtyValue > 1 ? handleQtySub : removeItemFromCart}>
-                            <RemoveIcon fontSize="inherit" />
-                        </IconButton>
-
-                        <input type="number" min="0" value={qtyValue} onChange={e => setQtyValue(parseInt(e.target.value))} className="qtyField"></input>
-
-                        <IconButton color="secondary" size="small" style={{ backgroundColor: "#2196f3" }} onClick={handleQtyAdd}>
-                            <AddIcon fontSize="inherit" />
-                        </IconButton>
-                    </div>
+                    {food?.customization_options?.map((option, index) => (
+                        <Typography key={index} variant="caption" gutterBottom component="p">
+                            {option.name + ' +$' + option.price}
+                        </Typography>
+                    ))}
+                    <QuantityControl
+                        qtyValue={qtyValue}
+                        handleQtyAdd={handleQtyAdd}
+                        handleQtySub={handleQtySub}
+                        setQtyValue={(e) => setQtyValue(parseInt(e.target.value))}
+                    />
                 </Grid>
-
             </Grid>
             <div className="closeButton">
                 <IconButton aria-label="close" style={{ marinRight: '8px' }} onClick={removeItemFromCart}>

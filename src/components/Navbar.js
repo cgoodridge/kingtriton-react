@@ -158,7 +158,6 @@ const Navbar = (props) => {
             onClick={toggleCartDrawer(anchor, false)}
             onKeyDown={toggleCartDrawer(anchor, false)}
         >
-
             <List className="cart" style={{ height: '500px', width: '100%', }}>
                 <Typography
                     component="h5"
@@ -173,10 +172,8 @@ const Navbar = (props) => {
                 {cart.map((food, key) => (
                     <>
                         <div style={{ padding: '8px 16px', marginTop: '16px' }}>
-                            <CartItem key={key} id={food.id} name={food.name} price={food.price} image={food.image} qty={food.qty} />
+                            <CartItem key={key} food={food} />
                         </div>
-                        {/* <Divider variant="inset" component="li" /> */}
-
                     </>
                 ))}
                 <ListItem className="cartOptions">

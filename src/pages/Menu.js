@@ -13,6 +13,8 @@ import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Dineinmenu from '../components/DineInMenu';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const chipValues = [
   {
@@ -73,7 +75,7 @@ const Menu = ({ food, loading }) => {
 
   const [value, setTabValue] = useState(0);
   const [filterProvider, setFilterParam] = useState('All');
-  const [chipColour, setChipColour] = useState(false);
+  const [chipColour, setChipColour] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedValue, setSelectedValue] = useState('a');
 
@@ -86,9 +88,12 @@ const Menu = ({ food, loading }) => {
   };
 
   const handleFilterOption = (e) => {
-    console.log(e.currentTarget.id);
     setFilterParam(e.currentTarget.id);
     setChipColour(true);
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
   };
 
   return (
@@ -129,6 +134,17 @@ const Menu = ({ food, loading }) => {
                         <Search />
                       </InputAdornment>
                     ),
+                    endAdornment: searchQuery && (
+                        <InputAdornment position="end">
+                            <IconButton
+                                onClick={handleClearSearch}
+                                size="small"
+                                style={{ color: "#999" }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </InputAdornment>
+                    )
                   }} />
               </Grid>
 
@@ -146,8 +162,8 @@ const Menu = ({ food, loading }) => {
               />
             ))}
 
-            <Grid container direction="row" className="grid-content">
-              <MenuList foods={food} loading={loading} filterParam={filterProvider} searchQuery={searchQuery} />
+            <Grid container direction="row" className="grid-content" spacing={2} justifyContent="flex-start">
+                <MenuList foods={food} loading={loading} filterParam={filterProvider} searchQuery={searchQuery}/>
             </Grid>
           </TabPanel>
         </Box>

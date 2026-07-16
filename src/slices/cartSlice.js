@@ -13,8 +13,6 @@ export const cartSlice = createSlice({
             const index = state.items.findIndex(
                 (cartItem) => cartItem.id === action.payload.id
             );
-            console.log('addToCart called with payload: ', action.payload);
-
             if (index >= 0) {
                 let newCart = [...state.items];
 
@@ -36,7 +34,6 @@ export const cartSlice = createSlice({
                 (cartItem) => cartItem.id === action.payload.id
             );
 
-
             const baseItemPrice = state.items[index].price;
 
             if (index >= 0) {
@@ -56,7 +53,6 @@ export const cartSlice = createSlice({
             const index = state.items.findIndex(
                 (cartItem) => cartItem.id === action.payload.id
             );
-
 
             if (index >= 0) {
                 let newCart = [...state.items];

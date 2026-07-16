@@ -63,13 +63,12 @@ const About = () => {
         {image: "img/owner.jpg", name: "Barbara Gordon", position:"Owner, King Triton's Seafood Palace",},
         {image: "img/head-chef.jpg", name: "Sara Lance", position:"Head Chef, King Triton's Seafood Palace",},
         {image: "img/sous-chef.jpg", name: "Lucius Fox", position:"Sous Chef, King Triton's Seafood Palace",},
-        
 
     ];
 
     const renderCard = (card, index) => {
         return(
-        
+
             <Grid item xs={12} sm={3} className={classes.card}>
               <Card className="card small" style={{borderRadius: "20px"}} key={index}>
                   <CardMedia
@@ -82,48 +81,40 @@ const About = () => {
                   />
                   <CardContent>
                       <Typography gutterBottom variant="h4" component="h2" align="center" style={{fontFamily: 'Poiret One', fontWeight: 'bold'}}>
-                          {card.name} 
+                          {card.name}
                       </Typography>
                       <Typography gutterBottom variant="h6" component="h2" align="center">
-                          {card.position} 
+                          {card.position}
                       </Typography>
                   </CardContent>
                   <CardActions className={classes.controls}>
-                      
-                          <IconButton size="small" color="primary">
-                            <a href="#"><FontAwesomeIcon icon={['fab','linkedin']} size="lg" /></a>
-                          </IconButton>
-                      
-          
+                    <IconButton size="small" color="primary">
+                    <a href="#"><FontAwesomeIcon icon={['fab','linkedin']} size="lg" /></a>
+                    </IconButton>
                   </CardActions>
               </Card>
             </Grid>
-
         )
     };
 
     return (
-        // <div className="App" theme={theme} style={{padding: '25px'}}>
         <>
-         <Container maxWidth="lg" style={{marginTop: '16px'}}>
-            <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont} >
-                    About
-            </Typography>
-            <Typography variant="body1" gutterBottom style={{lineHeight: 2}}>
-              King Triton’s Seafood Palace “Food fit for a king” was founded in 1999. 
-              King Triton’s gets its name from the 1989 Disney movie, The Little Mermaid, a movie the owner’s son loved as a child. 
-              Barbara Gordon originally opened her first espresso, doughnut and sandwich shop and when that proved to be a fruitful business venture, she expanded and rebranded to what is now known as King Triton’s Seafood Palace. 
-              It has turned into the best Seafood Restaurant in Barbados, serving in excess of 300,000 meals and 299,000. Furthermore, presently it’s additionally in Barbados located at Hastings Christ Church. At King Triton's Seafood Palace Barbados, you can appreciate a wide variety of seafood delights, espresso, drinks, and sandwiches, that will have you sipping’, slurping, gorgin and more.
-            </Typography>
-        </Container>
+            <Container maxWidth="lg" style={{marginTop: '16px'}}>
+                <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont} >
+                        About
+                </Typography>
+                <Typography variant="body1" gutterBottom style={{lineHeight: 2}}>
+                King Triton’s Seafood Palace was founded in 1999.
+                King Triton’s gets its name from the 1989 Disney movie, The Little Mermaid, a movie the owner’s son loved as a child.
+                Barbara Gordon originally opened her first espresso, doughnut and sandwich shop in 1996 and when that proved to be a fruitful business venture, she expanded and rebranded to what is now known as King Triton’s Seafood Palace.
+                It has turned into what is considred by some to the best Seafood Restaurant in Barbados. At King Triton's Seafood Palace Barbados, you can appreciate a wide variety of seafood delights, espresso, drinks, and sandwiches; food fit for a king.
+                </Typography>
+            </Container>
 
             <Grid container direction="row" className={classes.gridContent}>
-            {cardInfo.map(renderCard)}
+                {cardInfo.map(renderCard)}
             </Grid>
         </>
-       
-
-        // </div>
     );
 }
 

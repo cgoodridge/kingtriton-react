@@ -19,7 +19,6 @@ import '../css/order.css';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 
-
 const Order = (props) => {
     return (
         <>
@@ -30,7 +29,7 @@ const Order = (props) => {
                 {props.order.data.cart?.map((item, key) => (
                     // <CheckoutItem key={key} id={item.id} name={item.name} price={item.price} image={item.image}/>
                     <div className="listContainer">
-                        <Card className="orderHistoryCard"> 
+                        <Card className="orderHistoryCard">
                             <List sx={{ width: '100%' }}>
                                 <ListItem
                                 secondaryAction={

@@ -10,6 +10,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import Avatar from '@mui/material/Avatar';
+import { red } from '@mui/material/colors';
 import Slide from '@material-ui/core/Slide';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
@@ -48,7 +50,6 @@ const HideOnScroll = (props) => {
     );
 }
 
-
 const useStyles = makeStyles((theme) => ({
     list: {
         width: 580,
@@ -71,13 +72,10 @@ const HomeNavbar = (props) => {
     const total = useSelector(selectTotal);
     const history = useHistory();
     const dispatch = useDispatch();
-    const [qtyValue, setQtyValue] = useState(1);
-    const [cartQtyChanged, setCartQtyChangeVal] = useState(false);
     const [cartState, setCartState] = useState({
         right: false,
     });
     const [expand, setExpansion] = useState(true);
-    const [cartUpdateId, setCartUpdateId] = useState([]);
     const [menuState, setMenuState] = useState({
         right: false,
     });
@@ -151,21 +149,26 @@ const HomeNavbar = (props) => {
                 <Divider />
                 {cart.map((food, index) => (
                     <>
-                        <div key={food.id} id={food.id} style={{ padding: '8px 16px', marginTop: '16px' }}>
-                            <CartItem id={food.id} name={food.name} price={food.price} image={food.image} qty={food.qty} />
+                        <div key={index} id={food.id} style={{ padding: '8px 16px', marginTop: '16px' }}>
+                            <CartItem food={food} />
                         </div>
                     </>
                 ))}
                 {
                     (cart.length <= 0) ?
-                    <Typography
-                        component="caption"
-                        variant="caption"
-                        align="center"
-                        color="textPrimary"
-                    >
-                        Nothing in your cart yet. Add some items to checkout!
-                    </Typography>
+                    <Box className="centered-container">
+                        <Avatar sx={{ bgcolor: red[500] }}>
+                            <ShoppingBasketIcon />
+                        </Avatar>
+                        <Typography
+                            component="caption"
+                            variant="caption"
+                            align="center"
+                            color="textPrimary"
+                        >
+                            Nothing in your cart yet. Add some items to checkout!
+                        </Typography>
+                    </Box>
                     :
                     <Typography
                         component="h6"
@@ -185,11 +188,8 @@ const HomeNavbar = (props) => {
                         </Button>
                         :
                         <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
-                            {(total > 0 && total < 70) ?
-                                'Checkout' + ('($' + parseFloat(total + 10) + ')') : ''
-                            }
-                            {(total >= 70) ?
-                                'Checkout' + '($' + parseFloat(total) + ')' : ''}
+                            {(total > 0 && total < 70) ? `Checkout (($${parseFloat(total + 10)})` : ''}
+                            {(total >= 70) ? `Checkout ($${parseFloat(total)})` : ''}
                         </Button>
                     }
 
@@ -306,6 +306,7 @@ const HomeNavbar = (props) => {
                                 {['left'].map((anchor) => (
                                     <React.Fragment key={anchor}>
                                         <Box sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none', xl: 'none' } }} >
+                                            {/* TODO: Change a tag to button */}
                                             <a href="#" data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></a>
                                             <Drawer anchor={anchor} open={menuState[anchor]} onClose={toggleMenuDrawer(anchor, false)}>
                                                 {navList(anchor)}

@@ -15,6 +15,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import QuantityControl from "./QuantityControl";
 import ListItemText from '@mui/material/ListItemText';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -62,6 +63,7 @@ const Product = ({food}) => {
         setQtyValue(1);
         checkCart();
         addItemToCart();
+        handleClose();
     };
 
     const handleClose = () => {
@@ -72,13 +74,10 @@ const Product = ({food}) => {
     const [cartDuplicate, setCartDuplicate] = useState(false);
 
     const handleQtyAdd = () => {
-        setQtyValue(qtyValue + 1);
+        setQtyValue((qtyValue) => qtyValue + 1);
     };
     const handleQtySub = () => {
-        if (qtyValue > 1 )
-        {
-            setQtyValue(qtyValue - 1);
-        }
+        setQtyValue((qtyValue) => (qtyValue > 1 ? qtyValue - 1 : 1));
     };
 
     const handleInput = (event) => {
@@ -118,10 +117,7 @@ const Product = ({food}) => {
             name: option.name,
             price: option.price,
         }));
-        console.log("Selected customizations: ", selectedCustomizations);
-
         const customizationsTotalPrice = selectedCustomizations?.reduce((total, option) => total + option.price, 0);
-
 
         const product = {
             id: food?.id,
@@ -140,7 +136,6 @@ const Product = ({food}) => {
             <div className={classes.root} key={food.id}>
                 {/* {cartDuplicate ?
                     <Snackbar
-                        anchorOrigin={{ vertical, horizontal }}
                         open={open}
                         autoHideDuration={2000}
                         onClose={handleClose}
@@ -171,7 +166,6 @@ const Product = ({food}) => {
                             {food?.description}
                         </DialogContentText>
                         <FormGroup>
-                            {console.log("Custom options ", food?.customization_options)}
                             {food?.customization_options?.length ? (
                                 food.customization_options.map((custom_option, key) => (
                                     <FormControlLabel
@@ -194,30 +188,12 @@ const Product = ({food}) => {
                     </DialogContent>
                     <DialogActions>
                         <Box className="control-counters">
-                            <div className="counter">
-                                <IconButton
-                                    disabled={qtyValue <= 1}
-                                    color="secondary"
-                                    className="square-button"
-                                    size="small"
-                                    style={{backgroundColor: "#2196f3"}}
-                                    onClick={handleQtySub}
-                                >
-                                    <RemoveIcon fontSize="inherit" />
-                                </IconButton>
-                                <input
-                                    type="number"
-                                    inputprops={{style: { color: "#5f5f5f" }  }}
-                                    min="0"
-                                    value={qtyValue}
-                                    onChange={e => setQtyValue(parseInt(e.target.value))}
-                                    className="qtyField"
-                                ></input>
-
-                                <IconButton color="secondary" className="square-button" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtyAdd}>
-                                    <AddIcon fontSize="inherit"/>
-                                </IconButton>
-                            </div>
+                            <QuantityControl
+                                qtyValue={qtyValue}
+                                handleQtyAdd={handleQtyAdd}
+                                handleQtySub={handleQtySub}
+                                setQtyValue={(e) => setQtyValue(parseInt(e.target.value))}
+                            />
                         </Box>
                         <Button
                             type="submit"
@@ -227,17 +203,18 @@ const Product = ({food}) => {
                         >
                             Add to Cart
                         </Button>
+                        <Button onClick={handleClose}>Cancel</Button>
                     </DialogActions>
                 </Dialog>
                 <Grid item xs={12} sm={3} className={classes.card}>
                     <Card className="card small" style={{borderRadius: "5px"}} onClick={handleClickOpen}>
                         <CardMedia
-                        component="img"
-                        alt={food.name}
-                        height="225"
-                        image={food.image}
-                        title={food.name}
-                        className="card-image"
+                            component="img"
+                            alt={food.name}
+                            height="225"
+                            image={food.image}
+                            title={food.name}
+                            className="card-image"
                         />
                         <CardContent>
                             <Grid container style={{marginBottom: '10px'}}>
@@ -256,40 +233,6 @@ const Product = ({food}) => {
                                 {food?.description}
                             </Typography>
                         </CardContent>
-                        {/* <ListItemText
-                            secondary={
-                                <React.Fragment>
-                                    <Typography
-                                        sx={{ display: 'inline' }}
-                                        component="span"
-                                        variant="body2"
-                                        color="text.primary"
-                                    >
-
-                                    </Typography>
-                                    {food?.description}
-                                </React.Fragment>
-                            }
-                        /> */}
-
-                        {/* <CardActions className="controls">
-                            <Box className="control-counters">
-                                <div className="counter">
-                                    <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtySub}>
-                                        <RemoveIcon fontSize="inherit" />
-                                    </IconButton>
-
-                                    <input type="number" min="0" value={qtyValue} onChange={e => setQtyValue(parseInt(e.target.value))} className="qtyField"></input>
-
-                                    <IconButton color="secondary" size="small" style={{backgroundColor: "#2196f3"}} onClick={handleQtyAdd}>
-                                        <AddIcon fontSize="inherit"/>
-                                    </IconButton>
-                                </div>
-                            </Box>
-                            <Fab color="secondary" aria-label="add" onClick={handleClick ({ vertical: 'top', horizontal: 'right', })}>
-                                <img src="img/mdi_basket-plus.png"></img>
-                            </Fab>
-                        </CardActions> */}
                     </Card>
                 </Grid>
             </div>
