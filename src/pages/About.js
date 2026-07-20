@@ -1,6 +1,7 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
+import Box from '@mui/material/Box';
 import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -24,15 +25,16 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 0 auto',
   },
   cardRadius:{
-    borderRadius: 10,
+    borderRadius: 4,
   },
 
   gridContent:{
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+
   },
   mainFont:{
-    fontFamily: 'Poiret One'
+    fontFamily: 'Arial'
   },
   card: {
     padding: theme.spacing(1),
@@ -69,31 +71,30 @@ const About = () => {
     const renderCard = (card, index) => {
         return(
 
-            <Grid item xs={12} sm={3} className={classes.card}>
-              <Card className="card small" style={{borderRadius: "20px"}} key={index}>
-                  <CardMedia
-                  component="img"
-                  alt={card.position}
-                  height="200"
-                  image={card.image}
-                  title={card.owner}
-                  className="card-image"
-                  />
-                  <CardContent>
-                      <Typography gutterBottom variant="h4" component="h2" align="center" style={{fontFamily: 'Poiret One', fontWeight: 'bold'}}>
-                          {card.name}
-                      </Typography>
-                      <Typography gutterBottom variant="h6" component="h2" align="center">
-                          {card.position}
-                      </Typography>
-                  </CardContent>
-                  <CardActions className={classes.controls}>
+            <Card className="card small" spacing={1} style={{borderRadius: "4px"}} key={index}>
+                <CardMedia
+                component="img"
+                alt={card.position}
+                height="200"
+                image={card.image}
+                title={card.owner}
+                className="card-image"
+                />
+                <CardContent>
+                    <Typography gutterBottom variant="h4" component="h2" align="center" style={{fontFamily: 'Poiret One', fontWeight: 'bold'}}>
+                        {card.name}
+                    </Typography>
+                    <Typography gutterBottom variant="h6" component="h2" align="center">
+                        {card.position}
+                    </Typography>
+                </CardContent>
+                <CardActions className={classes.controls}>
                     <IconButton size="small" color="primary">
-                    <a href="#"><FontAwesomeIcon icon={['fab','linkedin']} size="lg" /></a>
+                        <a href="#"><FontAwesomeIcon icon={['fab','linkedin']} size="lg" /></a>
                     </IconButton>
-                  </CardActions>
-              </Card>
-            </Grid>
+                </CardActions>
+            </Card>
+
         )
     };
 
@@ -101,7 +102,7 @@ const About = () => {
         <>
             <Container maxWidth="lg" style={{marginTop: '16px'}}>
                 <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont} >
-                        About
+                    About
                 </Typography>
                 <Typography variant="body1" gutterBottom style={{lineHeight: 2}}>
                 King Triton’s Seafood Palace was founded in 1999.
@@ -111,9 +112,16 @@ const About = () => {
                 </Typography>
             </Container>
 
-            <Grid container direction="row" className={classes.gridContent}>
+            <Box
+                sx={{
+                    width: '100%',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(min(200px, 100%), 1fr))',
+                    gap: 2,
+                }}
+                >
                 {cardInfo.map(renderCard)}
-            </Grid>
+            </Box>
         </>
     );
 }
