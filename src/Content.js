@@ -58,10 +58,7 @@ const theme = createTheme({
 const Content = (props) => {
   const _isMounted = useRef(true);
 
-  // const [{ user }, dispatch] = useStateValue();
-  const [isAuth, setIsAuth] = useState(false);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     auth.onAuthStateChanged(authUser => {
@@ -80,13 +77,9 @@ const Content = (props) => {
       }
     });
 
-    // return () => { // ComponentWillUnmount
-    //   _isMounted.current = false;
-    // }
   }, []);
 
   const [menu, setMenuItems] = useState([]);
-
 
   useEffect(() => {
     db
