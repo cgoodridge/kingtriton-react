@@ -7,8 +7,8 @@ export const userSlice = createSlice({
         user: {
             email: "",
             uid: "",
-            displayName: "",
-            photoURL: ""
+            displayName: ""
+
         },
     },
     reducers: {
@@ -16,9 +16,7 @@ export const userSlice = createSlice({
             state.user = action.payload;
         },
         updateProfile:(state, action) => {
-            console.log("Payload is ", action.payload);
             state.user.photoURL = action.payload.photoURL;
-            console.log("user after payload is ", state.user);
         },
         logout: (state) => {
             state.user = null;
