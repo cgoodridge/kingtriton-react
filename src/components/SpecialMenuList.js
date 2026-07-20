@@ -2,7 +2,6 @@ import React from 'react';
 import Product from '../components/Product';
 import MenuLoadingSkeleton from './MenuLoadingSkeleton';
 
-
 const SpecialMenuList = (props) => {
 
     return(

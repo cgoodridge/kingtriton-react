@@ -16,7 +16,7 @@ import Footer from './components/Footer';
 import cartList from './pages/cartList';
 import './css/style.css';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements, useElements } from '@stripe/react-stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
 import ProtectedRoute from './components/ProtectedRoute';
 import { logout, login } from './slices/userSlice';
 import { SnackbarProvider } from 'notistack';
@@ -28,7 +28,6 @@ import {
 } from "react-router-dom";
 import { auth, db } from './firebaseConfigFile';
 import { useDispatch } from 'react-redux';
-import { getMenu } from './slices/menuSlice';
 import AuthRoute from './components/AuthRoute';
 
 
@@ -58,10 +57,7 @@ const theme = createTheme({
 const Content = (props) => {
   const _isMounted = useRef(true);
 
-  // const [{ user }, dispatch] = useStateValue();
-  const [isAuth, setIsAuth] = useState(false);
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     auth.onAuthStateChanged(authUser => {
@@ -80,17 +76,11 @@ const Content = (props) => {
       }
     });
 
-    // return () => { // ComponentWillUnmount
-    //   _isMounted.current = false;
-    // }
-  }, []);
+  });
 
   const [menu, setMenuItems] = useState([]);
 
-
   useEffect(() => {
-
-    // dispatch(getMenu());
     db
       .collection('menu')
       .onSnapshot(snapshot => (
@@ -104,7 +94,7 @@ const Content = (props) => {
       _isMounted.current = false;
     }
 
-  }, []);
+  }, [dispatch]);
 
 
   return (
@@ -119,7 +109,6 @@ const Content = (props) => {
             }}
             TransitionComponent={Slide}
             >
-
             <Switch>
               <Route exact path="/">
                 <HomeNavbar />

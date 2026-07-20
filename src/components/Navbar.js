@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -17,7 +17,7 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import { auth, db } from '../firebaseConfigFile';
+import { auth } from '../firebaseConfigFile';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import '../css/navbar.css';
@@ -47,7 +47,7 @@ const HideOnScroll = (props) => {
 }
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     list: {
         width: 300,
 
@@ -69,7 +69,6 @@ const useStyles = makeStyles((theme) => ({
 
 
 const Navbar = (props) => {
-    const _isMounted = useRef(true);
     const location = useLocation();
     const history = useHistory();
     const classes = useStyles();
@@ -80,10 +79,6 @@ const Navbar = (props) => {
         e.stopPropagation();
         setExpansion(!expand);
     };
-
-    // const [{ cart, user }, dispatch] = useStateValue();
-    const [displayName, setDisplayName] = useState("");
-    // console.log(user ? 'user logged in' : 'user not logged in');
 
     const user = useSelector(selectUser);
     const cart = useSelector(selectItems);
@@ -177,22 +172,20 @@ const Navbar = (props) => {
                     </>
                 ))}
                 <ListItem className="cartOptions">
-                    <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
-                        {cart.length <= 0 ? 'Checkout' : ''}
-                        {(total > 0 && total < 70) ?
-                            'Checkout' + ('($' + parseFloat(total + 10) + ')')
-                            :
-                            ''
-                        }
-                        {(total >= 70) ?
-                            'Checkout' + '($' + parseFloat(total) + ')'
-                            :
-                            ''}
-                    </Button>
+                    {
+                        (cart.length <= 0) ?
+                        <Button variant="contained" color="secondary" fullWidth onClick={toggleCartDrawer(anchor, false)} >
+                            Close
+                        </Button>
+                        :
+                        <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
+                            {(total > 0 && total < 70) ? `Checkout (($${parseFloat(total + 10)})` : ''}
+                            {(total >= 70) ? `Checkout ($${parseFloat(total)})` : ''}
+                        </Button>
+                    }
                 </ListItem>
             </List>
-            <Divider />
-
+            <Divider/>
         </div>
     );
 
@@ -308,7 +301,7 @@ const Navbar = (props) => {
                                 {['left'].map((anchor) => (
                                     <React.Fragment key={anchor}>
                                         <Box sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none' } }} >
-                                            <a href="#" data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></a>
+                                            <Button href="#" data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></Button>
                                             <Drawer ModalProps={{ keepMounted: true, }} anchor={anchor} open={menuState[anchor]} onClose={toggleMenuDrawer(anchor, false)}>
                                                 {navList(anchor)}
                                             </Drawer>

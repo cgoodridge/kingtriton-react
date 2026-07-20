@@ -77,14 +77,9 @@ const Menu = ({ food, loading }) => {
   const [filterProvider, setFilterParam] = useState('All');
   const [chipColour, setChipColour] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedValue, setSelectedValue] = useState('a');
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
-  };
-
-  const handleProceedButton = () => {
-    setTabValue(1);
   };
 
   const handleFilterOption = (e) => {

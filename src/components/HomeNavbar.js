@@ -192,7 +192,6 @@ const HomeNavbar = (props) => {
                             {(total >= 70) ? `Checkout ($${parseFloat(total)})` : ''}
                         </Button>
                     }
-
                 </ListItem>
             </List>
             <Divider/>
@@ -307,7 +306,7 @@ const HomeNavbar = (props) => {
                                     <React.Fragment key={anchor}>
                                         <Box sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none', xl: 'none' } }} >
                                             {/* TODO: Change a tag to button */}
-                                            <a href="#" data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></a>
+                                            <Button data-target="mobile-demo" onClick={toggleMenuDrawer(anchor, true)} className="sidenav-trigger"><i className="material-icons">menu</i></Button>
                                             <Drawer anchor={anchor} open={menuState[anchor]} onClose={toggleMenuDrawer(anchor, false)}>
                                                 {navList(anchor)}
                                             </Drawer>

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../css/login.css';
 import Card from '@material-ui/core/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useHistory, Link, withRouter, useLocation } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { auth } from '../firebaseConfigFile';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -12,15 +12,13 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { login } from '../slices/userSlice';
-import { Avatar, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { CircularProgress } from '@mui/material';
 
 const Login = (props) => {
 
     const history = useHistory();
     const [email, setEmail] = useState('');
-    const location = useLocation();
-    // console.log(props.location.state.prevPath);
 
     const dispatch = useDispatch();
     const [password, setPassword] = useState('');
@@ -39,9 +37,6 @@ const Login = (props) => {
         }
     };
 
-    if (props.history.state) {
-        console.log('Previous path is ', props.history.state?.prevPath);
-    }
     const loginUser = (e) => {
         if (email === '' || password === '') {
             return;
