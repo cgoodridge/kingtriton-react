@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -17,7 +17,7 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
-import { auth, db } from '../firebaseConfigFile';
+import { auth } from '../firebaseConfigFile';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import '../css/navbar.css';
@@ -81,9 +81,7 @@ const Navbar = (props) => {
         setExpansion(!expand);
     };
 
-    // const [{ cart, user }, dispatch] = useStateValue();
     const [displayName, setDisplayName] = useState("");
-    // console.log(user ? 'user logged in' : 'user not logged in');
 
     const user = useSelector(selectUser);
     const cart = useSelector(selectItems);

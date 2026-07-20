@@ -32,9 +32,6 @@ import { selectItems, selectTotal, emptyCart } from '../slices/cartSlice';
 import { selectUser } from '../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-
-
-
 const cardProviders = [
   {
     value: 'VISA',
@@ -271,7 +268,7 @@ const CheckoutDetailsForm = () => {
 
     getClientSecret();
 
-    return () => { // ComponentWillUnmount 
+    return () => { // ComponentWillUnmount
       _isMounted.current = false;
     }
   }, [cart]);
@@ -338,7 +335,7 @@ const CheckoutDetailsForm = () => {
         })))
       ))
 
-    return () => { // ComponentWillUnmount 
+    return () => { // ComponentWillUnmount
       _isMounted.current = false;
     }
 

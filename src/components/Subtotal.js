@@ -27,7 +27,7 @@ const Subtotal = () => {
                     </>
                     )}
                     decimalScale={2}
-                    value={total} 
+                    value={total}
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"$"}
@@ -36,9 +36,7 @@ const Subtotal = () => {
             <Button variant="contained" className="loginButton" type="submit" >Proceed to Checkout</Button>
             </div>
         </Card>
-        
     )
-
 }
 
 export default Subtotal;

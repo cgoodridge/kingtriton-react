@@ -228,7 +228,6 @@ function Reservations() {
         handleClickOpen();
       })
       .catch(error => alert(error.message));
-    // setTimeout(() => history.push('/account'), 3000);
   };
 
   const classes = useStyles();

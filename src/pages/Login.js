@@ -20,7 +20,6 @@ const Login = (props) => {
     const history = useHistory();
     const [email, setEmail] = useState('');
     const location = useLocation();
-    // console.log(props.location.state.prevPath);
 
     const dispatch = useDispatch();
     const [password, setPassword] = useState('');
@@ -39,9 +38,6 @@ const Login = (props) => {
         }
     };
 
-    if (props.history.state) {
-        console.log('Previous path is ', props.history.state?.prevPath);
-    }
     const loginUser = (e) => {
         if (email === '' || password === '') {
             return;

@@ -1,7 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
 import '../css/accountDetails.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -11,7 +10,6 @@ import { selectUser } from '../slices/userSlice';
 const EditProfile = () => {
 
     const user = useSelector(selectUser);
-console.log("user in edit profile is ", user);
 
     return (
         <>
