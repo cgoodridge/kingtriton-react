@@ -6,98 +6,8 @@ import { db } from '../firebaseConfigFile';
 import { selectUser } from '../slices/userSlice';
 import { useSelector } from 'react-redux';
 import Order from '../components/Order';
-import Skeleton from '@mui/material/Skeleton';
 import { Link } from 'react-router-dom';
 import { Button } from '@material-ui/core';
-
-
-const LoadingSkeleton = () => {
-    return (
-        <>
-            <div style={{ marginBottom: '32px', marginTop: '32px' }}>
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="250px"
-                    style={{ marginBottom: 6 }}
-                />
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="300px"
-                    style={{ marginBottom: 6 }}
-                />
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="100px"
-                    style={{ marginBottom: 6 }}
-                />
-            </div>
-            <div style={{ marginBottom: '32px' }}>
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="250px"
-                    style={{ marginBottom: 6 }}
-                />
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="300px"
-                    style={{ marginBottom: 6 }}
-                />
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="100px"
-                    style={{ marginBottom: 6 }}
-                />
-            </div>
-            <div style={{ marginBottom: '32px' }}>
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="250px"
-                    style={{ marginBottom: 6 }}
-                />
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="300px"
-                    style={{ marginBottom: 6 }}
-                />
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="100px"
-                    style={{ marginBottom: 6 }}
-                />
-            </div>
-            <div style={{ marginBottom: '32px' }}>
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="250px"
-                    style={{ marginBottom: 6 }}
-                />
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="300px"
-                    style={{ marginBottom: 6 }}
-                />
-                <Skeleton
-                    animation="wave"
-                    height={10}
-                    width="100px"
-                    style={{ marginBottom: 6 }}
-                />
-            </div>
-        </>
-    );
-};
-
 
 const Orders = () => {
     const user = useSelector(selectUser);
@@ -118,7 +28,7 @@ const Orders = () => {
                     })))
                 ));
         }
-    }, [])
+    }, [user])
 
     return (
         <>

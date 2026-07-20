@@ -16,7 +16,7 @@ import Footer from './components/Footer';
 import cartList from './pages/cartList';
 import './css/style.css';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements, useElements } from '@stripe/react-stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
 import ProtectedRoute from './components/ProtectedRoute';
 import { logout, login } from './slices/userSlice';
 import { SnackbarProvider } from 'notistack';
@@ -28,7 +28,6 @@ import {
 } from "react-router-dom";
 import { auth, db } from './firebaseConfigFile';
 import { useDispatch } from 'react-redux';
-import { getMenu } from './slices/menuSlice';
 import AuthRoute from './components/AuthRoute';
 
 
@@ -77,7 +76,7 @@ const Content = (props) => {
       }
     });
 
-  }, []);
+  });
 
   const [menu, setMenuItems] = useState([]);
 

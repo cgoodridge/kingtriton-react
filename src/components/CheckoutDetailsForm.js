@@ -5,7 +5,6 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
 import '../css/checkoutDetailsForm.css';
-import { useStateValue } from '../StateProvider';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -23,30 +22,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { db } from '../firebaseConfigFile';
-import { getCartTotal } from './reducers/reducer';
-import moment from 'moment';
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { CardElement } from '@stripe/react-stripe-js';
+// import { useStripe, useElements } from '@stripe/react-stripe-js';
 import CurrencyFormat from 'react-currency-format';
 import axios from '../axios';
 import { selectItems, selectTotal, emptyCart } from '../slices/cartSlice';
 import { selectUser } from '../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
-const cardProviders = [
-  {
-    value: 'VISA',
-    label: 'VISA',
-  },
-  {
-    value: 'MasterCard',
-    label: 'MasterCard',
-  },
-  {
-    value: 'AmericanExpress',
-    label: 'American Express',
-  },
-];
-
 
 const parishes = [
   {
@@ -99,25 +81,22 @@ const CheckoutDetailsForm = () => {
 
   const _isMounted = useRef(true);
 
-  // const [{ cart, user }, dispatch] = useStateValue();
   const user = useSelector(selectUser);
   const cart = useSelector(selectItems);
   const dispatch = useDispatch();
   const total = useSelector(selectTotal);
 
-
-
-  const [succeeded, setSucceeded] = useState(false);
+  const [setSucceeded] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [clientSecret, setClientSecret] = useState("");
-  const stripe = useStripe();
-  const elements = useElements();
+  const [clientResponse, setClientSecret] = useState("");
+//   const stripe = useStripe();
+//   const elements = useElements();
 
   const history = useHistory();
 
   const [open, setOpenForm] = useState(false);
 
-  const [cardProvider, setCardProvider] = useState('VISA');
+//   const [setCardProvider] = useState('VISA');
   const [addressNameSelection, setAddressNameSelection] = useState('Home');
   const [selectedValue, setSelectedValue] = useState('card');
 
@@ -125,7 +104,6 @@ const CheckoutDetailsForm = () => {
   const [lastName, setLastName] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [altNumber, setAltNumber] = useState('');
-
 
   const [addressState, setAddressState] = useState(false);
   const [addressName, setAddressName] = useState('');
@@ -135,12 +113,10 @@ const CheckoutDetailsForm = () => {
   const [directions, setDirections] = useState('');
 
   const [error, setError] = useState(null);
-  const [disabled, setDisabled] = useState(null);
+  const [setDisabled] = useState(null);
 
   const [openConfirmMessage, setOpenConfirmMessage] = useState(false);
   const [savedAddresses, setSavedAddresses] = useState([]);
-  const [addressIndex, setAddressIndex] = useState(0);
-
 
   const handleClickOpen = () => {
     setOpenForm(true);
@@ -161,59 +137,50 @@ const CheckoutDetailsForm = () => {
 
     setProcessing(true);
 
-    const payload = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement)
-      }
-    }).then(({ paymentIntent }) => {
+    // const payload = await stripe.confirmCardPayment(clientSecret, {
+    //   payment_method: {
+    //     card: elements.getElement(CardElement)
+    //   }
+    // }).then(({ paymentIntent }) => {
 
-      db
-        .collection('users')
-        .doc(user?.uid)
-        .collection('orders')
-        .doc(paymentIntent.id)
-        .set({
-          cart: cart,
-          amount: paymentIntent.amount,
-          createdAt: paymentIntent.created,
-          deliveryAddress: addressNameSelection,
-          paymentMethod: 'card',
-          contactNumber: mobileNumber,
-          altNumber: altNumber,
-          orderStatus: 'Pending'
+    //   db
+    //     .collection('users')
+    //     .doc(user?.uid)
+    //     .collection('orders')
+    //     .doc(paymentIntent.id)
+    //     .set({
+    //       cart: cart,
+    //       amount: paymentIntent.amount,
+    //       createdAt: paymentIntent.created,
+    //       deliveryAddress: addressNameSelection,
+    //       paymentMethod: 'card',
+    //       contactNumber: mobileNumber,
+    //       altNumber: altNumber,
+    //       orderStatus: 'Pending'
 
-          // test: 'Transaction was successful'
-        })
-        .then(() => {
-          setSucceeded(true);
-          setError(null);
-          setProcessing(false);
+    //       // test: 'Transaction was successful'
+    //     })
+    //     .then(() => {
+    //       setSucceeded(true);
+    //       setError(null);
+    //       setProcessing(false);
 
-          dispatch(emptyCart);
-          handleConfirmMessageOpen();
+    //       dispatch(emptyCart);
+    //       handleConfirmMessageOpen();
 
-        });
+    //     });
 
-
-
-
-    })
+    // })
 
   };
 
   useEffect(() => {
 
-    const index = savedAddresses.indexOf("Home");
-    console.log('Selected address index', addressNameSelection);
-    console.log('Selected address index', index);
     savedAddresses.forEach(element => {
       console.log(element.data.name);
     });
 
-
-  }, [addressNameSelection]);
-
-
+  }, [addressNameSelection, savedAddresses]);
 
   const handleCashPayment = (e) => {
 
@@ -263,7 +230,7 @@ const CheckoutDetailsForm = () => {
         method: 'post',
         url: `/checkout/create?total=${(total > 70 ? total : parseFloat(total+10)) * 100}`
       });
-      setClientSecret(response.data.clientSecret)
+      setClientSecret(response.data.clientSecret);
     }
 
     getClientSecret();
@@ -271,7 +238,7 @@ const CheckoutDetailsForm = () => {
     return () => { // ComponentWillUnmount
       _isMounted.current = false;
     }
-  }, [cart]);
+  }, [cart, total, clientResponse]);
 
   /// TODO: Create object models to handle data
 
@@ -284,10 +251,6 @@ const CheckoutDetailsForm = () => {
     history.push('/account');
   };
 
-
-  const handleChange = (event) => {
-    setCardProvider(event.target.value);
-  };
   const handleAddressNameSelection = (event) => {
     setAddressNameSelection(event.target.value);
   };
@@ -339,7 +302,7 @@ const CheckoutDetailsForm = () => {
       _isMounted.current = false;
     }
 
-  }, []);
+  });
 
   return (
     <>
@@ -501,8 +464,6 @@ const CheckoutDetailsForm = () => {
                       variant="standard"
                     >
                       {savedAddresses.map((option) => (
-                        console.log(savedAddresses.indexOf(option.data.name)),
-
                         <MenuItem key={option.id} value={option.id}>
                           {option.data.name}
                         </MenuItem>

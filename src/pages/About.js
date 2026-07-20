@@ -2,15 +2,10 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@mui/material/Box';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import { createTheme } from '@material-ui/core/styles';
 import '../css/about.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -44,22 +39,6 @@ const useStyles = makeStyles((theme) => ({
 const About = () => {
 
   const classes = useStyles();
-  const theme = createTheme({
-    palette: {
-      primary: {
-        light: '#757ce8',
-        main: '#2196f3',
-        dark: '#002884',
-        contrastText: '#fff',
-      },
-      secondary: {
-        light: '#ff7961',
-        main: '#f44336',
-        dark: '#ba000d',
-        contrastText: '#000',
-      },
-    },
-  });
 
     const cardInfo = [
         {image: "img/owner.jpg", name: "Barbara Gordon", position:"Owner, King Triton's Seafood Palace",},
@@ -88,11 +67,6 @@ const About = () => {
                         {card.position}
                     </Typography>
                 </CardContent>
-                <CardActions className={classes.controls}>
-                    <IconButton size="small" color="primary">
-                        <a href="#"><FontAwesomeIcon icon={['fab','linkedin']} size="lg" /></a>
-                    </IconButton>
-                </CardActions>
             </Card>
 
         )

@@ -6,14 +6,13 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import '../css/cartItem.css';
 import { removeFromCart, updateCartIncrease, updateCartDecrease } from '../slices/cartSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectItems } from '../slices/cartSlice';
+import { useDispatch } from 'react-redux';
+// import { selectItems } from '../slices/cartSlice';
 import QuantityControl from "./QuantityControl";
 
 const CartItem = ({ food }) => {
 
     const dispatch = useDispatch();
-    const cart = useSelector(selectItems);
 
     const [qtyValue, setQtyValue] = useState(food?.qty);
 

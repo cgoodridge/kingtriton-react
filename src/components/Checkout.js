@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import { createTheme } from '@material-ui/core/styles';
 import CheckoutItem from './CheckoutItem';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -21,7 +20,7 @@ import Card from '@material-ui/core/Card';
 import { CardContent } from '@mui/material';
 import { Delivery32 } from '@carbon/icons-react';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   gridContent: {
     display: 'flex',
     justifyContent: 'center',
@@ -100,25 +99,6 @@ const Checkout = () => {
   };
 
   const classes = useStyles();
-  const theme = createTheme({
-    palette: {
-      primary: {
-        light: '#757ce8',
-        main: '#2196f3',
-        dark: '#002884',
-        contrastText: '#fff',
-      },
-      secondary: {
-        light: '#ff7961',
-        main: '#f44336',
-        dark: '#ba000d',
-        contrastText: '#000',
-      },
-    },
-  });
-
-
-
 
   return (
     // <div className="App" theme={theme}>

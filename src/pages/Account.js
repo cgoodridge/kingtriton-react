@@ -11,7 +11,6 @@ import EditProfile from './EditProfile';
 import Privacypolicy from './PrivacyPolicy';
 import Help from './Help';
 import Reservationhistory from './ReservationHistory';
-import { styled } from '@mui/material/styles';
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -45,10 +44,6 @@ const a11yProps = (index) => {
         'aria-controls': `vertical-tabpanel-${index}`,
     };
 }
-
-const Input = styled('input')({
-    display: 'none',
-});
 
 const Account = () => {
 
