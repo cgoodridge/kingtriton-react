@@ -12,9 +12,6 @@ import { createTheme } from '@material-ui/core/styles';
 import '../css/contact.css';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
   details: {
     display: 'flex',
     flexDirection: 'column',
@@ -29,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'flex-end',
     justifyContent: 'space-around',
-    
+
     paddingLeft: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
@@ -37,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
-    
+
 
   },
   playIcon: {
@@ -50,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: 0,
     paddingBottom: 0,
     textAlign: 'center'
-  
+
   },
   cardRadius:{
     borderRadius: 10,
@@ -83,7 +80,8 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: '25ch',
     },
-  },
+    display: 'flex'
+  }
 }));
 
 function Contact() {
@@ -117,31 +115,31 @@ function Contact() {
                 <Grid container direction="row" className={classes.gridContent}>
                   <Grid item xs={12} sm={6}>
                       <Grid container>
-                        
+
                           <Grid item xs={12} style={{ paddingBottom: '20px'}}>
-                            <TextField 
-                              id="standard-basic" 
-                              fullWidth 
-                              label="Name"                            
-                                              
+                            <TextField
+                              id="standard-basic"
+                              fullWidth
+                              label="Name"
+
                             />
                           </Grid>
 
                           <Grid item xs={12} style={{paddingBottom: '20px'}}>
-                            <TextField 
-                              id="standard-basic" 
-                              fullWidth 
-                              label="Email" 
+                            <TextField
+                              id="standard-basic"
+                              fullWidth
+                              label="Email"
                               color="primary"
                           />
                           </Grid>
 
                           <Grid item xs={12} style={{paddingBottom: '20px'}}>
-                            <TextField 
-                              fullWidth 
-                              id="standard-basic" 
-                              label="Subject" 
-                              color="primary"          
+                            <TextField
+                              fullWidth
+                              id="standard-basic"
+                              label="Subject"
+                              color="primary"
                             />
                           </Grid>
 
@@ -152,17 +150,17 @@ function Contact() {
                             fullWidth
                             multiline
                             rows={4}
-                            
+
                           />
                           </Grid>
-                          
+
                             <Button variant="contained" color="primary" style={{width: 100}}>
                               Send
                             </Button>
                       </Grid>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <img style={{paddingLeft: '15px', paddingBottom: '20px'}} className="responsive-img" src="./img/Mapsicle-Map.png"></img>
+                    <img style={{paddingLeft: '15px', paddingBottom: '20px'}} className="responsive-img" src="./img/Mapsicle-Map.png" alt="Map screengrab"></img>
                   </Grid>
                 </Grid>
 

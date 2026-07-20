@@ -11,10 +11,6 @@ import EditProfile from './EditProfile';
 import Privacypolicy from './PrivacyPolicy';
 import Help from './Help';
 import Reservationhistory from './ReservationHistory';
-import { styled } from '@mui/material/styles';
-import { selectUser, updateProfile } from '../slices/userSlice';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 
 const TabPanel = (props) => {
     const { children, value, index, ...other } = props;
@@ -49,17 +45,11 @@ const a11yProps = (index) => {
     };
 }
 
-const Input = styled('input')({
-    display: 'none',
-});
-
 const Account = () => {
 
     const [value, setValue] = useState(0);
 
-    const [imageUploadDialog, setImageUploadDialog] = useState(false);
-
-    const handleChange = (event, newValue) => {
+    const handleChange = (newValue) => {
         setValue(newValue);
     };
 
@@ -166,9 +156,7 @@ const Account = () => {
                     </TabPanel>
                 </div>
             </Box>
-
         </>
-
     );
 }
 

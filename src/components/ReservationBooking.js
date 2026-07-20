@@ -1,11 +1,10 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 
-
 const Reservationbooking = () => {
     return (
         <>
-        
+
             <div className="tableContainer">
                 <div className="tableCode">
                 <Typography gutterBottom variant="h6" component="h2" className="tableCode">

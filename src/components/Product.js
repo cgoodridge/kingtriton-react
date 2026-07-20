@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import Card from '@material-ui/core/Card';
 import { makeStyles} from '@material-ui/core/styles';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -16,15 +13,10 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import QuantityControl from "./QuantityControl";
-import ListItemText from '@mui/material/ListItemText';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import '../css/product.css';
-import { useStateValue } from '../StateProvider';
 import Snackbar from '@mui/material/Snackbar';
 import { useDispatch } from 'react-redux';
 import { addToCart} from '../slices/cartSlice';
@@ -57,7 +49,7 @@ const Product = ({food}) => {
 
     const { vertical, horizontal, open } = state;
     const cart = useSelector(selectItems);
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const { enqueueSnackbar } = useSnackbar();
 
     const handleClick = (newState) => () => {
         setQtyValue(1);
@@ -71,17 +63,13 @@ const Product = ({food}) => {
     };
 
     const [qtyValue, setQtyValue] = useState(1);
-    const [cartDuplicate, setCartDuplicate] = useState(false);
+    const [cartDuplicate] = useState(false);
 
     const handleQtyAdd = () => {
         setQtyValue((qtyValue) => qtyValue + 1);
     };
     const handleQtySub = () => {
         setQtyValue((qtyValue) => (qtyValue > 1 ? qtyValue - 1 : 1));
-    };
-
-    const handleInput = (event) => {
-        setQtyValue(event.target.value);
     };
 
     const checkCart = () => {
@@ -134,7 +122,7 @@ const Product = ({food}) => {
 
     return (
             <div className={classes.root} key={food.id}>
-                {/* {cartDuplicate ?
+                {cartDuplicate ?
                     <Snackbar
                         open={open}
                         autoHideDuration={2000}
@@ -151,7 +139,7 @@ const Product = ({food}) => {
                         message= {food.name + ' added to Cart'}
                         key={vertical + horizontal}
                     />
-                } */}
+                }
                 <Dialog open={open} onClose={handleClose} disableScrollLock>
                     <img
                         className="dialog-image"
