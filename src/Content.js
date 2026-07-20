@@ -89,8 +89,6 @@ const Content = (props) => {
 
 
   useEffect(() => {
-
-    // dispatch(getMenu());
     db
       .collection('menu')
       .onSnapshot(snapshot => (
@@ -104,7 +102,7 @@ const Content = (props) => {
       _isMounted.current = false;
     }
 
-  }, []);
+  }, [dispatch]);
 
 
   return (
@@ -119,7 +117,6 @@ const Content = (props) => {
             }}
             TransitionComponent={Slide}
             >
-
             <Switch>
               <Route exact path="/">
                 <HomeNavbar />
