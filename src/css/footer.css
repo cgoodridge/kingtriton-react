@@ -1,15 +1,10 @@
 footer{
-    position:relative;
-    left:0;
-    /* bottom:0; */
-    right:0;
+    position: relative;
+    left: 0;
+    right: 0;
     clear: both;
-    /* bottom: auto; */
-    /* height: 200px; */
-    margin-top: auto; /*To control placement of footer*/
+    margin-top: 10vh; /*To control placement of footer*/
     padding-top: 16px;
-    /* margin: 0;
-    padding: 0; */
     width: 100%;
     background-color: #141414 !important;
 }
@@ -25,7 +20,7 @@ footer{
     padding: 16px 0;
 }
 
-.footerHeaders{
+.footerHeaders, .MuiGrid-container p{
     font-family: 'Poiret One' !important;
 }
 
