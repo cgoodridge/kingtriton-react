@@ -88,14 +88,9 @@ const Navbar = () => {
     });
 
     useEffect(() => {
-        const handleScroll = () => {
-            console.log('Scroll position:', window.scrollY);
-          };
-
-          window.addEventListener('scroll', handleScroll);
-          return () => {
-            window.removeEventListener('scroll', handleScroll);
-          };
+        const container = document.getElementsByClassName('.menuContainer');
+        console.log(container);
+        setScrollTarget(container);
     }, []);
 
     const toggleCartDrawer = (anchor, open) => (event) => {
@@ -253,9 +248,7 @@ const Navbar = () => {
                             </List>
                         </Collapse>
                     </>
-
                     :
-
                     <>
                         <ListItemButton sx={{ pl: 4 }} onClick={handleExpansionClick}>
                             <ListItemText primary="Hey Guest" />
@@ -290,15 +283,15 @@ const Navbar = () => {
                 }}
                 sx={{ overflowY: 'auto' }}
             >
-                <Toolbar />
+
                 <AppBar
                     elevation={trigger ? 4 : 0}
                     // className={`app-bar`}
                     position="fixed"
                     sx={{
                         transition: 'background-color 0.3s ease, color 0.3s ease',
-                        backgroundColor: trigger ? 'background.paper' : 'transparent',
-                        color: trigger ? 'text.primary' : '#ffffff',
+                        backgroundColor: trigger ? 'rgba(255, 255, 255, 0.9)' : 'transparent',
+                        color: trigger ? '#000' : '#ffffff',
                         backdropFilter: trigger ? 'blur(8px)' : 'none',
                     }}
                 >
@@ -401,6 +394,7 @@ const Navbar = () => {
                         </nav>
                     </Toolbar>
                 </AppBar>
+                <Toolbar />
             </Box>
         </header>
     )

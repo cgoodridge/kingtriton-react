@@ -5,23 +5,24 @@ footer{
     right:0;
     clear: both;
     /* bottom: auto; */
-    /* height: 300px; */
-    margin-top: 25vh; /* To control placement of footer*/
-
+    /* height: 200px; */
+    margin-top: auto; /*To control placement of footer*/
+    padding-top: 16px;
+    /* margin: 0;
+    padding: 0; */
     width: 100%;
     background-color: #141414 !important;
-    padding-top: 16px;
 }
 
 .footer-copyright{
+    margin: 0;
+    padding: 0;
     background-color: #0f0f0f !important;
     height: 50px;
     text-align: center;
     vertical-align: middle;
-    /* align-items: center; */
     color: white;
     padding: 16px 0;
-
 }
 
 .footerHeaders{
