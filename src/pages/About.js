@@ -4,9 +4,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@mui/material/Box';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import '../css/about.css';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import IconButton from '@mui/material/IconButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,23 +44,31 @@ const About = () => {
   const classes = useStyles();
 
     const cardInfo = [
-        {image: "img/owner.jpg", name: "Barbara Gordon", position:"Owner, King Triton's Seafood Palace",},
-        {image: "img/head-chef.jpg", name: "Sara Lance", position:"Head Chef, King Triton's Seafood Palace",},
-        {image: "img/sous-chef.jpg", name: "Lucius Fox", position:"Sous Chef, King Triton's Seafood Palace",},
-
+        {image: "img/owner.jpg", name: "Barbara Gordon", position:"Owner"},
+        {image: "img/head-chef.jpg", name: "Tim Drake", position:"Head Chef"},
+        {image: "img/sous-chef.jpg", name: "Selina Kyle", position:"Sous Chef"},
     ];
 
     const renderCard = (card, index) => {
         return(
-
-            <Card className="card small" spacing={1} style={{borderRadius: "4px"}} key={index}>
+            <Card
+                className="card small"
+                spacing={1}
+                style={{
+                    borderRadius: "4px",
+                    width: '100%', // Ensure the card takes up the full width of the grid column
+                    maxWidth: '200px', // Limit the card width
+                    margin: '0 auto',
+                }}
+                key={index}
+            >
                 <CardMedia
-                component="img"
-                alt={card.position}
-                height="200"
-                image={card.image}
-                title={card.owner}
-                className="card-image"
+                    component="img"
+                    alt={card.position}
+                    height="200"
+                    image={card.image}
+                    title={card.owner}
+                    className="card-image"
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h4" component="h2" align="center" style={{fontFamily: 'Poiret One', fontWeight: 'bold'}}>
@@ -67,6 +78,11 @@ const About = () => {
                         {card.position}
                     </Typography>
                 </CardContent>
+                <CardActions style={{ justifyContent: 'center' }}>
+                    <IconButton style={{ padding: '8px' }} aria-label="LinkedIn">
+                        <LinkedInIcon />
+                    </IconButton>
+                </CardActions>
             </Card>
 
         )
@@ -89,9 +105,15 @@ const About = () => {
             <Box
                 sx={{
                     width: '100%',
+                    maxWidth: '900px',
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(min(200px, 100%), 1fr))',
-                    gap: 2,
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gap: 1,
+                    justifyContent: 'center',
+                    margin: '0 auto',
+                    textAlign: 'center',
+                    alignItems: 'center',
+                    padding: 0,
                 }}
                 >
                 {cardInfo.map(renderCard)}
