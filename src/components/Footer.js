@@ -46,7 +46,7 @@ const Footer = () => {
                 </div>
               </Grid>
           </Grid>
-          <Typography variant="subtitle1" gutterBottom component="div" className="footer-copyright">
+          <Typography variant="subtitle1" component="div" className="footer-copyright">
             © 2026 King Triton's Seafood Palace
           </Typography>
         </footer>

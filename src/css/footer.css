@@ -1,17 +1,3 @@
-footer{
-    position:relative;
-    left:0;
-    /* bottom:0; */
-    right:0;
-    clear: both;
-    /* bottom: auto; */
-    /* height: 300px; */
-    margin-top: 25vh; /* To control placement of footer*/
-
-    width: 100%;
-    background-color: #141414 !important;
-    padding-top: 16px;
-}
 
 .footer-copyright{
     background-color: #0f0f0f !important;
