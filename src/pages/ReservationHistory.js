@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { db } from '../firebaseConfigFile';
 import { selectUser } from '../slices/userSlice';
@@ -27,7 +27,7 @@ const Reservationhistory = () => {
                setReservations(snapshot.docs.map(doc => ({
                    id: doc.id,
                    data: doc.data()
-               }))) 
+               })))
             ));
         } else {
             setReservations([])
@@ -40,26 +40,26 @@ const Reservationhistory = () => {
                 <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{textAlign: 'left', marginTop: '16px'}}>
                     Past Reservations
                 </Typography>
-                
+
                         {
-                        !reservations.length <=0 ? 
+                        !reservations.length <=0 ?
                             reservations.map(reservation => (
                                 <Reservationcard reservation={reservation} />
                             ))
                         :
                             <>
                                 <Typography variant="h6" className="emptyReservationText" gutterBottom component="div" style={{textAlign: 'left', marginTop: '16px'}}>
-                                    You haven't made any reservations yet. 
+                                    You haven't made any reservations yet.
                                 </Typography>
                                 <div>
                                     <Button variant="contained"  component={Link} to="/reservations">Make A Reservation</Button>
                                 </div>
                             </>
                         }
-                    
-                
 
-            
+
+
+
             </Container>
         </>
     );

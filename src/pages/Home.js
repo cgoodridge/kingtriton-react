@@ -1,9 +1,9 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import SpecialMenuList from '../components/SpecialMenuList';
 import LazyHero from 'react-lazy-hero';
 import { Link } from 'react-router-dom';
@@ -14,7 +14,7 @@ const Home = ({food, loading}) => {
       <LazyHero imageSrc="img/res-1.jpg" parallaxOffset={50} color="#000" minHeight="80vh">
         <Box className="hero-text">
           <Typography gutterBottom variant="h4" component="h2" align="center" className="main-font">
-                      Welcome to King Triton's Seafood Palace
+                Welcome to King Triton's Seafood Palace
           </Typography>
             <Button variant="contained" color="secondary" component={Link} to='/reservations' className="heroButton">
               Make a Reservation

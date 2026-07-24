@@ -1,14 +1,14 @@
 import React from 'react';
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import MailIcon from '@material-ui/icons/Mail';
-import PhoneIcon from '@material-ui/icons/PhoneAndroid';
-import LocationIcon from '@material-ui/icons/PinDrop';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import { createTheme } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider } from '@mui/material/styles';
+import MailIcon from '@mui/icons-material/Mail';
+import PhoneIcon from '@mui/icons-material/PhoneAndroid';
+import LocationIcon from '@mui/icons-material/PinDrop';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import { createTheme } from '@mui/material/styles';
 import '../css/contact.css';
 
 const useStyles = makeStyles((theme) => ({
@@ -149,8 +149,6 @@ function Contact() {
                             label="Message"
                             fullWidth
                             multiline
-                            rows={4}
-
                           />
                           </Grid>
 

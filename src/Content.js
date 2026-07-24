@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ThemeProvider, createTheme } from '@material-ui/core/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Home from './pages/Home';
 import Menu from './pages/Menu';
 import Reservations from './pages/Reservations';
@@ -20,10 +20,10 @@ import { Elements } from '@stripe/react-stripe-js'
 import ProtectedRoute from './components/ProtectedRoute';
 import { logout, login } from './slices/userSlice';
 import { SnackbarProvider } from 'notistack';
-import Slide from '@material-ui/core/Slide';
+import Slide from '@mui/material/Slide';
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
 } from "react-router-dom";
 import { auth, db } from './firebaseConfigFile';
@@ -109,7 +109,7 @@ const Content = (props) => {
             }}
             TransitionComponent={Slide}
             >
-            <Switch>
+            <Routes>
               <Route exact path="/">
                 <HomeNavbar />
                 <main>
@@ -161,7 +161,7 @@ const Content = (props) => {
                   <PageNotFound />
                 </main>
               </Route>
-            </Switch>
+            </Routes>
             <Footer />
           </SnackbarProvider>
         </ThemeProvider>

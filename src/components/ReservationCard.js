@@ -1,9 +1,9 @@
 import React from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import '../css/reservationHistory.css';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import moment from 'moment';
 import { selectUser } from '../slices/userSlice';
 import { useSelector } from 'react-redux';

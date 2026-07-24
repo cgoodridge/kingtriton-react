@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 import { selectUser } from '../slices/userSlice';
 import { useSelector } from 'react-redux';
 
@@ -9,7 +9,7 @@ const AuthRoute = (props, ...rest ) => {
     return (
         <Route {...rest}>
 
-            {user ? props.children : <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+            {user ? props.children : <Navigate to={{ pathname: '/login', state: { from: props.location } }} />
             }
         </Route>
     );

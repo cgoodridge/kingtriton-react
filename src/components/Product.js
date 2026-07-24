@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import Card from '@material-ui/core/Card';
-import { makeStyles} from '@material-ui/core/styles';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import { makeStyles} from '@mui/material/styles';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -13,9 +13,9 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import QuantityControl from "./QuantityControl";
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import '../css/product.css';
 import Snackbar from '@mui/material/Snackbar';
 import { useDispatch } from 'react-redux';
@@ -23,7 +23,7 @@ import { addToCart} from '../slices/cartSlice';
 import { useSelector } from 'react-redux';
 import { selectItems } from '../slices/cartSlice';
 import { useSnackbar } from 'notistack';
-import Slide from '@material-ui/core/Slide';
+import Slide from '@mui/material/Slide';
 
 const Product = ({food}) => {
 

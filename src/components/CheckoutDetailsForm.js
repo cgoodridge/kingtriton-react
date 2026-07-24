@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
 import '../css/checkoutDetailsForm.css';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Radio from '@mui/material/Radio';

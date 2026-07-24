@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../css/register.css';
-import Card from '@material-ui/core/Card';
+import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -11,7 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useDispatch } from 'react-redux';
 import { login } from '../slices/userSlice';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 
@@ -134,7 +134,7 @@ const Register = (props) => {
 
                             )}
                         </Box>
-                        
+
                     </form>
                 </CardContent>
             </Card>
