@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Card from '@mui/material/Card';
-import { makeStyles} from '@mui/material/styles';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
@@ -30,7 +29,8 @@ const Product = ({food}) => {
     const dispatch = useDispatch();
 
     const [state, setState] = useState({
-        open: false,
+        openModal: false,
+        openSnackbar: false,
         vertical: 'top',
         horizontal: 'center',
     });
@@ -43,23 +43,40 @@ const Product = ({food}) => {
         }));
     };
 
-    const handleClickOpen = () => {
-        setState({open: true});
+    const handleModalOpen = () => {
+        setState((prevState) => ({
+            ...prevState,
+            openModal: true,
+        }));
     };
 
-    const { vertical, horizontal, open } = state;
+    const { vertical, horizontal, openSnackbar } = state;
     const cart = useSelector(selectItems);
     const { enqueueSnackbar } = useSnackbar();
 
-    const handleClick = (newState) => () => {
+    const handleAddToCartClick = (newState) => () => {
+        setState((prevState) => ({
+            ...prevState,
+            ...newState,
+            open: true,
+        }));
         setQtyValue(1);
         checkCart();
         addItemToCart();
-        handleClose();
+        handleModalClose();
     };
 
-    const handleClose = () => {
-        setState({ ...state, open: false });
+    const handleSnackbarClose = () => {
+        setState((prevState) => ({
+            ...prevState,
+            openSnackbar: false,
+        }));
+    };
+    const handleModalClose = () => {
+        setState((prevState) => ({
+            ...prevState,
+            openModal: false,
+        }));
     };
 
     const [qtyValue, setQtyValue] = useState(1);
@@ -86,17 +103,6 @@ const Product = ({food}) => {
 
     };
 
-    const useStyles = makeStyles((theme) => ({
-        root: {
-          flexGrow: 1,
-        },
-        card: {
-          padding: theme.spacing(1),
-        },
-    }));
-
-    const classes = useStyles();
-
     const addItemToCart = () => {
 
         const selectedCustomizations = food?.customization_options
@@ -121,26 +127,29 @@ const Product = ({food}) => {
     }
 
     return (
-            <div className={classes.root} key={food.id}>
+            <div key={food.id}>
                 {cartDuplicate ?
                     <Snackbar
-                        open={open}
+                        open={state.openSnackbar}
                         autoHideDuration={2000}
-                        onClose={handleClose}
-                        message= {food.name + ' quantity updated'}
-                        key={vertical + horizontal}
+                        onClose={handleSnackbarClose}
+                        message= {food?.name + ' quantity updated'}
+                        key={`${vertical}-${horizontal}`}
                     />
                     :
                     <Snackbar
-                        anchorOrigin={{ vertical, horizontal }}
-                        open={open}
+                        anchorOrigin={{
+                            vertical: vertical || 'top',
+                            horizontal: horizontal || 'center',
+                        }}
+                        open={state.openSnackbar}
                         autoHideDuration={2000}
-                        onClose={handleClose}
-                        message= {food.name + ' added to Cart'}
-                        key={vertical + horizontal}
+                        onClose={handleSnackbarClose}
+                        message={food?.name ? `${food?.name} added to Cart` : 'Item added to Cart'}
+                        key={`${vertical}-${horizontal}`}
                     />
                 }
-                <Dialog open={open} onClose={handleClose} disableScrollLock>
+                <Dialog open={state.openModal} onClose={handleModalClose} disableScrollLock>
                     <img
                         className="dialog-image"
                         srcSet={`${food.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
@@ -186,16 +195,16 @@ const Product = ({food}) => {
                         <Button
                             type="submit"
                             variant="contained"
-                            onClick={handleClick ({ vertical: 'top', horizontal: 'right', })}
+                            onClick={handleAddToCartClick ({ vertical: 'top', horizontal: 'right', })}
                             disableElevation
                         >
                             Add to Cart
                         </Button>
-                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleModalClose}>Cancel</Button>
                     </DialogActions>
                 </Dialog>
-                <Grid item xs={12} sm={3} className={classes.card}>
-                    <Card className="card small" style={{borderRadius: "5px"}} onClick={handleClickOpen}>
+                <Grid size={3} xs={12} sm={3} sx={{ padding: 1 }}>
+                    <Card className="card small" style={{borderRadius: "5px"}} onClick={handleModalOpen}>
                         <CardMedia
                             component="img"
                             alt={food.name}
@@ -205,14 +214,14 @@ const Product = ({food}) => {
                             className="card-image"
                         />
                         <CardContent>
-                            <Grid container style={{marginBottom: '10px'}}>
-                                <Grid item xs={10}>
+                            <Grid container spacing={2} style={{marginBottom: '10px'}}>
+                                <Grid size={8}>
                                     <Typography gutterBottom variant="h6" component="h6" align="left">
                                         {food?.name}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={2}>
-                                    <Typography gutterBottom variant="h6" component="h6" align="left">
+                                <Grid size={4}>
+                                    <Typography gutterBottom variant="h6" component="h6" align="right">
                                         ${food?.price}
                                     </Typography>
                                 </Grid>
@@ -226,6 +235,5 @@ const Product = ({food}) => {
             </div>
     );
 }
-
 
 export default Product;

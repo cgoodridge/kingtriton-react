@@ -1,5 +1,6 @@
 import React from 'react';
-import { makeStyles, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import MailIcon from '@mui/icons-material/Mail';
 import PhoneIcon from '@mui/icons-material/PhoneAndroid';
 import LocationIcon from '@mui/icons-material/PinDrop';
@@ -8,7 +9,6 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
-import { createTheme } from '@mui/material/styles';
 import '../css/contact.css';
 
 const useStyles = makeStyles((theme) => ({

@@ -26,10 +26,10 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import { collection, onSnapshot } from "firebase/firestore";
 import { auth, db } from './firebaseConfigFile';
 import { useDispatch } from 'react-redux';
 import AuthRoute from './components/AuthRoute';
-
 
 const promise = loadStripe('pk_test_51JelBJESzl8Ss9eHeAVZ8WozJuU1eiPQ1pOXak0vXrnqM8N6uoX659QmFv8DZ15JxEmMYeAyEmw6l6RCxBVg42uj006vt0mzoA');
 
@@ -81,19 +81,21 @@ const Content = (props) => {
   const [menu, setMenuItems] = useState([]);
 
   useEffect(() => {
-    db
-      .collection('menu')
-      .onSnapshot(snapshot => (
-        setMenuItems(snapshot.docs.map(doc => ({
+    const menuCollectionRef = collection(db, 'menu');
+
+    const unsubscribe = onSnapshot(menuCollectionRef, (snapshot) => {
+      setMenuItems(
+        snapshot.docs.map((doc) => ({
           id: doc.id,
-          data: doc.data()
-        })))
-      ))
+          data: doc.data(),
+        }))
+      );
+    });
 
-    return () => { // ComponentWillUnmount
+    return () => {
+      unsubscribe(); // Prevents memory leaks by stopping the listener
       _isMounted.current = false;
-    }
-
+    };
   }, [dispatch]);
 
 
@@ -110,56 +112,69 @@ const Content = (props) => {
             TransitionComponent={Slide}
             >
             <Routes>
-              <Route exact path="/">
-                <HomeNavbar />
+              <Route exact path="/" element={
                 <main>
-                  <Home food={menu} loading={menu.length <= 0 ? true : false} />
+                    <HomeNavbar />
+                    <Home food={menu} loading={menu.length <= 0 ? true : false} />
                 </main>
+              }>
               </Route>
-              <Route exact path="/menu">
-                <Navbar cart={cartList} />
+              <Route exact path="/menu" element={
                 <main id="mainTag">
-                  <Menu food={menu} loading={menu.length <= 0 ? true : false} />
+                    <Navbar cart={cartList} />
+                    <Menu food={menu} loading={menu.length <= 0 ? true : false} />
                 </main>
+              }>
+
               </Route>
-              <Route exact path="/reservations" >
-                <Navbar cart={cartList} />
+              <Route exact path="/reservations" element={
                 <main>
-                  <Reservations />
+                    <Navbar cart={cartList} />
+                    <Reservations />
                 </main>
+              }>
+
               </Route>
-              <Route exact path="/contact">
-                <Navbar cart={cartList} />
+              <Route exact path="/contact" element={
                 <main>
-                  <Contact />
+                    <Navbar cart={cartList} />
+                    <Contact />
                 </main>
+              }>
+
               </Route>
-              <Route exact path="/about" >
-                <Navbar cart={cartList} />
-                <main >
-                  <About />
+              <Route exact path="/about" element={
+                <main>
+                    <Navbar cart={cartList} />
+                    <About />
                 </main>
+              }>
               </Route>
-              <AuthRoute exact path="/account" >
-                <Navbar />
+              {/* <AuthRoute exact path="/account" element={
                 <main>
-                  <Account />
+                    <Navbar />
+                    <Account />
                 </main>
-              </AuthRoute>
-              <Route exact path="/checkout">
-                <Navbar cart={cartList} />
+              }>
+
+              </AuthRoute> */}
+              <Route exact path="/checkout" element={
                 <main>
+                    <Navbar cart={cartList} />
                   <Elements stripe={promise}>
                     <Checkout />
                   </Elements>
                 </main>
+              }>
+
               </Route>
-              <ProtectedRoute exact path="/login" comp={Login} />
-              <ProtectedRoute exact path="/register" comp={Register} />
-              <Route component={PageNotFound}>
+              {/* <ProtectedRoute exact path="/login" comp={Login} />
+              <ProtectedRoute exact path="/register" comp={Register} /> */}
+              <Route component={PageNotFound} element={
                 <main>
                   <PageNotFound />
                 </main>
+              }>
               </Route>
             </Routes>
             <Footer />

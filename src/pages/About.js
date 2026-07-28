@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '@mui/material/Card';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import Box from '@mui/material/Box';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';

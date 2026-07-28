@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 import { selectUser } from '../slices/userSlice';
 import { useSelector } from 'react-redux';
 
@@ -9,7 +9,7 @@ const ProtectedRoute = ({ comp: Component }, ...rest  ) => {
     return (
         <Route
         {...rest}
-            render={(props) => !user ? <Component {...props}/>  :  <Redirect to={{ pathname: '/', state: {from: props.location} }}/>
+            render={(props) => !user ? <Component {...props}/>  :  <Navigate to={{ pathname: '/', state: {from: props.location} }}/>
         }/>
     );
 }

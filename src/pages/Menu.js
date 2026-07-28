@@ -93,8 +93,7 @@ const Menu = ({ food, loading }) => {
 
   return (
     <div className="menuContainer">
-
-      <Container maxWidth="lg" style={{ marginTop: '32px' }}>
+      <Container maxWidth="xl" style={{ marginTop: '32px' }} >
         <Box sx={{ width: '100%', marginTop: '16px' }}>
           <Box>
             <Tabs value={value} onChange={handleChange} aria-label="me4" centered>
@@ -109,12 +108,12 @@ const Menu = ({ food, loading }) => {
 
           <TabPanel value={value} index={1}>
             <Grid container>
-              <Grid item xs={12} sm={9}>
+              <Grid size={10} xs={12} sm={9}>
                 <Typography gutterBottom variant="h3" component="h2" align="left" className="main-font">
                   Menu
                 </Typography>
               </Grid>
-              <Grid item xs={12} sm={3}>
+              <Grid size={2} xs={12} sm={3}>
                 <TextField
                   id="standard-basic"
                   fullWidth
@@ -157,7 +156,7 @@ const Menu = ({ food, loading }) => {
               />
             ))}
 
-            <Grid container direction="row" className="grid-content" spacing={2} justifyContent="flex-start">
+            <Grid container className="centered-container" spacing={2}>
                 <MenuList foods={food} loading={loading} filterParam={filterProvider} searchQuery={searchQuery}/>
             </Grid>
           </TabPanel>

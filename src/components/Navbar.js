@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
-import { makeStyles } from '@mui/material/styles';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
 import clsx from 'clsx';
 import Badge from '@mui/material/Badge';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
@@ -54,7 +54,7 @@ const useStyles = makeStyles(() => ({
 
 const Navbar = () => {
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
     const classes = useStyles();
     const total = useSelector(selectTotal);
     const [expand, setExpansion] = useState(true);
@@ -74,7 +74,7 @@ const Navbar = () => {
         dispatch(logout);
         auth.signOut();
         handleLoggedInMenuClose();
-        history.push('/');
+        navigate.push('/');
     }
 
     const [cartState, setCartState] = useState({

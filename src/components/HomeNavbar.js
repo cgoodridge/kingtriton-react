@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { makeStyles } from '@mui/material/styles';
+import { Link, useNavigate } from 'react-router-dom';
+import { makeStyles } from '@mui/styles';
 import clsx from 'clsx';
 import Badge from '@mui/material/Badge';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
@@ -70,7 +70,7 @@ const HomeNavbar = (props) => {
     const user = useSelector(selectUser);
     const cart = useSelector(selectItems);
     const total = useSelector(selectTotal);
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [cartState, setCartState] = useState({
         right: false,
@@ -92,7 +92,7 @@ const HomeNavbar = (props) => {
         dispatch(logout);
         auth.signOut();
         handleLoggedInMenuClose();
-        history.push('/');
+        navigate.push('/');
     };
 
     const toggleCartDrawer = (anchor, open) => (event) => {

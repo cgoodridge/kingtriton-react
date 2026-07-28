@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import CheckoutItem from './CheckoutItem';
@@ -18,7 +18,8 @@ import { selectUser } from '../slices/userSlice';
 import CurrencyFormat from 'react-currency-format';
 import Card from '@mui/material/Card';
 import { CardContent } from '@mui/material';
-import { Delivery32 } from '@carbon/icons-react';
+import { Delivery } from '@carbon/icons-react';
+
 
 const useStyles = makeStyles(() => ({
   gridContent: {
@@ -130,7 +131,7 @@ const Checkout = () => {
               <Card className="deliveryCard">
                 <CardContent>
                   <Box sx={{ display: 'flex', }}>
-                    <Delivery32 sx={{ margin: '8px' }} />
+                    <Delivery sx={{ margin: '8px' }} />
                     <Typography sx={{ fontSize: 14, margin: '8px' }} gutterBottom>
                       Free delivery on orders over $70
                     </Typography>
