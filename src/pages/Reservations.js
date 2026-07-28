@@ -77,24 +77,12 @@ function Reservations() {
         }
 
         try {
-
-            const [firstName, ...lastNameParts] = user?.displayName?.split(' ') || [];
-            const lastName = lastNameParts.join(' '); 
-
-            await setDoc(doc(db, 'users', user?.uid), {
-                firstName: firstName || 'First Name',
-                lastName: lastName || 'Last Name',
-            }, { merge: true });
-
-            await setDoc(doc(collection(db, 'users', user?.uid, 'reservations')), {
-                partySize: partySize,
-                occasion: occasion,
-                dateTime: dateTimeValue.toDate()
-            });
-
             // Add reservation to the global reservations collection
             await setDoc(doc(collection(db, 'reservations')), {
-                dateTime: dateTimeValue.toDate()
+                dateTime: dateTimeValue.toDate(),
+                userUid: user?.uid,
+                partySize: partySize,
+                occasion: occasion
             });
 
             // Reset state and show confirmation
