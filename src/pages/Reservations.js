@@ -14,8 +14,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
-// import { DateField } from '@mui/x-date-pickers/DateField';
-// import { TimeField } from '@mui/x-date-pickers/TimeField';
 import { selectUser } from '../slices/userSlice';
 import { useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
@@ -36,7 +34,7 @@ function Reservations() {
     // const [reservationName, setReservationName] = useState('');
     // const [reservationEmail, setReservationEmail] = useState('');
     const [partySize, setPartySize] = useState(1);
-    const [dateTimeValue, setDateTimeValue] = useState(moment());
+    const [dateTimeValue, setDateTimeValue] = useState(moment().startOf('hour').add(2, 'hour'));
     const user = useSelector(selectUser);
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -48,12 +46,7 @@ function Reservations() {
 
     const handleClose = () => {
         setOpenConfirmMessage(false);
-        navigate.push('/account');
-    };
-
-    const getTableId = (e) => {
-        isTableSelected(true);
-        setSelectedTable(e.target.id);
+        navigate('/account');
     };
 
     const handleDateChange = (newValue) => {
@@ -88,7 +81,7 @@ function Reservations() {
             // Reset state and show confirmation
             setPartySize(1);
             setOccasion('');
-            setDateTimeValue('');
+            setDateTimeValue(moment().startOf('hour').add(2, 'hour'));
             setSelectedTable('none');
             setLoading(false);
             handleClickOpen();
