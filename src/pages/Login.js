@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import '../css/login.css';
-import Card from '@material-ui/core/Card';
+import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useHistory, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { auth } from '../firebaseConfigFile';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -12,12 +12,12 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { login } from '../slices/userSlice';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import { CircularProgress } from '@mui/material';
 
 const Login = (props) => {
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
 
     const dispatch = useDispatch();
@@ -60,10 +60,10 @@ const Login = (props) => {
             .catch(error => alert(error.message));
 
         if (!props.location.state) {
-            history.push('/');
+            navigate.push('/');
         }
         else {
-            history.push(props.location.state?.prevPath);
+            navigate.push(props.location.state?.prevPath);
         }
 
     }

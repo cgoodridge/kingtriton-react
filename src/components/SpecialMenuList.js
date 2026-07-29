@@ -1,4 +1,5 @@
 import React from 'react';
+import Grid from '@mui/material/Grid';
 import Product from '../components/Product';
 import MenuLoadingSkeleton from './MenuLoadingSkeleton';
 
@@ -7,7 +8,7 @@ const SpecialMenuList = (props) => {
     return(
         // TODO: Alter code so it's possible to display all food items on the main menu page, without excluding the special items
 
-            <>
+            <Grid container spacing={2}>
                 {
                     props.loading ?
                     <MenuLoadingSkeleton/>
@@ -18,8 +19,7 @@ const SpecialMenuList = (props) => {
                         );
                     })
                 }
-
-            </>
+            </Grid>
         );
 }
 

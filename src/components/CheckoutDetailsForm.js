@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import EditIcon from '@mui/icons-material/Edit';
 import '../css/checkoutDetailsForm.css';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Radio from '@mui/material/Radio';
@@ -15,7 +15,7 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -92,7 +92,7 @@ const CheckoutDetailsForm = () => {
 //   const stripe = useStripe();
 //   const elements = useElements();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [open, setOpenForm] = useState(false);
 
@@ -248,7 +248,7 @@ const CheckoutDetailsForm = () => {
 
   const handleConfirmMessageClose = () => {
     setOpenConfirmMessage(false);
-    history.push('/account');
+    navigate.push('/account');
   };
 
   const handleAddressNameSelection = (event) => {

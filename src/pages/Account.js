@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../css/account.css';
-import Card from '@material-ui/core/Card';
+import Card from '@mui/material/Card';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';

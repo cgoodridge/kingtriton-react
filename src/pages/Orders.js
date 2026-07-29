@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import '../css/orders.css';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { db } from '../firebaseConfigFile';
 import { selectUser } from '../slices/userSlice';
 import { useSelector } from 'react-redux';
 import Order from '../components/Order';
 import { Link } from 'react-router-dom';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 
 const Orders = () => {
     const user = useSelector(selectUser);

@@ -1,36 +1,33 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import SpecialMenuList from '../components/SpecialMenuList';
-import LazyHero from 'react-lazy-hero';
 import { Link } from 'react-router-dom';
+import '../css/home.css';
 
 const Home = ({food, loading}) => {
   return (
     <section>
-      <LazyHero imageSrc="img/res-1.jpg" parallaxOffset={50} color="#000" minHeight="80vh">
-        <Box className="hero-text">
-          <Typography gutterBottom variant="h4" component="h2" align="center" className="main-font">
-                      Welcome to King Triton's Seafood Palace
-          </Typography>
+        <div className="parallax">
+            <Box className="hero-text">
+            <Typography gutterBottom variant="h4" component="h2" align="center" className="main-font">
+                Welcome to King Triton's Seafood Palace
+            </Typography>
             <Button variant="contained" color="secondary" component={Link} to='/reservations' className="heroButton">
-              Make a Reservation
+                Make a Reservation
             </Button>
-        </Box>
-      </LazyHero>
+            </Box>
+        </div>
 
-      <Container maxWidth="lg">
-          <Typography gutterBottom variant="h3" component="h3" align="center" className="main-font">
-                Take-away Specials
-          </Typography>
-      </Container>
         <Container maxWidth="lg">
-          <Grid container direction="row" className="grid-content">
-              <SpecialMenuList foods={food} loading={loading}/>
-          </Grid>
+            <Typography gutterBottom variant="h3" component="h3" align="center" className="main-font">
+                Take-away Specials
+            </Typography>
+        </Container>
+        <Container maxWidth="xl" className="centered-container">
+            <SpecialMenuList foods={food} loading={loading}/>
         </Container>
 
     </section>

@@ -1,24 +1,23 @@
 import React, { useState } from 'react';
 import '../css/register.css';
-import Card from '@material-ui/core/Card';
+import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebaseConfigFile';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useDispatch } from 'react-redux';
 import { login } from '../slices/userSlice';
-import { Box, Typography } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Box, Typography } from '@mui/material';
 import { CircularProgress } from '@mui/material';
 
 const Register = (props) => {
 
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -71,7 +70,7 @@ const Register = (props) => {
                     })
                     .catch(error => alert(error.message))
 
-                // history.push('/');
+                // navigate.push('/');
 
             })
             .then(() => {
@@ -86,11 +85,11 @@ const Register = (props) => {
             })
             .catch(error => alert(error.message))
         if (props.location.state) {
-            history.push('/');
+            navigate.push('/');
         }
         else {
 
-            history.push(props.location.state?.prevPath);
+            navigate.push(props.location.state?.prevPath);
         }
 
     }
@@ -134,7 +133,7 @@ const Register = (props) => {
 
                             )}
                         </Box>
-                        
+
                     </form>
                 </CardContent>
             </Card>
