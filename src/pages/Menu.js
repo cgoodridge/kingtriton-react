@@ -92,7 +92,7 @@ const Menu = ({ food, loading }) => {
   };
 
   return (
-    <div className="menuContainer">
+    <div className="container">
       <Container maxWidth="xl" style={{ marginTop: '32px' }} >
         <Box sx={{ width: '100%', marginTop: '16px' }}>
           <Box>

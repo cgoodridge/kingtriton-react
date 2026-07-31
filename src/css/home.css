@@ -5,10 +5,11 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    min-height: 60vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative; /* Ensure the overlay is positioned correctly */
+    position: relative;
 }
 
 .parallax::before {

@@ -31,10 +31,11 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import Collapse from '@mui/material/Collapse';
+import Slide from '@mui/material/Slide';
 
 const useStyles = makeStyles(() => ({
     list: {
-        width: 300,
+        width: 580,
 
     },
     fullList: {
@@ -52,7 +53,27 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const Navbar = () => {
+function ChangeColorOnScroll({ children, target }) {
+    const location = useLocation();
+    const trigger = useScrollTrigger({
+        disableHysteresis: true, // Appends styles instantly upon passing the threshold
+        threshold: 50,
+        target: target || window, // Use the provided target or default to window
+    });
+    const isTargetRoute = location.pathname === '/';
+
+    const isScrolledOrOtherRoute = isTargetRoute ? trigger : true;
+    return React.cloneElement(children, {
+        sx: {
+            backgroundColor: isScrolledOrOtherRoute ? 'primary.main' : 'transparent',
+            color: isScrolledOrOtherRoute  ? 'text.primary' : 'common.white',
+            boxShadow: isScrolledOrOtherRoute  ? 4 : 0,
+            transition: 'all 0.3s ease-in-out',
+        },
+    });
+}
+
+const Navbar = ({ target = window}) => {
     const location = useLocation();
     const navigate = useNavigate();
     const classes = useStyles();
@@ -74,22 +95,15 @@ const Navbar = () => {
         dispatch(logout);
         auth.signOut();
         handleLoggedInMenuClose();
-        navigate.push('/');
+        navigate('/');
     }
 
     const [cartState, setCartState] = useState({
         right: false,
     });
 
-    const trigger = useScrollTrigger({
-        disableHysteresis: true,
-        threshold: 50,
-        target: window,
-    });
-
     useEffect(() => {
         const container = document.getElementsByClassName('.menuContainer');
-        console.log(container);
         setScrollTarget(container);
     }, []);
 
@@ -218,13 +232,6 @@ const Navbar = () => {
                 <Divider />
 
                 <ListItem disablepadding="true">
-                    <ListItemButton component={Link} to="/contact">
-                        <ListItemText primary="Contact" />
-                    </ListItemButton>
-                </ListItem>
-                <Divider />
-
-                <ListItem disablepadding="true">
                     <ListItemButton component={Link} to="/about">
                         <ListItemText primary="About" />
                     </ListItemButton>
@@ -265,37 +272,16 @@ const Navbar = () => {
                         </Collapse>
                     </>
                 }
-
             </List>
             <Divider />
-
         </div>
     );
 
     return (
-
-        <header>
-            <Box
-                ref={(node) => {
-                    if (node && !scrollTarget) {
-                        setScrollTarget(node);
-                    }
-                }}
-                sx={{ overflowY: 'auto' }}
-            >
-
-                <AppBar
-                    elevation={trigger ? 4 : 0}
-                    // className={`app-bar`}
-                    position="fixed"
-                    sx={{
-                        transition: 'background-color 0.3s ease, color 0.3s ease',
-                        backgroundColor: trigger ? 'rgba(255, 255, 255, 0.9)' : 'transparent',
-                        color: trigger ? '#000' : '#ffffff',
-                        backdropFilter: trigger ? 'blur(8px)' : 'none',
-                    }}
-                >
-                    <Toolbar disableGutters>
+        <>
+            <ChangeColorOnScroll target={target}>
+                <AppBar>
+                    <Toolbar>
                         <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }}>
                             <img className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img>
                         </Box>
@@ -337,7 +323,6 @@ const Navbar = () => {
                                     <li><Link to="/">Home</Link></li>
                                     <li><Link to="/menu">Menu</Link></li>
                                     <li><Link to="/reservations">Reservations</Link></li>
-                                    <li><Link to="/contact">Contact</Link></li>
                                     <li><Link to="/about">About</Link></li>
                                     <li style={{ marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white' }} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hi, {user ? user.displayName.split(" ")[0] : 'Guest'} <KeyboardArrowDownIcon sx={{ paddingTop: '5px' }} /></li>
                                     <li>
@@ -394,9 +379,8 @@ const Navbar = () => {
                         </nav>
                     </Toolbar>
                 </AppBar>
-                <Toolbar />
-            </Box>
-        </header>
+            </ChangeColorOnScroll>
+        </>
     )
 
 }

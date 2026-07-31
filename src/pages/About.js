@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Arial'
   },
   card: {
-    padding: theme.spacing(1),
+    padding: 1,
   },
 }));
 
@@ -89,7 +89,7 @@ const About = () => {
     };
 
     return (
-        <>
+        <div className='container'>
             <Container maxWidth="lg" style={{marginTop: '16px'}}>
                 <Typography gutterBottom variant="h3" component="h2" align="left" className={classes.mainFont} >
                     About
@@ -118,7 +118,7 @@ const About = () => {
                 >
                 {cardInfo.map(renderCard)}
             </Box>
-        </>
+        </div>
     );
 }
 

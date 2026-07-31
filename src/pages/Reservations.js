@@ -94,7 +94,7 @@ function Reservations() {
     };
 
     return (
-        <div className="App" style={{ padding: '25px' }}>
+        <div className="App container" style={{ padding: '25px' }}>
             <Dialog
                 open={openConfirmMessage}
                 onClose={handleClose}
