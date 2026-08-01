@@ -1,7 +1,7 @@
 .resCard{
     /* background-color: yellow !important; */
-    min-width: 300px;
-    width: 50vw;
+    min-width: 200px;
+    /* width: 50vw; */
     height: auto;
     margin-bottom: 16px;
 }

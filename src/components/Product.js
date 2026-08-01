@@ -127,7 +127,7 @@ const Product = ({food}) => {
     }
 
     return (
-            <div key={food.id}>
+            <>
                 {cartDuplicate ?
                     <Snackbar
                         open={state.openSnackbar}
@@ -203,7 +203,7 @@ const Product = ({food}) => {
                         <Button onClick={handleModalClose}>Cancel</Button>
                     </DialogActions>
                 </Dialog>
-                <Grid size={3} xs={12} sm={3} sx={{ padding: 1 }}>
+                <Grid size={{ xs: 12, sm: 4, md: 3 }} key={food.id}>
                     <Card className="card small" style={{borderRadius: "5px"}} onClick={handleModalOpen}>
                         <CardMedia
                             component="img"
@@ -232,7 +232,7 @@ const Product = ({food}) => {
                         </CardContent>
                     </Card>
                 </Grid>
-            </div>
+            </>
     );
 }
 

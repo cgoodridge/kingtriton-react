@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import Order from '../components/Order';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 
 const Orders = () => {
     const user = useSelector(selectUser);
@@ -16,23 +17,26 @@ const Orders = () => {
 
     useEffect(() => {
         if (user) {
-            db
-                .collection('users')
-                .doc(user.uid)
-                .collection('orders')
-                .orderBy('createdAt', 'desc')
-                .onSnapshot(snapshot => (
-                    setOrders(snapshot.docs.map(doc => ({
-                        id: doc.id,
-                        data: doc.data()
-                    })))
-                ));
+            // Reference to the user's orders collection
+            const ordersRef = collection(db, 'users', user.uid, 'orders');
+            const ordersQuery = query(ordersRef, orderBy('createdAt', 'desc'));
+
+            // Listen for real-time updates
+            const unsubscribe = onSnapshot(ordersQuery, (snapshot) => {
+                setOrders(snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    data: doc.data(),
+                })));
+            });
+
+            // Cleanup the listener on unmount
+            return () => unsubscribe();
         }
     }, [user])
 
     return (
         <>
-            <Container sx={{ height: '90vh', overflowY: 'scroll' }}>
+            <Container className="container">
                 <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{ textAlign: 'center', marginTop: '16px' }}>
                     Order History
                 </Typography>

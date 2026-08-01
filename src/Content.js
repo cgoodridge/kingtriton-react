@@ -115,7 +115,7 @@ const Content = (props) => {
                             <Route exact path="/" element={
                                 <main ref={mainRef} className="mainTag">
                                     {/* <HomeNavbar /> */}
-                                    <Navbar target={mainRef.current} cart={cartList} />
+                                    <Navbar target={mainRef} cart={cartList} />
                                     <Home food={menu} loading={menu.length <= 0 ? true : false} />
                                     <Footer />
                                 </main>
@@ -123,7 +123,7 @@ const Content = (props) => {
                             </Route>
                             <Route exact path="/menu" element={
                                 <main ref={mainRef} className="mainTag">
-                                    <Navbar target={mainRef.current} cart={cartList} />
+                                    <Navbar target={mainRef} cart={cartList} />
                                     <Menu food={menu} loading={menu.length <= 0 ? true : false} />
                                     <Footer />
                                 </main>
@@ -132,7 +132,7 @@ const Content = (props) => {
                             </Route>
                             <Route exact path="/reservations" element={
                                 <main ref={mainRef} className="mainTag">
-                                    <Navbar target={mainRef.current} cart={cartList} />
+                                    <Navbar target={mainRef} cart={cartList} />
                                     <Reservations />
                                     <Footer />
                                 </main>
@@ -140,7 +140,7 @@ const Content = (props) => {
                             </Route>
                             <Route exact path="/about" element={
                                 <main ref={mainRef} className="mainTag">
-                                    <Navbar target={mainRef.current} cart={cartList} />
+                                    <Navbar target={mainRef} cart={cartList} />
                                     <About />
                                     <Footer />
                                 </main>
@@ -159,7 +159,7 @@ const Content = (props) => {
                             />
                             <Route exact path="/checkout" element={
                                 <main ref={mainRef} className="mainTag">
-                                    <Navbar target={mainRef.current} cart={cartList} />
+                                    <Navbar target={mainRef} cart={cartList} />
                                     <Elements stripe={promise}>
                                         <Checkout />
                                     </Elements>

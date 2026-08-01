@@ -35,7 +35,7 @@ import Slide from '@mui/material/Slide';
 
 const useStyles = makeStyles(() => ({
     list: {
-        width: 580,
+        // width: 580,
 
     },
     fullList: {
@@ -55,10 +55,13 @@ const useStyles = makeStyles(() => ({
 
 function ChangeColorOnScroll({ children, target }) {
     const location = useLocation();
+
+    const scrollTarget = target?.current || window;
+
     const trigger = useScrollTrigger({
         disableHysteresis: true, // Appends styles instantly upon passing the threshold
         threshold: 50,
-        target: target || window, // Use the provided target or default to window
+        target: scrollTarget, // Use the provided target or default to window
     });
     const isTargetRoute = location.pathname === '/';
 
@@ -282,7 +285,11 @@ const Navbar = ({ target = window}) => {
             <ChangeColorOnScroll target={target}>
                 <AppBar>
                     <Toolbar>
-                        <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }}>
+                        <Box
+                        sx={{
+                            display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' },
+                            alignItems: 'center',
+                        }}>
                             <img className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img>
                         </Box>
                         <nav className="nav-col">
@@ -305,7 +312,7 @@ const Navbar = ({ target = window}) => {
                             </Box>
                             {['right'].map((anchor) => (
                                 <React.Fragment key={anchor}>
-                                    <Box sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none' } }} >
+                                    <Box className="cartIcon" sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none' } }} >
                                         <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" className="cartButton" aria-label="open shopping cart">
                                             <Badge badgeContent={cart?.length} color="secondary">
                                                 <ShoppingBasketIcon />
@@ -318,7 +325,6 @@ const Navbar = ({ target = window}) => {
                                 </React.Fragment>
                             ))}
                             <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }} className="nav-wrapper">
-
                                 <ul className="right hide-on-med-and-down">
                                     <li><Link to="/">Home</Link></li>
                                     <li><Link to="/menu">Menu</Link></li>

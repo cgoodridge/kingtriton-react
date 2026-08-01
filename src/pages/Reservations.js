@@ -119,7 +119,7 @@ function Reservations() {
                 </Typography>
                 <form action="" style={{ width: '100%' }}>
                     <Grid container className="gridContent">
-                        <Grid xs={12} md={6} lg={3} style={{ paddingRight: '20px', paddingTop: '5px', paddingBottom: '20px' }}>
+                        <Grid size={{ xs: 12, sm: 4, md: 2 }} style={{ paddingRight: '20px', paddingTop: '5px', paddingBottom: '20px' }}>
                             <LocalizationProvider dateAdapter={AdapterMoment}>
                                 <DateTimePicker
                                     label="Select Date and Time"
@@ -129,12 +129,13 @@ function Reservations() {
                                     renderInput={(params) => (
                                         <TextField
                                             {...params}
+                                            fullWidth
                                         />
                                     )}
                                 />
                             </LocalizationProvider>
                         </Grid>
-                        <Grid xs={12} md={6} lg={3} style={{ paddingRight: '20px', paddingBottom: '20px' }}>
+                        <Grid size={{ xs: 12, sm: 4, md: 4 }} style={{ paddingRight: '20px', paddingBottom: '20px' }}>
                             <TextField
                                 id="occasion"
                                 fullWidth
@@ -147,7 +148,7 @@ function Reservations() {
                                 variant="outlined"
                             />
                         </Grid>
-                        <Grid xs={12} md={6} lg={3} style={{ paddingRight: '20px', paddingBottom: '20px' }}>
+                        <Grid size={{ xs: 12, sm: 4, md: 4 }} style={{ paddingRight: '20px', paddingBottom: '20px' }}>
                             <TextField
                                 id="partySize"
                                 fullWidth
@@ -230,6 +231,8 @@ function Reservations() {
                                     id="standard-multiline-static"
                                     label="Message"
                                     fullWidth
+                                    multiline
+                                    rows={4}
 
                                 />
                             </Grid>
@@ -238,9 +241,9 @@ function Reservations() {
                             </Button>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    {/* <Grid item xs={12} sm={6}>
                         <img style={{ paddingLeft: '15px', paddingBottom: '20px' }} className="responsive-img" src="./img/Mapsicle-Map.png" alt="Map screengrab"></img>
-                    </Grid>
+                    </Grid> */}
                 </Grid>
 
                 {/* <Grid container direction="row" className="gridContent">

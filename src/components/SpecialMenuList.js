@@ -8,7 +8,7 @@ const SpecialMenuList = (props) => {
     return(
         // TODO: Alter code so it's possible to display all food items on the main menu page, without excluding the special items
 
-            <Grid container spacing={2}>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                 {
                     props.loading ?
                     <MenuLoadingSkeleton/>

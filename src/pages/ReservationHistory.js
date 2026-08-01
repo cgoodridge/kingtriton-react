@@ -8,6 +8,8 @@ import '../css/reservationHistory.css';
 import Reservationcard from '../components/ReservationCard';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { Grid } from '@mui/material';
 
 
 const Reservationhistory = () => {
@@ -19,47 +21,48 @@ const Reservationhistory = () => {
     useEffect(() => {
 
         if (user) {
-            db
-            .collection('users')
-            .doc(user?.uid)
-            .collection('reservations')
-            .onSnapshot(snapshot => (
-               setReservations(snapshot.docs.map(doc => ({
-                   id: doc.id,
-                   data: doc.data()
-               })))
-            ));
+            // Reference to the user's reservations collection
+            const reservationsRef = collection(db, 'reservations');
+
+            // Listen for real-time updates
+            const unsubscribe = onSnapshot(reservationsRef, (snapshot) => {
+                setReservations(snapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    data: doc.data(),
+                })));
+            });
+
+            // Cleanup the listener on unmount
+            return () => unsubscribe();
         } else {
-            setReservations([])
+            setReservations([]);
         }
     }, [user]);
 
     return (
         <>
-            <Container sx={{height: '90vh', overflowY: 'scroll'}} maxWidth="lg" className="cardContainer">
-                <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{textAlign: 'left', marginTop: '16px'}}>
+            <Container maxWidth="lg" className="container">
+                <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{ textAlign: 'left', marginTop: '16px' }}>
                     Past Reservations
                 </Typography>
 
-                        {
-                        !reservations.length <=0 ?
-                            reservations.map(reservation => (
+                {
+                    !reservations.length <= 0 ?
+                        reservations.map(reservation => (
+                            // <Grid container spacing={2}>
                                 <Reservationcard reservation={reservation} />
-                            ))
+                            // {/* </Grid> */}
+                        ))
                         :
-                            <>
-                                <Typography variant="h6" className="emptyReservationText" gutterBottom component="div" style={{textAlign: 'left', marginTop: '16px'}}>
-                                    You haven't made any reservations yet.
-                                </Typography>
-                                <div>
-                                    <Button variant="contained"  component={Link} to="/reservations">Make A Reservation</Button>
-                                </div>
-                            </>
-                        }
-
-
-
-
+                        <>
+                            <Typography variant="h6" className="emptyReservationText" gutterBottom component="div" style={{ textAlign: 'left', marginTop: '16px' }}>
+                                You haven't made any reservations yet.
+                            </Typography>
+                            <div>
+                                <Button variant="contained" component={Link} to="/reservations">Make A Reservation</Button>
+                            </div>
+                        </>
+                }
             </Container>
         </>
     );
