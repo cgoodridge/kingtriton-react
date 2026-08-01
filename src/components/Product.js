@@ -182,8 +182,6 @@ const Product = ({food}) => {
                                 'No customization options available for this item.'
                             )}
                         </FormGroup>
-                    </DialogContent>
-                    <DialogActions>
                         <Box className="control-counters">
                             <QuantityControl
                                 qtyValue={qtyValue}
@@ -192,15 +190,22 @@ const Product = ({food}) => {
                                 setQtyValue={(e) => setQtyValue(parseInt(e.target.value))}
                             />
                         </Box>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            onClick={handleAddToCartClick ({ vertical: 'top', horizontal: 'right', })}
-                            disableElevation
-                        >
-                            Add to Cart
-                        </Button>
-                        <Button onClick={handleModalClose}>Cancel</Button>
+                    </DialogContent>
+                    <DialogActions>
+                        {/* <Grid container> */}
+
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color='secondary'
+                                size="small"
+                                onClick={handleAddToCartClick ({ vertical: 'top', horizontal: 'right', })}
+                                disableElevation
+                            >
+                                Add to Cart
+                            </Button>
+                            <Button onClick={handleModalClose}>Cancel</Button>
+                        {/* </Grid> */}
                     </DialogActions>
                 </Dialog>
                 <Grid size={{ xs: 12, sm: 4, md: 3 }} key={food.id}>
