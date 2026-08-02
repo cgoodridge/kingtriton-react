@@ -44,7 +44,6 @@ export const cartSlice = createSlice({
                 // Without this the values continue to double rather than adding the base price to the total
                 newCart[index].price = (parseFloat(baseItemPrice) * parseFloat(newCart[index].qty)) / (parseFloat(newCart[index].qty) - 1);
                 state.items = newCart;
-                console.log('Cart quantities updated ', state.items);
             }
 
         },

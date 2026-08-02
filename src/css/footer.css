@@ -10,7 +10,7 @@
     padding: 16px 0;
 }
 
-.footerHeaders, .MuiGrid-container p{
+.footerHeaders, footer .MuiGrid-container p{
     font-family: 'Poiret One' !important;
 }
 

@@ -6,6 +6,8 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebaseConfigFile';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -42,54 +44,52 @@ const Register = (props) => {
     };
 
 
-    const register = (e) => {
+    const register = async (e) => {
         e.preventDefault();
 
         if (confirmPassword !== password) {
             alert('Both passwords must be the same');
             return;
         }
+        
         setLoading(true);
 
+        try {
+            // Create user with email and password
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
 
-        auth
-            .createUserWithEmailAndPassword(email, password)
-            .then((auth) => {
+            // Update user profile with display name
+            await updateProfile(user, {
+                displayName: `${fName} ${lName}`,
+            });
 
-                auth.user.updateProfile({
-                    displayName: fName + " " + lName
+            // Dispatch user data to Redux store
+            dispatch(
+                login({
+                    email: user.email,
+                    uid: user.uid,
+                    displayName: `${fName} ${lName}`,
+                    photoURL: user.photoURL || '',
                 })
-                    .then(() => {
-                        dispatch(
-                            login({
-                                email: auth.user.email,
-                                uid: auth.user.uid,
-                                displayName: fName + " " + lName,
-                                photoURL: auth.user.photoURL ? auth.user.photoURL : "",
-                            }));
-                    })
-                    .catch(error => alert(error.message))
+            );
 
-                // navigate.push('/');
+            // Add user data to Firestore
+            await setDoc(doc(db, 'users', user.uid), {
+                firstName: fName,
+                lastName: lName,
+            });
 
-            })
-            .then(() => {
-                db
-                    .collection('users')
-                    .doc(auth?.user.uid)
-                    .set({
-                        firstName: fName,
-                        lastName: lName,
-                    })
-                    .catch(error => alert(error.message))
-            })
-            .catch(error => alert(error.message))
-        if (props.location.state) {
-            navigate.push('/');
-        }
-        else {
-
-            navigate.push(props.location.state?.prevPath);
+            // Navigate to the previous path or home
+            if (props.location?.state?.prevPath) {
+                navigate(props.location.state.prevPath);
+            } else {
+                navigate('/');
+            }
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setLoading(false);
         }
 
     }

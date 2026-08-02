@@ -8,7 +8,7 @@ import '../css/reservationHistory.css';
 import Reservationcard from '../components/ReservationCard';
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { collection, query, where, orderBy, onSnapshot } from 'firebase/firestore';
 import { Grid } from '@mui/material';
 
 
@@ -24,13 +24,26 @@ const Reservationhistory = () => {
             // Reference to the user's reservations collection
             const reservationsRef = collection(db, 'reservations');
 
+            const reservationsQuery = query(
+                reservationsRef,
+                where('userUid', '==', user.uid), // Filter by uid
+                orderBy('dateTime', 'desc') // Order by createdAt field in descending order
+            );
             // Listen for real-time updates
-            const unsubscribe = onSnapshot(reservationsRef, (snapshot) => {
-                setReservations(snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    data: doc.data(),
-                })));
-            });
+            const unsubscribe = onSnapshot(
+                reservationsQuery,
+                (snapshot) => {
+                    const docs = snapshot.docs.map((doc) => ({
+                        id: doc.id,
+                        data: doc.data(),
+                    }));
+                    setReservations(docs);
+                },
+                (error) => {
+                    console.error('Error in onSnapshot:', error); // Debugging
+                }
+            );
+            // console.log("DOC ", docs);
 
             // Cleanup the listener on unmount
             return () => unsubscribe();

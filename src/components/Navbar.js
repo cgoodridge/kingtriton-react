@@ -186,7 +186,7 @@ const Navbar = ({ target = window}) => {
                                 Close
                             </Button>
                             :
-                            <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
+                            <Button sx={{ color: 'white'}} variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
                                 {(total > 0 && total < 70) ? `Checkout (($${parseFloat(total + 10)})` : ''}
                                 {(total >= 70) ? `Checkout ($${parseFloat(total)})` : ''}
                             </Button>
@@ -244,7 +244,7 @@ const Navbar = ({ target = window}) => {
                 {user ?
                     <>
                         <ListItemButton sx={{ pl: 4 }} onClick={handleExpansionClick}>
-                            <ListItemText primary={'Hi ' + user.displayName.split(" ")[0]} />
+                            <ListItemText primary={'Hi ' + user?.displayName?.split(" ")[0]} />
                             {expand ? <ExpandLess /> : <ExpandMore />}
                         </ListItemButton>
                         <Collapse in={expand} timeout="auto" unmountOnExit>
@@ -330,7 +330,7 @@ const Navbar = ({ target = window}) => {
                                     <li><Link to="/menu">Menu</Link></li>
                                     <li><Link to="/reservations">Reservations</Link></li>
                                     <li><Link to="/about">About</Link></li>
-                                    <li style={{ marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white' }} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hi, {user ? user.displayName.split(" ")[0] : 'Guest'} <KeyboardArrowDownIcon sx={{ paddingTop: '5px' }} /></li>
+                                    <li style={{ marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white' }} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hi, {user ? user?.displayName?.split(" ")[0] : 'Guest'} <KeyboardArrowDownIcon sx={{ paddingTop: '5px' }} /></li>
                                     <li>
                                         {['right'].map((anchor) => (
                                             <React.Fragment key={anchor}>

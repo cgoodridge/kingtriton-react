@@ -109,14 +109,17 @@ const Product = ({food}) => {
         ?.filter((option) => selectedOptions[option.name]) // Only include selected options
         .map((option) => ({
             name: option.name,
-            price: option.price,
+            price: Number(option.price || 0),
         }));
-        const customizationsTotalPrice = selectedCustomizations?.reduce((total, option) => total + option.price, 0);
+        const customizationsTotalPrice = selectedCustomizations?.reduce(
+            (total, option) => total + option.price,
+            0
+        ) || 0;
 
         const product = {
             id: food?.id,
             name: food?.name,
-            price: food?.price + customizationsTotalPrice,
+            price: Number(food?.price || 0) + customizationsTotalPrice,
             image: food?.image,
             course: food?.course,
             special: food?.special,
@@ -201,6 +204,7 @@ const Product = ({food}) => {
                                 size="small"
                                 onClick={handleAddToCartClick ({ vertical: 'top', horizontal: 'right', })}
                                 disableElevation
+                                sx={{ color: 'white' }}
                             >
                                 Add to Cart
                             </Button>
