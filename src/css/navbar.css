@@ -64,3 +64,15 @@
     color: #000000; /* Contrast text color for white background */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
+
+.logoContainer {
+    display: flex;
+    align-items: center; /* Aligns logo and text vertically */
+    gap: 12px;           /* Adds space between logo and text */
+}
+
+  .headerLogo {
+    width: auto;         /* Allows width to scale naturally */
+    height: 50px;        /* Set your desired explicit height */
+    object-fit: contain; /* Prevents squishing or stretching */
+}
