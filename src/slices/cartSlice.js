@@ -85,7 +85,7 @@ export const cartSlice = createSlice({
         },
         emptyCart: (state, action) => {
             state.items = [];
-            console.log("empty cart called");
+            // console.log("empty cart called");
         }
     },
 });

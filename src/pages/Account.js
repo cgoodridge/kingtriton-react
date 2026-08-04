@@ -72,8 +72,8 @@ const Account = () => {
                             <Tab label="Edit Profile" {...a11yProps(0)} />
                             <Tab label="Order History" {...a11yProps(1)} />
                             <Tab label="Reservation History" {...a11yProps(2)} />
-                            <Tab label="Privacy Policy" {...a11yProps(3)} />
-                            <Tab label="Help" {...a11yProps(4)} />
+                            {/* <Tab label="Privacy Policy" {...a11yProps(3)} /> */}
+                            {/* <Tab label="Help" {...a11yProps(4)} /> */}
                         </Tabs>
 
                     </Box>

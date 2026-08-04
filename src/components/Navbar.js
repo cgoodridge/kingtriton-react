@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import clsx from 'clsx';
@@ -7,9 +7,7 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-// import CssBaseline from '@material-ui/core/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-// import Slide from '@material-ui/core/Slide';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
@@ -31,7 +29,6 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import Collapse from '@mui/material/Collapse';
-import Slide from '@mui/material/Slide';
 
 const useStyles = makeStyles(() => ({
     list: {
@@ -82,7 +79,6 @@ const Navbar = ({ target = window}) => {
     const classes = useStyles();
     const total = useSelector(selectTotal);
     const [expand, setExpansion] = useState(true);
-    const [scrollTarget, setScrollTarget] = useState(undefined);
 
     const handleExpansionClick = (e) => {
         e.stopPropagation();
@@ -104,11 +100,6 @@ const Navbar = ({ target = window}) => {
     const [cartState, setCartState] = useState({
         right: false,
     });
-
-    useEffect(() => {
-        const container = document.getElementsByClassName('.menuContainer');
-        setScrollTarget(container);
-    }, []);
 
     const toggleCartDrawer = (anchor, open) => (event) => {
 

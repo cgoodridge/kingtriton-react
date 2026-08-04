@@ -43,7 +43,6 @@ const Reservationhistory = () => {
                     console.error('Error in onSnapshot:', error); // Debugging
                 }
             );
-            // console.log("DOC ", docs);
 
             // Cleanup the listener on unmount
             return () => unsubscribe();

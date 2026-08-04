@@ -18,7 +18,7 @@ const Orders = () => {
     useEffect(() => {
         if (user) {
             // Reference to the user's orders collection
-            const ordersRef = collection(db, 'users', user.uid, 'orders');
+            const ordersRef = collection(db, 'users', user?.uid, 'orders');
             const ordersQuery = query(ordersRef, orderBy('createdAt', 'desc'));
 
             // Listen for real-time updates

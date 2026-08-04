@@ -1,7 +1,5 @@
 .resCard{
-    /* background-color: yellow !important; */
     min-width: 200px;
-    /* width: 50vw; */
     height: auto;
     margin-bottom: 16px;
 }
@@ -20,12 +18,7 @@
 }
 
 .cardContainer{
-    /* background-color: yellow !important; */
     width: 100%;
-}
-
-.reservationDate{
-    font-size: 16px !important;
 }
 
 .cardHighlight{
