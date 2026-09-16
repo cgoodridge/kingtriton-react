@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../css/orders.css';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
 import { db } from '../firebaseConfigFile';
 import { selectUser } from '../slices/userSlice';
 import { useSelector } from 'react-redux';
@@ -37,25 +38,42 @@ const Orders = () => {
     return (
         <>
             <Container className="container">
-                <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{ textAlign: 'center', marginTop: '16px' }}>
+                <Typography
+                    className="headerStyle"
+                    variant="h3"
+                    gutterBottom
+                    component="div"
+                    style={{ textAlign: 'center', marginTop: '16px' }}
+                >
                     Order History
                 </Typography>
 
-                {
-                    !orders.length <= 0 ?
-                        orders?.map(order => (
-                            <Order order={order} />
-                        ))
-                        :
-                        <>
-                            <Typography variant="h6" className="emptyReservationText" gutterBottom component="div" style={{ textAlign: 'left', marginTop: '16px' }}>
-                                You haven't placed any orders yet.
-                            </Typography>
-                            <div>
-                                <Button variant="contained" component={Link} to="/menu">Menu</Button>
-                            </div>
-                        </>
-                }
+                {orders.length > 0 ? (
+                    <Grid container spacing={3}>
+                        {orders.map((order) => (
+                            <Grid item xs={12} sm={6} md={4} lg={3} key={order.id}>
+                                <Order order={order} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                ) : (
+                    <>
+                        <Typography
+                            variant="h6"
+                            className="emptyReservationText"
+                            gutterBottom
+                            component="div"
+                            style={{ textAlign: 'left', marginTop: '16px' }}
+                        >
+                            You haven't placed any orders yet.
+                        </Typography>
+                        <div>
+                            <Button variant="contained" component={Link} to="/menu">
+                                Menu
+                            </Button>
+                        </div>
+                    </>
+                )}
             </Container>
         </>
 
