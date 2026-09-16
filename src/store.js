@@ -5,7 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import autoMergeLevel2 from 'redux-persist/es/stateReconciler/autoMergeLevel2';
 import userReducer from './slices/userSlice';
 import cartReducer from './slices/cartSlice';
-import thunk from 'redux-thunk';
+import { thunk } from 'redux-thunk';
 
 // const reducers = {
 //     user: userReducer,
@@ -34,7 +34,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = configureStore(
     {
         reducer: persistedReducer,
-        middleware: [thunk],
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
     });
 
 export default store;

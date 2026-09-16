@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import '../css/login.css';
-import Card from '@material-ui/core/Card';
+import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { useHistory, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { auth } from '../firebaseConfigFile';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -12,12 +12,13 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import { useDispatch } from 'react-redux';
 import { login } from '../slices/userSlice';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 import { CircularProgress } from '@mui/material';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = (props) => {
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
 
     const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const Login = (props) => {
     const [fieldVal, setFieldVal] = useState('password');
     const [loading, setLoading] = useState(false);
     const [showPassword, setPasswordVisibility] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handlePasswordVisibility = (event) => {
         setPasswordVisibility(event.target.checked);
@@ -37,36 +39,44 @@ const Login = (props) => {
         }
     };
 
-    const loginUser = (e) => {
-        if (email === '' || password === '') {
-            return;
-        }
-        setLoading(true);
+    const loginUser = async (e) => {
         e.preventDefault();
 
-        auth
-            .signInWithEmailAndPassword(email, password)
-            .then((userAuth) => {
-                dispatch(login({
-                    email: userAuth.user.email,
-                    uid: userAuth.user.uid,
-                    displayName: userAuth.user.displayName,
-                    photoURL: userAuth.user.photoURL ? userAuth.user.photoURL : "",
-                }))
-            })
-            .then(() => {
-                setLoading(false);
-            })
-            .catch(error => alert(error.message));
-
-        if (!props.location.state) {
-            history.push('/');
-        }
-        else {
-            history.push(props.location.state?.prevPath);
+        if (email === '' || password === '') {
+            alert('Please fill in all fields.');
+            return;
         }
 
-    }
+        setLoading(true);
+        setErrorMessage('');
+
+        try {
+            // Sign in the user with email and password
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Dispatch user data to Redux store
+            dispatch(
+                login({
+                    email: user.email,
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL || '',
+                })
+            );
+
+            // Navigate to the previous path or home
+            if (props.location?.state?.prevPath) {
+                navigate(props.location.state.prevPath);
+            } else {
+                navigate('/');
+            }
+        } catch (error) {
+            setErrorMessage('Invalid user/credentials');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="loginCardContainer">
@@ -88,6 +98,16 @@ const Login = (props) => {
                                 <FormControlLabel control={<Checkbox checked={showPassword} onChange={handlePasswordVisibility} inputProps={{ 'aria-label': 'controlled' }} />} label="Show Password" />
                             </FormGroup>
                         </Box>
+
+                        {errorMessage && (
+                            <Typography
+                                variant="body2"
+                                color="error"
+                                style={{ marginTop: '8px', textAlign: 'center' }}
+                            >
+                                {errorMessage}
+                            </Typography>
+                        )}
 
                         <Box sx={{ m: 1, position: 'relative' }}>
                             <Button variant="contained" disabled={loading} className="loginButton" type="submit" onClick={loginUser}>Login</Button>

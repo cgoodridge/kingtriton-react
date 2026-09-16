@@ -2,7 +2,7 @@
     /* background-color: yellow; */
     height: auto !important;
     position: absolute !important;
-    z-index: 1;
+    z-index: 10;
     width: 100%;
 }
 
@@ -22,7 +22,10 @@
     height: 40px;
     justify-content: center;
     align-items: center;
-    margin: 16px auto;
+    margin: 16px;
+}
+.cartIcon{
+    margin: 16px;
 }
 .nav-col{
     width: 100%;
@@ -42,15 +45,17 @@
     margin-left: 24px;
 }
 
-.brand-logo{
-    
+/* Adjust the side menu and cart drawer */
+.MuiDrawer-paper {
+    width: 100% !important; /* Set the width for smaller screens */
+    max-width: 580px !important; /* Set a maximum width */
 }
 
 .homeNav{
     margin-right: 24px !important;
     /* float: right; */
     margin: 0;
-    padding: 0; 
+    padding: 0;
 }
 
 .cartOptions{

@@ -1,5 +1,5 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import '../css/accountDetails.css';
 import TextField from '@mui/material/TextField';
@@ -13,7 +13,7 @@ const EditProfile = () => {
 
     return (
         <>
-            <Container>
+            <Container className="container">
                 <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{textAlign: 'center', marginTop: '16px'}}>
                     Account Details
                 </Typography>

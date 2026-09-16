@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import Card from '@material-ui/core/Card';
-import { makeStyles} from '@material-ui/core/styles';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -13,9 +12,9 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import QuantityControl from "./QuantityControl";
-import Box from '@material-ui/core/Box';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import '../css/product.css';
 import Snackbar from '@mui/material/Snackbar';
 import { useDispatch } from 'react-redux';
@@ -23,14 +22,15 @@ import { addToCart} from '../slices/cartSlice';
 import { useSelector } from 'react-redux';
 import { selectItems } from '../slices/cartSlice';
 import { useSnackbar } from 'notistack';
-import Slide from '@material-ui/core/Slide';
+import Slide from '@mui/material/Slide';
 
 const Product = ({food}) => {
 
     const dispatch = useDispatch();
 
     const [state, setState] = useState({
-        open: false,
+        openModal: false,
+        openSnackbar: false,
         vertical: 'top',
         horizontal: 'center',
     });
@@ -43,23 +43,40 @@ const Product = ({food}) => {
         }));
     };
 
-    const handleClickOpen = () => {
-        setState({open: true});
+    const handleModalOpen = () => {
+        setState((prevState) => ({
+            ...prevState,
+            openModal: true,
+        }));
     };
 
-    const { vertical, horizontal, open } = state;
+    const { vertical, horizontal, openSnackbar } = state;
     const cart = useSelector(selectItems);
     const { enqueueSnackbar } = useSnackbar();
 
-    const handleClick = (newState) => () => {
+    const handleAddToCartClick = (newState) => () => {
+        setState((prevState) => ({
+            ...prevState,
+            ...newState,
+            open: true,
+        }));
         setQtyValue(1);
         checkCart();
         addItemToCart();
-        handleClose();
+        handleModalClose();
     };
 
-    const handleClose = () => {
-        setState({ ...state, open: false });
+    const handleSnackbarClose = () => {
+        setState((prevState) => ({
+            ...prevState,
+            openSnackbar: false,
+        }));
+    };
+    const handleModalClose = () => {
+        setState((prevState) => ({
+            ...prevState,
+            openModal: false,
+        }));
     };
 
     const [qtyValue, setQtyValue] = useState(1);
@@ -86,31 +103,23 @@ const Product = ({food}) => {
 
     };
 
-    const useStyles = makeStyles((theme) => ({
-        root: {
-          flexGrow: 1,
-        },
-        card: {
-          padding: theme.spacing(1),
-        },
-    }));
-
-    const classes = useStyles();
-
     const addItemToCart = () => {
 
         const selectedCustomizations = food?.customization_options
         ?.filter((option) => selectedOptions[option.name]) // Only include selected options
         .map((option) => ({
             name: option.name,
-            price: option.price,
+            price: Number(option.price || 0),
         }));
-        const customizationsTotalPrice = selectedCustomizations?.reduce((total, option) => total + option.price, 0);
+        const customizationsTotalPrice = selectedCustomizations?.reduce(
+            (total, option) => total + option.price,
+            0
+        ) || 0;
 
         const product = {
             id: food?.id,
             name: food?.name,
-            price: food?.price + customizationsTotalPrice,
+            price: Number(food?.price || 0) + customizationsTotalPrice,
             image: food?.image,
             course: food?.course,
             special: food?.special,
@@ -121,26 +130,29 @@ const Product = ({food}) => {
     }
 
     return (
-            <div className={classes.root} key={food.id}>
+            <>
                 {cartDuplicate ?
                     <Snackbar
-                        open={open}
+                        open={state.openSnackbar}
                         autoHideDuration={2000}
-                        onClose={handleClose}
-                        message= {food.name + ' quantity updated'}
-                        key={vertical + horizontal}
+                        onClose={handleSnackbarClose}
+                        message= {food?.name + ' quantity updated'}
+                        key={`${vertical}-${horizontal}`}
                     />
                     :
                     <Snackbar
-                        anchorOrigin={{ vertical, horizontal }}
-                        open={open}
+                        anchorOrigin={{
+                            vertical: vertical || 'top',
+                            horizontal: horizontal || 'center',
+                        }}
+                        open={state.openSnackbar}
                         autoHideDuration={2000}
-                        onClose={handleClose}
-                        message= {food.name + ' added to Cart'}
-                        key={vertical + horizontal}
+                        onClose={handleSnackbarClose}
+                        message={food?.name ? `${food?.name} added to Cart` : 'Item added to Cart'}
+                        key={`${vertical}-${horizontal}`}
                     />
                 }
-                <Dialog open={open} onClose={handleClose} disableScrollLock>
+                <Dialog open={state.openModal} onClose={handleModalClose} disableScrollLock>
                     <img
                         className="dialog-image"
                         srcSet={`${food.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
@@ -173,8 +185,6 @@ const Product = ({food}) => {
                                 'No customization options available for this item.'
                             )}
                         </FormGroup>
-                    </DialogContent>
-                    <DialogActions>
                         <Box className="control-counters">
                             <QuantityControl
                                 qtyValue={qtyValue}
@@ -183,19 +193,27 @@ const Product = ({food}) => {
                                 setQtyValue={(e) => setQtyValue(parseInt(e.target.value))}
                             />
                         </Box>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            onClick={handleClick ({ vertical: 'top', horizontal: 'right', })}
-                            disableElevation
-                        >
-                            Add to Cart
-                        </Button>
-                        <Button onClick={handleClose}>Cancel</Button>
+                    </DialogContent>
+                    <DialogActions>
+                        {/* <Grid container> */}
+
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color='secondary'
+                                size="small"
+                                onClick={handleAddToCartClick ({ vertical: 'top', horizontal: 'right', })}
+                                disableElevation
+                                sx={{ color: 'white' }}
+                            >
+                                Add to Cart
+                            </Button>
+                            <Button onClick={handleModalClose}>Cancel</Button>
+                        {/* </Grid> */}
                     </DialogActions>
                 </Dialog>
-                <Grid item xs={12} sm={3} className={classes.card}>
-                    <Card className="card small" style={{borderRadius: "5px"}} onClick={handleClickOpen}>
+                <Grid size={{ xs: 12, sm: 4, md: 3 }} key={food.id}>
+                    <Card className="card small" style={{borderRadius: "5px"}} onClick={handleModalOpen}>
                         <CardMedia
                             component="img"
                             alt={food.name}
@@ -205,14 +223,14 @@ const Product = ({food}) => {
                             className="card-image"
                         />
                         <CardContent>
-                            <Grid container style={{marginBottom: '10px'}}>
-                                <Grid item xs={10}>
+                            <Grid container spacing={2} style={{marginBottom: '10px'}}>
+                                <Grid size={8}>
                                     <Typography gutterBottom variant="h6" component="h6" align="left">
                                         {food?.name}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={2}>
-                                    <Typography gutterBottom variant="h6" component="h6" align="left">
+                                <Grid size={4}>
+                                    <Typography gutterBottom variant="h6" component="h6" align="right">
                                         ${food?.price}
                                     </Typography>
                                 </Grid>
@@ -223,9 +241,8 @@ const Product = ({food}) => {
                         </CardContent>
                     </Card>
                 </Grid>
-            </div>
+            </>
     );
 }
-
 
 export default Product;

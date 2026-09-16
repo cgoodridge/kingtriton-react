@@ -1,16 +1,16 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 const Help = () => {
     return (
         <>
-            <Container>
+            <Container className="container">
                 <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{textAlign: 'left', marginTop: '16px'}}>
                     Help
                 </Typography>
 
-            
+
             </Container>
         </>
     );

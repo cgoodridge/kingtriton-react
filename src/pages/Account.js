@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../css/account.css';
-import Card from '@material-ui/core/Card';
+import Card from '@mui/material/Card';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -13,19 +13,19 @@ import Help from './Help';
 import Reservationhistory from './ReservationHistory';
 
 const TabPanel = (props) => {
-    const { children, value, index, ...other } = props;
+    const { children, value, index, className } = props;
 
     return (
         <div
             role="tabpanel"
             hidden={value !== index}
             id={`vertical-tabpanel-${index}`}
+            className={className}
             aria-labelledby={`vertical-tab-${index}`}
-            {...other}
         >
             {value === index && (
                 <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
+                    {children}
                 </Box>
             )}
         </div>
@@ -49,9 +49,9 @@ const Account = () => {
 
     const [value, setValue] = useState(0);
 
-    const handleChange = (newValue) => {
-        setValue(newValue);
-    };
+    // const handleChange = (event, newValue) => {
+    //     setValue(newValue);
+    // };
 
     return (
         <>
@@ -65,15 +65,15 @@ const Account = () => {
                             orientation="vertical"
                             // variant="scrollable"
                             value={value}
-                            onChange={handleChange}
+                            onChange={(e, val) => setValue(val)}
                             aria-label="Vertical tabs example"
                             sx={{ borderRight: 1, borderColor: 'divider' }}
                         >
                             <Tab label="Edit Profile" {...a11yProps(0)} />
                             <Tab label="Order History" {...a11yProps(1)} />
                             <Tab label="Reservation History" {...a11yProps(2)} />
-                            <Tab label="Privacy Policy" {...a11yProps(3)} />
-                            <Tab label="Help" {...a11yProps(4)} />
+                            {/* <Tab label="Privacy Policy" {...a11yProps(3)} /> */}
+                            {/* <Tab label="Help" {...a11yProps(4)} /> */}
                         </Tabs>
 
                     </Box>
@@ -81,27 +81,27 @@ const Account = () => {
                 <div className="tabPanelContainer">
                     <TabPanel className="tabPanel" value={value} index={0}>
                         <Box className="tabContent">
-                            <EditProfile />
+                            {value === 0 && <EditProfile />}
                         </Box>
                     </TabPanel>
                     <TabPanel className="tabPanel" value={value} index={1}>
                         <Box className="tabContent">
-                            <Orders />
+                            {value === 1 && <Orders />}
                         </Box>
                     </TabPanel>
                     <TabPanel className="tabPanel" value={value} index={2}>
                         <Box className="tabContent">
-                            <Reservationhistory />
+                            {value === 2 && <Reservationhistory />}
                         </Box>
                     </TabPanel>
                     <TabPanel className="tabPanel" value={value} index={3}>
                         <Box className="tabContent">
-                            <Privacypolicy />
+                            {value === 3 && <Privacypolicy />}
                         </Box>
                     </TabPanel>
                     <TabPanel className="tabPanel" value={value} index={4}>
                         <Box className="tabContent">
-                            <Help />
+                            {value === 4 && <Help />}
                         </Box>
                     </TabPanel>
                 </div>
@@ -119,7 +119,7 @@ const Account = () => {
                         orientation="horizontal"
                         variant="scrollable"
                         value={value}
-                        onChange={handleChange}
+                        onChange={(e, val) => setValue(val)}
                         aria-label="Horizontal tabs"
                         sx={{ borderRight: 1, borderColor: 'divider' }}
                     >
@@ -131,27 +131,27 @@ const Account = () => {
 
                     <TabPanel className="tabPanel" value={value} index={0}>
                         <Box className="tabContent">
-                            <EditProfile />
+                            {value === 0 && <EditProfile />}
                         </Box>
                     </TabPanel>
                     <TabPanel className="tabPanel" value={value} index={1}>
                         <Box className="tabContent">
-                            <Orders />
+                            {value === 1 && <Orders />}
                         </Box>
                     </TabPanel>
                     <TabPanel className="tabPanel" value={value} index={2}>
                         <Box className="tabContent">
-                            <Reservationhistory />
+                            {value === 2 && <Reservationhistory />}
                         </Box>
                     </TabPanel>
                     <TabPanel className="tabPanel" value={value} index={3}>
                         <Box className="tabContent">
-                            <Privacypolicy />
+                            {value === 3 && <Privacypolicy />}
                         </Box>
                     </TabPanel>
                     <TabPanel className="tabPanel" value={value} index={4}>
                         <Box className="tabContent">
-                            <Help />
+                            {value === 4 && <Help />}
                         </Box>
                     </TabPanel>
                 </div>

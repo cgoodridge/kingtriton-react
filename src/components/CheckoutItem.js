@@ -1,6 +1,6 @@
 import React from 'react'
 import '../css/checkoutItem.css';
-import Card from '@material-ui/core/Card';
+import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import CurrencyFormat from 'react-currency-format';
 import { removeFromCart } from '../slices/cartSlice';
