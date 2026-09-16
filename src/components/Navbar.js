@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import clsx from 'clsx';
@@ -7,9 +7,7 @@ import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-// import CssBaseline from '@material-ui/core/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-// import Slide from '@material-ui/core/Slide';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
@@ -34,7 +32,7 @@ import Collapse from '@mui/material/Collapse';
 
 const useStyles = makeStyles(() => ({
     list: {
-        width: 300,
+        // width: 580,
 
     },
     fullList: {
@@ -52,13 +50,35 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const Navbar = () => {
+function ChangeColorOnScroll({ children, target }) {
+    const location = useLocation();
+
+    const scrollTarget = target?.current || window;
+
+    const trigger = useScrollTrigger({
+        disableHysteresis: true, // Appends styles instantly upon passing the threshold
+        threshold: 50,
+        target: scrollTarget, // Use the provided target or default to window
+    });
+    const isTargetRoute = location.pathname === '/';
+
+    const isScrolledOrOtherRoute = isTargetRoute ? trigger : true;
+    return React.cloneElement(children, {
+        sx: {
+            backgroundColor: isScrolledOrOtherRoute ? 'primary.main' : 'transparent',
+            color: isScrolledOrOtherRoute  ? 'text.primary' : 'common.white',
+            boxShadow: isScrolledOrOtherRoute  ? 4 : 0,
+            transition: 'all 0.3s ease-in-out',
+        },
+    });
+}
+
+const Navbar = ({ target = window}) => {
     const location = useLocation();
     const navigate = useNavigate();
     const classes = useStyles();
     const total = useSelector(selectTotal);
     const [expand, setExpansion] = useState(true);
-    const [scrollTarget, setScrollTarget] = useState(undefined);
 
     const handleExpansionClick = (e) => {
         e.stopPropagation();
@@ -74,24 +94,12 @@ const Navbar = () => {
         dispatch(logout);
         auth.signOut();
         handleLoggedInMenuClose();
-        navigate.push('/');
+        navigate('/');
     }
 
     const [cartState, setCartState] = useState({
         right: false,
     });
-
-    const trigger = useScrollTrigger({
-        disableHysteresis: true,
-        threshold: 50,
-        target: window,
-    });
-
-    useEffect(() => {
-        const container = document.getElementsByClassName('.menuContainer');
-        console.log(container);
-        setScrollTarget(container);
-    }, []);
 
     const toggleCartDrawer = (anchor, open) => (event) => {
 
@@ -169,7 +177,7 @@ const Navbar = () => {
                                 Close
                             </Button>
                             :
-                            <Button variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
+                            <Button sx={{ color: 'white'}} variant="contained" color="secondary" fullWidth component={Link} to="/checkout" >
                                 {(total > 0 && total < 70) ? `Checkout (($${parseFloat(total + 10)})` : ''}
                                 {(total >= 70) ? `Checkout ($${parseFloat(total)})` : ''}
                             </Button>
@@ -218,13 +226,6 @@ const Navbar = () => {
                 <Divider />
 
                 <ListItem disablepadding="true">
-                    <ListItemButton component={Link} to="/contact">
-                        <ListItemText primary="Contact" />
-                    </ListItemButton>
-                </ListItem>
-                <Divider />
-
-                <ListItem disablepadding="true">
                     <ListItemButton component={Link} to="/about">
                         <ListItemText primary="About" />
                     </ListItemButton>
@@ -234,7 +235,7 @@ const Navbar = () => {
                 {user ?
                     <>
                         <ListItemButton sx={{ pl: 4 }} onClick={handleExpansionClick}>
-                            <ListItemText primary={'Hi ' + user.displayName.split(" ")[0]} />
+                            <ListItemText primary={'Hi ' + user?.displayName?.split(" ")[0]} />
                             {expand ? <ExpandLess /> : <ExpandMore />}
                         </ListItemButton>
                         <Collapse in={expand} timeout="auto" unmountOnExit>
@@ -265,38 +266,21 @@ const Navbar = () => {
                         </Collapse>
                     </>
                 }
-
             </List>
             <Divider />
-
         </div>
     );
 
     return (
-
-        <header>
-            <Box
-                ref={(node) => {
-                    if (node && !scrollTarget) {
-                        setScrollTarget(node);
-                    }
-                }}
-                sx={{ overflowY: 'auto' }}
-            >
-
-                <AppBar
-                    elevation={trigger ? 4 : 0}
-                    // className={`app-bar`}
-                    position="fixed"
-                    sx={{
-                        transition: 'background-color 0.3s ease, color 0.3s ease',
-                        backgroundColor: trigger ? 'rgba(255, 255, 255, 0.9)' : 'transparent',
-                        color: trigger ? '#000' : '#ffffff',
-                        backdropFilter: trigger ? 'blur(8px)' : 'none',
-                    }}
-                >
-                    <Toolbar disableGutters>
-                        <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }}>
+        <>
+            <ChangeColorOnScroll target={target}>
+                <AppBar>
+                    <Toolbar>
+                        <Box
+                        sx={{
+                            display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' },
+                            alignItems: 'center',
+                        }}>
                             <img className="headerLogo" src="./img/temp-logo.png" alt="Site Logo"></img>
                         </Box>
                         <nav className="nav-col">
@@ -319,7 +303,7 @@ const Navbar = () => {
                             </Box>
                             {['right'].map((anchor) => (
                                 <React.Fragment key={anchor}>
-                                    <Box sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none' } }} >
+                                    <Box className="cartIcon" sx={{ display: { xs: 'flex', sm: 'flex', md: 'none', lg: 'none' } }} >
                                         <IconButton disableFocusRipple="true" onClick={toggleCartDrawer(anchor, true)} color="secondary" className="cartButton" aria-label="open shopping cart">
                                             <Badge badgeContent={cart?.length} color="secondary">
                                                 <ShoppingBasketIcon />
@@ -332,14 +316,12 @@ const Navbar = () => {
                                 </React.Fragment>
                             ))}
                             <Box sx={{ display: { xs: 'none', sm: 'none', md: 'flex', lg: 'flex' } }} className="nav-wrapper">
-
                                 <ul className="right hide-on-med-and-down">
                                     <li><Link to="/">Home</Link></li>
                                     <li><Link to="/menu">Menu</Link></li>
                                     <li><Link to="/reservations">Reservations</Link></li>
-                                    <li><Link to="/contact">Contact</Link></li>
                                     <li><Link to="/about">About</Link></li>
-                                    <li style={{ marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white' }} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hi, {user ? user.displayName.split(" ")[0] : 'Guest'} <KeyboardArrowDownIcon sx={{ paddingTop: '5px' }} /></li>
+                                    <li style={{ marginLeft: '16px', marginRight: '8px', cursor: 'pointer', color: 'white' }} onClick={user ? handleLoggedInMenu : handleMenuClick}>Hi, {user ? user?.displayName?.split(" ")[0] : 'Guest'} <KeyboardArrowDownIcon sx={{ paddingTop: '5px' }} /></li>
                                     <li>
                                         {['right'].map((anchor) => (
                                             <React.Fragment key={anchor}>
@@ -394,9 +376,8 @@ const Navbar = () => {
                         </nav>
                     </Toolbar>
                 </AppBar>
-                <Toolbar />
-            </Box>
-        </header>
+            </ChangeColorOnScroll>
+        </>
     )
 
 }

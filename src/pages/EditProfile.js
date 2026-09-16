@@ -13,7 +13,7 @@ const EditProfile = () => {
 
     return (
         <>
-            <Container>
+            <Container className="container">
                 <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{textAlign: 'center', marginTop: '16px'}}>
                     Account Details
                 </Typography>

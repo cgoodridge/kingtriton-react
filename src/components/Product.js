@@ -109,14 +109,17 @@ const Product = ({food}) => {
         ?.filter((option) => selectedOptions[option.name]) // Only include selected options
         .map((option) => ({
             name: option.name,
-            price: option.price,
+            price: Number(option.price || 0),
         }));
-        const customizationsTotalPrice = selectedCustomizations?.reduce((total, option) => total + option.price, 0);
+        const customizationsTotalPrice = selectedCustomizations?.reduce(
+            (total, option) => total + option.price,
+            0
+        ) || 0;
 
         const product = {
             id: food?.id,
             name: food?.name,
-            price: food?.price + customizationsTotalPrice,
+            price: Number(food?.price || 0) + customizationsTotalPrice,
             image: food?.image,
             course: food?.course,
             special: food?.special,
@@ -127,7 +130,7 @@ const Product = ({food}) => {
     }
 
     return (
-            <div key={food.id}>
+            <>
                 {cartDuplicate ?
                     <Snackbar
                         open={state.openSnackbar}
@@ -182,8 +185,6 @@ const Product = ({food}) => {
                                 'No customization options available for this item.'
                             )}
                         </FormGroup>
-                    </DialogContent>
-                    <DialogActions>
                         <Box className="control-counters">
                             <QuantityControl
                                 qtyValue={qtyValue}
@@ -192,18 +193,26 @@ const Product = ({food}) => {
                                 setQtyValue={(e) => setQtyValue(parseInt(e.target.value))}
                             />
                         </Box>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            onClick={handleAddToCartClick ({ vertical: 'top', horizontal: 'right', })}
-                            disableElevation
-                        >
-                            Add to Cart
-                        </Button>
-                        <Button onClick={handleModalClose}>Cancel</Button>
+                    </DialogContent>
+                    <DialogActions>
+                        {/* <Grid container> */}
+
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color='secondary'
+                                size="small"
+                                onClick={handleAddToCartClick ({ vertical: 'top', horizontal: 'right', })}
+                                disableElevation
+                                sx={{ color: 'white' }}
+                            >
+                                Add to Cart
+                            </Button>
+                            <Button onClick={handleModalClose}>Cancel</Button>
+                        {/* </Grid> */}
                     </DialogActions>
                 </Dialog>
-                <Grid size={3} xs={12} sm={3} sx={{ padding: 1 }}>
+                <Grid size={{ xs: 12, sm: 4, md: 3 }} key={food.id}>
                     <Card className="card small" style={{borderRadius: "5px"}} onClick={handleModalOpen}>
                         <CardMedia
                             component="img"
@@ -232,7 +241,7 @@ const Product = ({food}) => {
                         </CardContent>
                     </Card>
                 </Grid>
-            </div>
+            </>
     );
 }
 

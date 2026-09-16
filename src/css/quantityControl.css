@@ -12,11 +12,10 @@
 
 .counter {
     width: 150px !important;
-    margin: 16px !important;
-
+    /* margin: 8px !important; */
     display: flex !important;
     align-items: center !important;
-    justify-content: center !important;
+    justify-content: flex-start !important;
   }
 
   .counter .qtyField {

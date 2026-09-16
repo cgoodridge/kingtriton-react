@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../slices/userSlice';
 import { Typography } from '@mui/material';
 import { CircularProgress } from '@mui/material';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login = (props) => {
 
@@ -25,6 +26,7 @@ const Login = (props) => {
     const [fieldVal, setFieldVal] = useState('password');
     const [loading, setLoading] = useState(false);
     const [showPassword, setPasswordVisibility] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handlePasswordVisibility = (event) => {
         setPasswordVisibility(event.target.checked);
@@ -37,36 +39,44 @@ const Login = (props) => {
         }
     };
 
-    const loginUser = (e) => {
-        if (email === '' || password === '') {
-            return;
-        }
-        setLoading(true);
+    const loginUser = async (e) => {
         e.preventDefault();
 
-        auth
-            .signInWithEmailAndPassword(email, password)
-            .then((userAuth) => {
-                dispatch(login({
-                    email: userAuth.user.email,
-                    uid: userAuth.user.uid,
-                    displayName: userAuth.user.displayName,
-                    photoURL: userAuth.user.photoURL ? userAuth.user.photoURL : "",
-                }))
-            })
-            .then(() => {
-                setLoading(false);
-            })
-            .catch(error => alert(error.message));
-
-        if (!props.location.state) {
-            navigate.push('/');
-        }
-        else {
-            navigate.push(props.location.state?.prevPath);
+        if (email === '' || password === '') {
+            alert('Please fill in all fields.');
+            return;
         }
 
-    }
+        setLoading(true);
+        setErrorMessage('');
+
+        try {
+            // Sign in the user with email and password
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Dispatch user data to Redux store
+            dispatch(
+                login({
+                    email: user.email,
+                    uid: user.uid,
+                    displayName: user.displayName,
+                    photoURL: user.photoURL || '',
+                })
+            );
+
+            // Navigate to the previous path or home
+            if (props.location?.state?.prevPath) {
+                navigate(props.location.state.prevPath);
+            } else {
+                navigate('/');
+            }
+        } catch (error) {
+            setErrorMessage('Invalid user/credentials');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="loginCardContainer">
@@ -88,6 +98,16 @@ const Login = (props) => {
                                 <FormControlLabel control={<Checkbox checked={showPassword} onChange={handlePasswordVisibility} inputProps={{ 'aria-label': 'controlled' }} />} label="Show Password" />
                             </FormGroup>
                         </Box>
+
+                        {errorMessage && (
+                            <Typography
+                                variant="body2"
+                                color="error"
+                                style={{ marginTop: '8px', textAlign: 'center' }}
+                            >
+                                {errorMessage}
+                            </Typography>
+                        )}
 
                         <Box sx={{ m: 1, position: 'relative' }}>
                             <Button variant="contained" disabled={loading} className="loginButton" type="submit" onClick={loginUser}>Login</Button>

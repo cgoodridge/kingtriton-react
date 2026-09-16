@@ -28,7 +28,7 @@ input[type=number] {
 
 .control-counters {
   display: 'flex';
-  align-items: 'center';
+  align-items: 'flex-start';
   justify-content: 'space-around';
 }
 
@@ -63,4 +63,9 @@ input[type=number] {
     height: 300px;
     object-fit: cover;
     border-radius: 8px;
+}
+
+.card {
+    margin: 0 auto; /* Center horizontally */
+    max-width: 100%; /* Ensure the card doesn't overflow */
 }

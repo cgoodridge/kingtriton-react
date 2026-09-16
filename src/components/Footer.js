@@ -10,8 +10,8 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 const Footer = () => {
     return (
         <footer>
-          <Grid container className="grid-content">
-              <Grid size={3} xs={12} md={6} lg={3} sx={{ textAlign: 'center' }}>
+          <Grid container className="grid-content" spacing={{ xs: 2, md: 3 }} justifyContent="center" alignItems="center">
+              <Grid size={{ xs: 12, sm: 4, md: 3 }} sx={{ textAlign: 'center' }}>
                 <img id="footer-logo" src="./img/temp-logo.png" alt="Site Logo"></img>
                 <Typography variant="h5" gutterBottom component="div" className="footerHeaders">
                   King Triton's Seafood Palace
@@ -20,7 +20,7 @@ const Footer = () => {
                 <p>info@triton.com</p>
               </Grid>
 
-              <Grid size={3} xs={12} md={6} lg={3}>
+              <Grid size={{ xs: 12, sm: 4, md: 3 }}>
                 <Typography variant="h5" gutterBottom component="div" className="footerHeaders">
                   Opening Hours
                 </Typography>
@@ -28,14 +28,14 @@ const Footer = () => {
                 Sunday: Closed</p>
               </Grid>
 
-              <Grid size={3} xs={12} md={6} lg={3}>
+              <Grid size={{ xs: 12, sm: 4, md: 3 }}>
                 <Typography variant="h5" gutterBottom component="div" className="footerHeaders">
                   Location
                 </Typography>
                 <p>Hastings Main Road, Christ Church</p>
               </Grid>
 
-              <Grid size={3} xs={12} md={6} lg={3}>
+              <Grid size={{ xs: 12, sm: 4, md: 3 }}>
                 <Typography variant="h5" gutterBottom component="div" className="footerHeaders">
                   Follow Us
                 </Typography>

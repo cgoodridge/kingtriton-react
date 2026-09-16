@@ -26,7 +26,7 @@ const Home = ({food, loading}) => {
                 Take-away Specials
             </Typography>
         </Container>
-        <Container maxWidth="xl" className="centered-container">
+        <Container maxWidth="xl">
             <SpecialMenuList foods={food} loading={loading}/>
         </Container>
 

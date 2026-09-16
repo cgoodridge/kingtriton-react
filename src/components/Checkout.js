@@ -22,177 +22,177 @@ import { Delivery } from '@carbon/icons-react';
 
 
 const useStyles = makeStyles(() => ({
-  gridContent: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: '32px'
-  },
+    gridContent: {
+        display: 'flex',
+        justifyContent: 'center',
+        marginTop: '32px'
+    },
 
-  contentPadding: {
-    paddingTop: '16px',
-    paddingBottom: '16px',
-  },
-  cardPadding: {
-    paddingRight: '8px',
-    paddingLeft: '8px'
-  }
+    contentPadding: {
+        paddingTop: '16px',
+        paddingBottom: '16px',
+    },
+    cardPadding: {
+        paddingRight: '8px',
+        paddingLeft: '8px'
+    }
 }));
 
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+    const { children, value, index, ...other } = props;
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
 }
 
 TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
 };
 
 function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
-  };
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
 }
 
 
 const EmptyCart = () => {
-  return (
-    <>
-      <h4>Cart is empty</h4>
-      <div className="addButtonContainer">
-        <Button variant="contained" size="small" className="addButton" component={Link} to="/menu">Add Something</Button>
-      </div>
-    </>
-  )
+    return (
+        <>
+            <h4>Cart is empty</h4>
+            <div className="addButtonContainer">
+                <Button variant="contained" size="small" className="addButton" component={Link} to="/menu">Add Something</Button>
+            </div>
+        </>
+    )
 }
 
 const Checkout = () => {
 
-  const [value, setTabValue] = useState(0);
-  const total = useSelector(selectTotal);
-  const cart = useSelector(selectItems);
-  const user = useSelector(selectUser);
+    const [value, setTabValue] = useState(0);
+    const total = useSelector(selectTotal);
+    const cart = useSelector(selectItems);
+    const user = useSelector(selectUser);
 
-  const handleChange = (newValue) => {
-    setTabValue(newValue);
-  };
+    const handleChange = (newValue) => {
+        setTabValue(newValue);
+    };
 
-  const handleProceedButton = () => {
-    setTabValue(1);
-  };
+    const handleProceedButton = () => {
+        setTabValue(1);
+    };
 
-  const classes = useStyles();
+    const classes = useStyles();
 
-  return (
-    // <div className="App" theme={theme}>
-    <Container maxWidth="lg">
-      <Box sx={{ width: '100%', marginTop: '16px' }}>
-        <Box>
-          <Tabs value={value} onChange={handleChange} aria-label="checkout page tabs" centered>
-            <Tab label="Review Items" {...a11yProps(0)} />
-            {user ?
+    return (
+        // <div className="App" theme={theme}>
+        <Container maxWidth="lg">
+            <Box sx={{ width: '100%', marginTop: '16px' }}>
+                <Box>
+                    <Tabs value={value} onChange={handleChange} aria-label="checkout page tabs" centered>
+                        <Tab label="Review Items" {...a11yProps(0)} />
+                        {user ?
 
-              <Tab label="Enter Details" {...a11yProps(1)} />
-              :
-              <Tab label="Enter Details" {...a11yProps(1)} disabled />
-            }
-          </Tabs>
-        </Box>
-        <TabPanel value={value} index={0}>
-          <Grid container direction="row" className={classes.contentPadding}>
-            <Grid container direction="column" item xs={12} md={6} sm={6} className={classes.gridContent}>
-              <h4 alignItems="flex-start">Items in Cart</h4>
-              {
-                !cart.length <= 0 ?
-                  cart.map(item => (
+                            <Tab label="Enter Details" {...a11yProps(1)} />
+                            :
+                            <Tab label="Enter Details" {...a11yProps(1)} disabled />
+                        }
+                    </Tabs>
+                </Box>
+                <TabPanel value={value} index={0}>
+                    <Grid container direction="row" className={classes.contentPadding}>
+                        <Grid container direction="column" item xs={12} md={6} sm={6} className={classes.gridContent}>
+                            <h4 alignItems="flex-start">Items in Cart</h4>
+                            {
+                                !cart.length <= 0 ?
+                                    cart.map(item => (
 
-                    <CheckoutItem id={item.id} name={item.name} image={item.image} price={item.price} qty={item.qty} />
-                  ))
-                  : <EmptyCart />
-              }
-              <Card className="deliveryCard">
-                <CardContent>
-                  <Box sx={{ display: 'flex', }}>
-                    <Delivery sx={{ margin: '8px' }} />
-                    <Typography sx={{ fontSize: 14, margin: '8px' }} gutterBottom>
-                      Free delivery on orders over $70
-                    </Typography>
-                  </Box>
-                  <Typography sx={{ fontSize: 14, margin: '8px' }} color="text.secondary" gutterBottom>
-                    All other orders have a fixed delivery charge of $10
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={6} sm={6} alignItems="flex-start" className={classes.gridContent}>
-              <Card className='subtotalCardStyle'>
-                <CardContent>
-                  <div className="subtotal">
-                    <CurrencyFormat
-                      renderText={(value) => (
-                        <>
-                          <p>
-                            Subtotal ({cart?.length} {cart?.length === 1 ? 'item' : 'items'}): <strong>{value}</strong>
-                          </p>
-                        </>
-                      )}
-                      decimalScale={2}
-                      value={parseFloat(total)}
-                      displayType={"text"}
-                      thousandSeparator={true}
-                      prefix={"$"}
-                    />
-                    <CurrencyFormat
-                      renderText={(value) => (
-                        <>
-                          <p>
-                            Delivery: <strong>{total > 70 ? 'Free' : '$'+10}</strong>
-                          </p>
-                        </>
-                      )}
-                      decimalScale={2}
-                      value={parseFloat(total)}
-                      displayType={"text"}
-                      thousandSeparator={true}
-                      prefix={"$"}
-                    />
-                    {user ?
-                      <Button variant="contained" className="loginButton" onClick={handleProceedButton}>Checkout{total > 70 ? '' : '$(' + parseFloat(total+10)+')'}</Button>
-                      :
-                      <Button variant="contained" className="loginButton" component={Link} to="/login">Sign In To Continue</Button>
-                    }
-                  </div>
-                </CardContent>
+                                        <CheckoutItem id={item.id} name={item.name} image={item.image} price={item.price} qty={item.qty} />
+                                    ))
+                                    : <EmptyCart />
+                            }
+                            <Card className="deliveryCard">
+                                <CardContent>
+                                    <Delivery sx={{ margin: '8px' }} />
+                                    <Box sx={{ display: 'flex', }}>
+                                        <Typography sx={{ fontSize: 16, margin: '8px' }} gutterBottom>
+                                            Free delivery on orders over $70
+                                        </Typography>
+                                    </Box>
+                                    <Typography sx={{ fontSize: 16, margin: '8px' }} color="text.secondary" gutterBottom>
+                                        All other orders have a fixed delivery charge of $10
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid className={classes.gridContent}>
+                            <Card>
+                                <CardContent>
+                                    <div className="subtotal">
+                                        <CurrencyFormat
+                                            renderText={(value) => (
+                                                <>
+                                                    <p>
+                                                        Subtotal ({cart?.length} {cart?.length === 1 ? 'item' : 'items'}): <strong>{value}</strong>
+                                                    </p>
+                                                </>
+                                            )}
+                                            decimalScale={2}
+                                            value={parseFloat(total)}
+                                            displayType={"text"}
+                                            thousandSeparator={true}
+                                            prefix={"$"}
+                                        />
+                                        <CurrencyFormat
+                                            renderText={(value) => (
+                                                <>
+                                                    <p>
+                                                        Delivery: <strong>{total > 70 ? 'Free' : '$' + 10}</strong>
+                                                    </p>
+                                                </>
+                                            )}
+                                            decimalScale={2}
+                                            value={parseFloat(total)}
+                                            displayType={"text"}
+                                            thousandSeparator={true}
+                                            prefix={"$"}
+                                        />
+                                        {user ?
+                                            <Button variant="contained" color="secondary" sx={{ color: 'white' }} fullWidth className="loginButton" onClick={handleProceedButton}>Checkout{total > 70 ? '' : '$(' + parseFloat(total + 10) + ')'}</Button>
+                                            :
+                                            <Button variant="contained" color="secondary" className="loginButton" component={Link} to="/login" fullWidth>Sign In To Continue</Button>
+                                        }
+                                    </div>
+                                </CardContent>
 
-              </Card>
-            </Grid>
-          </Grid>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <CheckoutDetailsForm />
-        </TabPanel>
-      </Box>
-    </Container>
-    // </div>
-  );
+                            </Card>
+                        </Grid>
+                    </Grid>
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <CheckoutDetailsForm />
+                </TabPanel>
+            </Box>
+        </Container>
+        // </div>
+    );
 }
 
 export default Checkout;

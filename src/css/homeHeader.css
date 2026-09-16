@@ -22,7 +22,10 @@
     height: 40px;
     justify-content: center;
     align-items: center;
-    margin: 16px auto;
+    margin: 16px;
+}
+.cartIcon{
+    margin: 16px;
 }
 .nav-col{
     width: 100%;
@@ -42,8 +45,10 @@
     margin-left: 24px;
 }
 
-.brand-logo{
-
+/* Adjust the side menu and cart drawer */
+.MuiDrawer-paper {
+    width: 100% !important; /* Set the width for smaller screens */
+    max-width: 580px !important; /* Set a maximum width */
 }
 
 .homeNav{
