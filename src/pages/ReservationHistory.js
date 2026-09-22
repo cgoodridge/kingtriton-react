@@ -54,27 +54,42 @@ const Reservationhistory = () => {
     return (
         <>
             <Container maxWidth="lg" className="container">
-                <Typography className="headerStyle" variant="h3" gutterBottom component="div" style={{ textAlign: 'left', marginTop: '16px' }}>
+                <Typography
+                    className="headerStyle"
+                    variant="h3"
+                    gutterBottom
+                    component="div"
+                    style={{ textAlign: 'left', marginTop: '16px' }}
+                >
                     Past Reservations
                 </Typography>
 
-                {
-                    !reservations.length <= 0 ?
-                        reservations.map(reservation => (
-                            // <Grid container spacing={2}>
+                {reservations.length > 0 ? (
+                    <Grid container spacing={3}>
+                        {reservations.map((reservation) => (
+                            <Grid item xs={12} sm={6} md={4} lg={3} key={reservation.id}>
                                 <Reservationcard reservation={reservation} />
-                            // {/* </Grid> */}
-                        ))
-                        :
-                        <>
-                            <Typography variant="h6" className="emptyReservationText" gutterBottom component="div" style={{ textAlign: 'left', marginTop: '16px' }}>
-                                You haven't made any reservations yet.
-                            </Typography>
-                            <div>
-                                <Button variant="contained" component={Link} to="/reservations">Make A Reservation</Button>
-                            </div>
-                        </>
-                }
+                            </Grid>
+                        ))}
+                    </Grid>
+                ) : (
+                    <>
+                        <Typography
+                            variant="h6"
+                            className="emptyReservationText"
+                            gutterBottom
+                            component="div"
+                            style={{ textAlign: 'left', marginTop: '16px' }}
+                        >
+                            You haven't made any reservations yet.
+                        </Typography>
+                        <div>
+                            <Button variant="contained" component={Link} to="/reservations">
+                                Make A Reservation
+                            </Button>
+                        </div>
+                    </>
+                )}
             </Container>
         </>
     );
