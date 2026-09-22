@@ -9,25 +9,41 @@ import { useSelector } from 'react-redux';
 import Order from '../components/Order';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
-import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { collection, query, orderBy, onSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
 
-const Orders = () => {
+interface OrderData {
+    id: string;
+    data: {
+        createdAt: number;
+        orderStatus: string;
+        cart: {
+            name: string;
+            qty: number;
+            price: number;
+            image: string;
+        }[];
+    };
+}
+
+const Orders: React.FC = () => {
     const user = useSelector(selectUser);
 
-    const [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState<OrderData[]>([]);
 
     useEffect(() => {
-        if (user) {
+        if (user && user.uid) {
             // Reference to the user's orders collection
             const ordersRef = collection(db, 'users', user?.uid, 'orders');
             const ordersQuery = query(ordersRef, orderBy('createdAt', 'desc'));
 
             // Listen for real-time updates
             const unsubscribe = onSnapshot(ordersQuery, (snapshot) => {
-                setOrders(snapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    data: doc.data(),
-                })));
+                setOrders(
+                    snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
+                        id: doc.id,
+                        data: doc.data() as OrderData['data'],
+                    }))
+                );
             });
 
             // Cleanup the listener on unmount
@@ -40,7 +56,7 @@ const Orders = () => {
             <Container className="container">
                 <Typography
                     className="headerStyle"
-                    variant="h3"
+                    variant="h4"
                     gutterBottom
                     component="div"
                     style={{ textAlign: 'center', marginTop: '16px' }}
@@ -51,7 +67,7 @@ const Orders = () => {
                 {orders.length > 0 ? (
                     <Grid container spacing={3}>
                         {orders.map((order) => (
-                            <Grid item xs={12} sm={6} md={4} lg={3} key={order.id}>
+                            <Grid key={order.id}>
                                 <Order order={order} />
                             </Grid>
                         ))}
